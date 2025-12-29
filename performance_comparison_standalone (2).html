@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Comparison Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- Load performance data from external file -->
+    <script>
+// Auto-generated from performance_data.xlsx
+const EXCEL_DATA = [
+  [
+    "Option",
+    null,
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+  ],
+  [
+    "Performance Measure",
+    null,
+    "60/40",
+    "WavRyder QQQ",
+    "WavRyder SP500",
+    "WavRyder(H)",
+    "WavRyder(M)",
+    "WavRyder(L)",
+    "WR QQQ (Lev)",
+    "WR SP500 (Lev)",
+    "WR QQQ/SP500 Lev)",
+    "QQQ (Lev)-WR",
+    "SP 500"
+  ],
+  [
+    "Total Return",
+    "1 year",
+    0.124941689378821,
+    0.1755558345823689,
+    0.1500984966064436,
+    0.17061472015791068,
+    0.16306143835477638,
+    0.15533947507090806,
+    0.3600802462787316,
+    0.15533947507090806,
+    0.15533947507090806,
+    0.2638826792924889,
+    0.17550102475675278
+  ],
+  [
+    "Total Return",
+    "YTD",
+    0.14371297871961808,
+    0.17490936156735293,
+    0.14946602333652814,
+    0.16997096440824744,
+    0.1624218363787724,
+    0.15470411963151198,
+    0.3593322978175786,
+    0.15470411963151198,
+    0.15470411963151198,
+    0.4095494272678759,
+    0.19167417738414594
+  ],
+  [
+    "CAGR",
+    "5 Year",
+    0.08897135616986618,
+    0.10452174579562423,
+    0.09778825230799693,
+    0.10351154320188738,
+    0.10168211138720884,
+    0.099473155483087,
+    0.20583394573438207,
+    0.099473155483087,
+    0.099473155483087,
+    0.20787345614101205,
+    0.14836517636401392
+  ],
+  [
+    "CAGR",
+    "10 Year",
+    0.09826617247929081,
+    0.1514020320183065,
+    0.12067335018460312,
+    0.14546901090750453,
+    0.13636857488789333,
+    0.12702990217666899,
+    0.36408155855902913,
+    0.12702990217666899,
+    0.12702990217666899,
+    0.3734403360399954,
+    0.1489372732556109
+  ],
+  [
+    "CAGR",
+    "15 Year",
+    0.0954549238160074,
+    0.12807838607348154,
+    0.10092326392916484,
+    0.12282632512411751,
+    0.11477927616801487,
+    0.10653174331546889,
+    0.3075958747086125,
+    0.10653174331546889,
+    0.10653174331546889,
+    0.3954994701202532,
+    0.14160598873620467
+  ],
+  [
+    "CAGR",
+    "20 Year",
+    0.08199722673466248,
+    0.12427253755029244,
+    0.0953211493896522,
+    0.11867023360788975,
+    0.11008882126271935,
+    0.10129718649640762,
+    0.2783300098727388,
+    0.10129718649640762,
+    0.10129718649640762,
+    0.3469592078853829,
+    0.11031265715500282
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "$100K Investment Growth",
+    "20 Year",
+    483118.98181212787,
+    1039286.2358231678,
+    617003.7527443555,
+    940533.9840432976,
+    806367.9292071358,
+    687886.1412265772,
+    13533147.851294626,
+    687886.1412265772,
+    687886.1412265772,
+    38487250.90564725,
+    809623.8153010661
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Worst Annual Drawdown%",
+    "20 Year",
+    -0.1905575791472005,
+    -0.09572172918412059,
+    -0.08463731735187463,
+    -0.09031323556218152,
+    -0.08217694754550631,
+    -0.08146880362524733,
+    -0.2618634015601986,
+    -0.08146880362524733,
+    -0.08146880362524733,
+    -0.7909001278779242,
+    -0.3699999999999882
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    100000,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    19.986301369863014,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    "Year",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Total Return",
+    1,
+    0.11037993457731532,
+    0.14283881637958684,
+    0.16423536018966356,
+    0.14760993753368612,
+    0.15430656346437943,
+    0.16044909477256764,
+    0.1588216757855454,
+    0.1588216757855454,
+    0.1588216757855454,
+    0.1150192778810828,
+    0.15790000000000615
+  ],
+  [
+    "Total Return",
+    2,
+    0.05715747303076979,
+    0.19256594171615782,
+    0.03559244690897145,
+    0.1597120714607405,
+    0.11182016705577658,
+    0.06555461887426417,
+    0.20854254569951913,
+    0.20854254569951913,
+    0.20854254569951913,
+    0.12066537916995723,
+    0.054900000000026816
+  ],
+  [
+    "Total Return",
+    3,
+    -0.1905575791472005,
+    0.1498029927279101,
+    0.0872030849356289,
+    0.13721162091387606,
+    0.1183904672527687,
+    0.09965036746424838,
+    0.16304845541853452,
+    0.16304845541853452,
+    0.16304845541853452,
+    -0.39282170027907437,
+    -0.3699999999999882
+  ],
+  [
+    "Total Return",
+    4,
+    0.162930093429974,
+    -0.0185300909582935,
+    0.034524320114372564,
+    -0.007875323133361034,
+    0.00806981004897045,
+    0.023962626763297745,
+    -0.004514816331647742,
+    -0.004514816331647742,
+    -0.004514816331647742,
+    0.4040000388004261,
+    0.26460000000002526
+  ],
+  [
+    "Total Return",
+    5,
+    0.1162162694010731,
+    0.12105797297878929,
+    0.08611033279024793,
+    0.11414943377617437,
+    0.1037095453998147,
+    0.09317937202805404,
+    0.49944746071607926,
+    0.49944746071607926,
+    0.49944746071607926,
+    0.1759039547473844,
+    0.1506000000000265
+  ],
+  [
+    "Total Return",
+    6,
+    0.04252698835958868,
+    0.04814215624201701,
+    0.0570870296680166,
+    0.04998999117643965,
+    0.0527068482037476,
+    0.055357280823195465,
+    -0.008236796723226303,
+    -0.008236796723226303,
+    -0.008236796723226303,
+    0.026901004754602775,
+    0.021100000000022767
+  ],
+  [
+    "Total Return",
+    7,
+    0.11020352691905533,
+    0.15551414997120228,
+    0.13617666387598693,
+    0.1518973247479114,
+    0.14623601995752122,
+    0.14029344955916634,
+    0.27692032146189116,
+    0.27692032146189116,
+    0.27692032146189116,
+    0.17050978218817048,
+    0.16000000000000747
+  ],
+  [
+    "Total Return",
+    8,
+    0.18464702200669691,
+    0.292764017775748,
+    0.26080510265980816,
+    0.28658012089377327,
+    0.27710634315196714,
+    0.2674008870965081,
+    1.143566785241899,
+    1.143566785241899,
+    1.143566785241899,
+    0.3446876391344167,
+    0.32389999999996877
+  ],
+  [
+    "Total Return",
+    9,
+    0.10426665393995971,
+    0.026872124168275002,
+    -0.02404169974907766,
+    0.016603187136912334,
+    0.0012799527142683953,
+    -0.013945890944580985,
+    0.15819977416437792,
+    0.15819977416437792,
+    0.15819977416437792,
+    0.1632151568545468,
+    0.1369000000000049
+  ],
+  [
+    "Total Return",
+    10,
+    0.00927453047964888,
+    -0.06875823796704572,
+    -0.08463731735187463,
+    -0.07194132512561169,
+    -0.07670916317846221,
+    -0.08146880362524733,
+    -0.19126874920449666,
+    -0.19126874920449666,
+    -0.19126874920449666,
+    0.05337263021974459,
+    0.013800000000019574
+  ],
+  [
+    "Total Return",
+    11,
+    0.08196750407089493,
+    -0.0008905988514329444,
+    0.0016488605404514356,
+    -0.0003632047641006775,
+    0.00040962705829405976,
+    0.0011605015440672162,
+    -0.03469655918615988,
+    -0.03469655918615988,
+    -0.03469655918615988,
+    0.09524485743532929,
+    0.11960000000001703
+  ],
+  [
+    "Total Return",
+    12,
+    0.1443524090448971,
+    0.2984309693345417,
+    0.18653367166480161,
+    0.2754854430617488,
+    0.2416013228940621,
+    0.20835151671784513,
+    1.1082585418480155,
+    1.1082585418480155,
+    1.1082585418480155,
+    0.2717948315480272,
+    0.21830000000003325
+  ],
+  [
+    "Total Return",
+    13,
+    -0.02562672784190545,
+    0.05763779780682232,
+    0.06624045019195823,
+    0.0595920994381689,
+    0.062305799239056325,
+    0.06475547865673636,
+    0.024165129683128672,
+    0.024165129683128672,
+    0.024165129683128672,
+    -0.023352004143146976,
+    -0.04379999999998818
+  ],
+  [
+    "Total Return",
+    14,
+    0.2211451061773244,
+    0.23879180541511924,
+    0.17432524132453397,
+    0.2257206212119618,
+    0.20628085092416315,
+    0.18704100755190511,
+    0.556188877477886,
+    0.556188877477886,
+    0.556188877477886,
+    0.35090802412032707,
+    0.31489999999996776
+  ],
+  [
+    "Total Return",
+    15,
+    0.14006856261217182,
+    0.4669429079542302,
+    0.31438372890572164,
+    0.43564018549149264,
+    0.3894257884703023,
+    0.34410254195834034,
+    1.7053069122550153,
+    1.7053069122550153,
+    1.7053069122550153,
+    0.33329219844253055,
+    0.18400000000000039
+  ],
+  [
+    "Total Return",
+    16,
+    0.1659511657351258,
+    0.04061675606806747,
+    0.07366548213266078,
+    0.04774867279790085,
+    0.057965364027131816,
+    0.06758853553290445,
+    0.0803695935334181,
+    0.0803695935334181,
+    0.0803695935334181,
+    0.28070493528718576,
+    0.28710000000002966
+  ],
+  [
+    "Total Return",
+    17,
+    -0.16025585373124784,
+    -0.09572172918412059,
+    -0.06855377204992374,
+    -0.09031323556218152,
+    -0.08217694754550631,
+    -0.07401243774277833,
+    -0.2618634015601986,
+    -0.2618634015601986,
+    -0.2618634015601986,
+    -0.2536289362862124,
+    -0.1810999999999814
+  ],
+  [
+    "Total Return",
+    18,
+    0.18041275379542876,
+    0.22156177601373916,
+    0.16594603064765456,
+    0.2107349406683312,
+    0.19421592758891038,
+    0.1773642464713019,
+    0.5689517091686349,
+    0.5689517091686349,
+    0.5689517091686349,
+    0.40552035833500977,
+    0.2629000000000308
+  ],
+  [
+    "Total Return",
+    19,
+    0.15456090012002166,
+    0.21609543256174124,
+    0.19184189001727714,
+    0.21159535384272798,
+    0.2045161079048896,
+    0.19704266104117796,
+    0.49456006935294905,
+    0.49456006935294905,
+    0.49456006935294905,
+    0.25164338808851805,
+    0.25020000000001885
+  ],
+  [
+    "Total Return",
+    20,
+    0.14371297871961808,
+    0.17490936156735293,
+    0.14946602333652814,
+    0.16997096440824744,
+    0.1624218363787724,
+    0.15470411963151198,
+    0.3593322978175786,
+    0.3593322978175786,
+    0.3593322978175786,
+    0.20906973265254902,
+    0.19319999999998716
+  ]
+];
+
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto Slab', serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .upload-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .upload-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .selector-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .selector-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 13px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-family: 'Roboto Slab', serif;
+            min-width: 250px;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .upload-button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        #reportContent {
+            display: none;
+        }
+        
+        .copy-button-container {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .copy-button {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+        }
+        
+        .copy-status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #28a745;
+            font-weight: 600;
+            display: none;
+        }
+        
+        #presentationContent {
+            width: 60%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #1a1a1a;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .section-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 10px 0 6px 0;
+            padding-bottom: 4px;
+            border-bottom: 3px solid #007bff;
+            text-align: center;
+        }
+        
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .performance-table thead tr {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+        
+        .performance-table th {
+            padding: 4px 5px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 17px;
+        }
+        
+        .performance-table th:nth-child(2),
+        .performance-table td:nth-child(2) {
+            width: 80px;
+            white-space: nowrap;
+        }
+        
+        .performance-table th:first-child {
+            border-top-left-radius: 8px;
+        }
+        
+        .performance-table th:last-child {
+            border-top-right-radius: 8px;
+        }
+        
+        .performance-table td {
+            padding: 3px 5px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 17px;
+        }
+        
+        .performance-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .performance-table tbody tr:nth-child(even) {
+            background-color: #f5f6f7;
+        }
+        
+        .performance-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .performance-table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+        
+        .performance-table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+        
+        .performance-table td:nth-child(3),
+        .performance-table td:nth-child(4),
+        .performance-table td:nth-child(5) {
+            font-weight: 600;
+        }
+        
+        .performance-table .positive {
+            color: #28a745;
+        }
+        
+        .performance-table .negative {
+            color: #dc3545;
+        }
+        
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 8px 0;
+            max-width: 100%;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 6px 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-title {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+        
+        .metric-table {
+            width: 100%;
+            margin-top: 2px;
+        }
+        
+        .metric-table td {
+            padding: 1px 4px;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .metric-table td:first-child {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .metric-table td:last-child {
+            font-weight: 700;
+            text-align: right;
+        }
+        
+        .metric-table .positive {
+            color: #28a745;
+        }
+        
+        .metric-table .negative {
+            color: #dc3545;
+        }
+        
+        .metric-table .neutral {
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-section">
+            <h3 style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
+            <div class="upload-row">
+                <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                    📁 Select Excel File
+                </button>
+                <input type="file" id="fileInput" accept=".xlsx, .xls">
+            </div>
+            
+            <div class="selector-row" id="selectorRow" style="display: none;">
+                <div class="selector-group">
+                    <label class="selector-label">Portfolio 1 - Model A:</label>
+                    <select id="option1Select">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Allocation %:</label>
+                    <select id="allocation1Select">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50" selected>50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Portfolio 1 - Model B:</label>
+                    <select id="option2Select">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Allocation %:</label>
+                    <select id="allocation2Select">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50" selected>50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="selector-row" id="selectorRow2" style="display: none; margin-top: 10px;">
+                <div class="selector-group">
+                    <label class="selector-label">Portfolio 2 - Model A:</label>
+                    <select id="option3Select">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Allocation %:</label>
+                    <select id="allocation3Select">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50" selected>50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Portfolio 2 - Model B:</label>
+                    <select id="option4Select">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label class="selector-label">Allocation %:</label>
+                    <select id="allocation4Select">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50" selected>50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                    </select>
+                </div>
+                <button class="upload-button" style="padding: 8px 20px; font-size: 14px;" onclick="updateComparison()">
+                    🔄 Update
+                </button>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+        </div>
+
+        <div id="reportContent">
+            <div class="copy-button-container">
+                <button class="copy-button" onclick="copyAllAsImage()" style="background: linear-gradient(135deg, #28a745, #218838);">
+                    📑 Copy All
+                </button>
+                <button class="copy-button" onclick="copyReportAsImage()">
+                    📋 Copy Performance Report
+                </button>
+                <button class="copy-button" onclick="copyGrowthChartAsImage()" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                    📈 Copy Growth Chart
+                </button>
+                <button class="copy-button" onclick="copyRiskMetricsAsImage()" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+                    📊 Copy Risk Metrics
+                </button>
+                <div class="copy-status" id="copyStatus"></div>
+            </div>
+
+            <div id="presentationContent">
+                <div class="header">
+                    <h1>Performance Comparison</h1>
+                    <div class="subtitle" id="comparisonSubtitle">Select two options to compare</div>
+                </div>
+
+                <div class="section-header">Performance Metrics</div>
+                <div id="portfolioKey" style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
+                    <span id="portfolio1Description">Portfolio 1</span> vs <span id="portfolio2Description">Portfolio 2</span>
+                </div>
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>Return Type</th>
+                            <th>Period</th>
+                            <th id="col1HeaderTable">Option 1</th>
+                            <th id="col2HeaderTable">Option 2</th>
+                            <th>Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody id="performanceTableBody">
+                    </tbody>
+                </table>
+
+                <div class="section-header">20-Year Investment Lookback Analysis</div>
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <div class="metric-title">$100k Investment Growth</div>
+                        <table class="metric-table">
+                            <tr>
+                                <td id="col1Label1">Option 1:</td>
+                                <td class="neutral" id="option1_100k">$0</td>
+                            </tr>
+                            <tr>
+                                <td id="col2Label1">Option 2:</td>
+                                <td class="neutral" id="option2_100k">$0</td>
+                            </tr>
+                            <tr>
+                                <td>Difference:</td>
+                                <td class="positive" id="diff100k">$0</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Max Annual Drawdown</div>
+                        <table class="metric-table">
+                            <tr>
+                                <td id="col1Label2">Option 1:</td>
+                                <td class="neutral" id="option1Drawdown">0%</td>
+                            </tr>
+                            <tr>
+                                <td id="col2Label2">Option 2:</td>
+                                <td class="neutral" id="option2Drawdown">0%</td>
+                            </tr>
+                            <tr>
+                                <td>Difference:</td>
+                                <td class="positive" id="drawdownDiff">0%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 6px;">
+                    Note: Back-test CAGRs and growth from daily model; max annual drawdown based on year-end values. 20-year period is 19.99 years.
+                </div>
+                
+                <div class="section-header" style="margin-top: 15px;">Portfolio Growth Over Time</div>
+                <div id="growthChartContent" style="background: #ffffff; padding: 15px; border-radius: 8px; margin-top: 6px;">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <h3 style="font-size: 18px; color: #1a1a1a; font-weight: 600; margin-bottom: 3px;">$100K Growth Over 20 Years</h3>
+                        <div id="chartSubtitle" style="font-size: 13px; color: #666; font-style: italic;">Portfolio Comparison</div>
+                    </div>
+                    <div style="position: relative; height: 400px;">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 8px;">
+                        Growth calculated from annual returns with annual rebalancing.
+                    </div>
+                </div>
+                
+                <div class="section-header" style="margin-top: 15px;">Advanced Risk Metrics</div>
+                <div style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
+                    <span id="portfolio1DescriptionRisk">Portfolio 1</span> vs <span id="portfolio2DescriptionRisk">Portfolio 2</span>
+                </div>
+                <div id="riskMetricsContent" style="background: #fafbfc; padding: 12px; border-radius: 8px; margin-top: 6px;">
+                    <div class="metrics-container">
+                        <div class="metric-card">
+                            <div class="metric-title">Beta (vs S&P 500)</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label3">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Beta">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label3">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Beta">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="betaDiff">0.00</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Expected Return</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label4">Portfolio 1:</td>
+                                    <td class="neutral" id="option1ExpReturn">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label4">Portfolio 2:</td>
+                                    <td class="neutral" id="option2ExpReturn">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="expReturnDiff">0.0%</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Alpha (vs S&P 500)</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label5">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Alpha">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label5">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Alpha">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="alphaDiff">0.0%</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Sharpe Ratio</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label6">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Sharpe">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label6">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Sharpe">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="sharpeDiff">0.00</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Sortino Ratio</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label7">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Sortino">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label7">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Sortino">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="sortinoDiff">0.00</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Treynor Ratio</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label8">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Treynor">0.000</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label8">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Treynor">0.000</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="treynorDiff">0.000</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Volatility (Std Dev)</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label9">Portfolio 1:</td>
+                                    <td class="neutral" id="option1Vol">0.00%</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label9">Portfolio 2:</td>
+                                    <td class="neutral" id="option2Vol">0.00%</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="volDiff">0.00%</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-title">Win Rate</div>
+                            <table class="metric-table">
+                                <tr>
+                                    <td id="col1Label10">Portfolio 1:</td>
+                                    <td class="neutral" id="option1WinRate">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td id="col2Label10">Portfolio 2:</td>
+                                    <td class="neutral" id="option2WinRate">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td>Difference:</td>
+                                    <td class="positive" id="winRateDiff">0.0%</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 6px;">
+                        Sharpe, Sortino, Alpha & Beta use 3% risk-free rate. S&P 500 benchmark. Calculated from annual returns.
+                    </div>
+                    
+                    <div style="margin-top: 12px; padding: 10px; background: #f8f9fa; border-radius: 6px; font-size: 12px; line-height: 1.5;">
+                        <div style="font-weight: 600; color: #1a1a1a; margin-bottom: 6px;">Ratio Definitions:</div>
+                        <div style="color: #495057;">
+                            <strong>Beta:</strong> Volatility vs S&P 500; <1.0 = less volatile, >1.0 = more volatile.<br>
+                            <strong>Expected Return:</strong> Return predicted by CAPM given the portfolio's risk level (Beta).<br>
+                            <strong>Alpha:</strong> Excess return vs risk-adjusted benchmark; positive means outperformance.<br>
+                            <strong>Sharpe:</strong> Risk-adjusted return using total volatility; higher is better.<br>
+                            <strong>Sortino:</strong> Like Sharpe but only penalizes downside volatility; higher is better.<br>
+                            <strong>Treynor:</strong> Return per unit of market risk (Beta); higher is better.<br>
+                            <strong>Volatility:</strong> Standard deviation of returns; lower means more stable.<br>
+                            <strong>Win Rate:</strong> Percentage of positive years; higher means more consistent gains.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if EXCEL_DATA is loaded from performance_data.js
+        const DATA_FILE_LOADED = typeof EXCEL_DATA !== 'undefined';
+        
+        let excelData = null;
+        let columnHeaders = [];
+        let yearsValue = 20; // Default, will be read from A17
+        let growthChart = null; // Chart.js instance
+        
+        // Function to process Excel data (used by both file upload and data file)
+        function processExcelData(jsonData) {
+            excelData = jsonData;
+            
+            // Read years value from A17 (row 17, column 0)
+            if (jsonData[16] && jsonData[16][0]) {
+                yearsValue = parseFloat(jsonData[16][0]);
+            }
+            
+            // Parse headers - create array of objects with index and name
+            columnHeaders = [];
+            const nameRow = jsonData[1]; // Row with names like "60/40", "WavRyder QQQ", etc.
+            
+            // Add options from column headers (skip first two: "Performance Measure" and empty)
+            for (let i = 2; i < nameRow.length; i++) {
+                if (nameRow[i]) {
+                    columnHeaders.push({
+                        index: i,
+                        name: nameRow[i]
+                    });
+                }
+            }
+            
+            // Populate dropdowns
+            const option1Select = document.getElementById('option1Select');
+            const option2Select = document.getElementById('option2Select');
+            const option3Select = document.getElementById('option3Select');
+            const option4Select = document.getElementById('option4Select');
+            
+            // Clear existing options except the first one
+            [option1Select, option2Select, option3Select, option4Select].forEach(select => {
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+            });
+            
+            // Add options from column headers
+            columnHeaders.forEach(header => {
+                const option1 = document.createElement('option');
+                option1.value = header.index;
+                option1.textContent = header.name;
+                option1Select.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = header.index;
+                option2.textContent = header.name;
+                option2Select.appendChild(option2);
+                
+                const option3 = document.createElement('option');
+                option3.value = header.index;
+                option3.textContent = header.name;
+                option3Select.appendChild(option3);
+                
+                const option4 = document.createElement('option');
+                option4.value = header.index;
+                option4.textContent = header.name;
+                option4Select.appendChild(option4);
+            });
+        }
+        
+        // Auto-load data from performance_data.js if available
+        if (DATA_FILE_LOADED) {
+            window.addEventListener('DOMContentLoaded', () => {
+                processExcelData(EXCEL_DATA);
+                
+                // Show selector rows since data is loaded
+                document.getElementById('selectorRow').style.display = 'flex';
+                document.getElementById('selectorRow2').style.display = 'flex';
+                
+                // Hide the upload button since data is already loaded
+                const uploadRow = document.querySelector('.upload-row');
+                if (uploadRow) {
+                    uploadRow.style.display = 'none';
+                }
+                
+                const successMsg = document.getElementById('successMessage');
+                successMsg.textContent = '✓ Performance data loaded successfully!';
+                successMsg.style.display = 'block';
+            });
+        }
+        
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                    
+                    if (jsonData.length < 2) {
+                        throw new Error('Excel file must have at least 2 rows');
+                    }
+                    
+                    excelData = jsonData;
+                    
+                    // Read years value from A17 (row 17, column A = index [16][0])
+                    if (jsonData[16] && jsonData[16][0]) {
+                        yearsValue = parseFloat(jsonData[16][0]);
+                        if (isNaN(yearsValue) || yearsValue <= 0) {
+                            yearsValue = 20; // Fallback to 20 if invalid
+                        }
+                    }
+                    
+                    // Parse headers - automatically detect all available columns
+                    columnHeaders = [];
+                    const letterRow = jsonData[0];
+                    const nameRow = jsonData[1];
+                    
+                    // Start from column 2 (index 2) and check all columns until we hit empty ones
+                    for (let i = 2; i < letterRow.length; i++) {
+                        // Include column if it has either a letter OR a name (more flexible)
+                        if (letterRow[i] || nameRow[i]) {
+                            columnHeaders.push({
+                                letter: letterRow[i] || `Col${i}`,
+                                name: nameRow[i] || letterRow[i] || `Column ${i}`,
+                                index: i
+                            });
+                        }
+                    }
+                    
+                    // Also check if there are more columns beyond the current length
+                    // by looking at the data rows to find the actual last column with data
+                    let maxCol = letterRow.length;
+                    for (let rowIdx = 2; rowIdx < Math.min(15, jsonData.length); rowIdx++) {
+                        if (jsonData[rowIdx] && jsonData[rowIdx].length > maxCol) {
+                            maxCol = jsonData[rowIdx].length;
+                        }
+                    }
+                    
+                    // Add any additional columns found in data rows
+                    for (let i = letterRow.length; i < maxCol; i++) {
+                        // Check if this column has data in any of the first few data rows
+                        let hasData = false;
+                        for (let rowIdx = 2; rowIdx < Math.min(15, jsonData.length); rowIdx++) {
+                            if (jsonData[rowIdx] && jsonData[rowIdx][i]) {
+                                hasData = true;
+                                break;
+                            }
+                        }
+                        
+                        if (hasData) {
+                            columnHeaders.push({
+                                letter: `Col${String.fromCharCode(65 + i - 2)}`,
+                                name: `Column ${String.fromCharCode(65 + i - 2)}`,
+                                index: i
+                            });
+                        }
+                    }
+                    
+                    if (columnHeaders.length === 0) {
+                        throw new Error('No valid options found in Excel file');
+                    }
+                    
+                    populateSelectors();
+                    
+                    successMsg.textContent = `✓ File loaded! Found ${columnHeaders.length} options.`;
+                    successMsg.style.display = 'block';
+                    document.getElementById('selectorRow').style.display = 'flex';
+                    document.getElementById('selectorRow2').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                    }, 3000);
+                    
+                } catch (error) {
+                    errorMsg.textContent = '❌ Error: ' + error.message;
+                    errorMsg.style.display = 'block';
+                }
+            };
+            
+            reader.onerror = function() {
+                errorMsg.textContent = '❌ Error reading file';
+                errorMsg.style.display = 'block';
+            };
+            
+            reader.readAsArrayBuffer(file);
+        });
+        
+        function populateSelectors() {
+            const option1Select = document.getElementById('option1Select');
+            const option2Select = document.getElementById('option2Select');
+            const option3Select = document.getElementById('option3Select');
+            const option4Select = document.getElementById('option4Select');
+            
+            option1Select.innerHTML = '<option value="">-- Select --</option>';
+            option2Select.innerHTML = '<option value="">-- Select --</option>';
+            option3Select.innerHTML = '<option value="">-- Select --</option>';
+            option4Select.innerHTML = '<option value="">-- Select --</option>';
+            
+            columnHeaders.forEach((header) => {
+                const opt1 = document.createElement('option');
+                opt1.value = header.index;
+                opt1.textContent = `${header.letter} - ${header.name}`;
+                option1Select.appendChild(opt1);
+                
+                const opt2 = document.createElement('option');
+                opt2.value = header.index;
+                opt2.textContent = `${header.letter} - ${header.name}`;
+                option2Select.appendChild(opt2);
+                
+                const opt3 = document.createElement('option');
+                opt3.value = header.index;
+                opt3.textContent = `${header.letter} - ${header.name}`;
+                option3Select.appendChild(opt3);
+                
+                const opt4 = document.createElement('option');
+                opt4.value = header.index;
+                opt4.textContent = `${header.letter} - ${header.name}`;
+                option4Select.appendChild(opt4);
+            });
+        }
+        
+        function calculateCAGRFromAnnualReturns(colIndex, startYear, endYear) {
+            // Annual returns start at row 21 (index 20) for Year 1
+            // Calculate compound annual growth rate from individual year returns
+            let compoundedValue = 1.0;
+            
+            for (let year = startYear; year <= endYear; year++) {
+                const rowIndex = 19 + year; // Row 21 = Year 1, so index 20 = 19 + 1
+                const row = excelData[rowIndex];
+                if (row && row[colIndex] !== null && row[colIndex] !== undefined) {
+                    const yearReturn = typeof row[colIndex] === 'number' ? row[colIndex] : parseValue(row[colIndex]);
+                    compoundedValue *= (1 + yearReturn);
+                }
+            }
+            
+            // Convert to CAGR: (Final/Initial)^(1/years) - 1
+            const years = endYear - startYear + 1;
+            const cagr = Math.pow(compoundedValue, 1/years) - 1;
+            return cagr;
+        }
+        
+        function calculateBlendedCAGR(col1, alloc1, col2, alloc2, startYear, endYear) {
+            // Calculate blended annual returns year by year, then derive CAGR
+            let compoundedValue = 1.0;
+            
+            for (let year = startYear; year <= endYear; year++) {
+                const rowIndex = 19 + year;
+                const row = excelData[rowIndex];
+                
+                let blendedReturn = 0;
+                if (col1 && alloc1 > 0 && row && row[col1] !== null) {
+                    const ret1 = typeof row[col1] === 'number' ? row[col1] : parseValue(row[col1]);
+                    blendedReturn += ret1 * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0 && row && row[col2] !== null) {
+                    const ret2 = typeof row[col2] === 'number' ? row[col2] : parseValue(row[col2]);
+                    blendedReturn += ret2 * (alloc2 / 100);
+                }
+                
+                compoundedValue *= (1 + blendedReturn);
+            }
+            
+            const years = endYear - startYear + 1;
+            const cagr = Math.pow(compoundedValue, 1/years) - 1;
+            return cagr;
+        }
+        
+        function calculateMaxDrawdown(col1, alloc1, col2, alloc2) {
+            // Calculate true maximum drawdown from annual returns
+            let portfolioValue = 100000;
+            let peak = portfolioValue;
+            let maxDrawdown = 0;
+            
+            const years = Math.round(yearsValue); // Use value from A17
+            
+            for (let year = 1; year <= years; year++) {
+                const rowIndex = 19 + year;
+                const row = excelData[rowIndex];
+                
+                let blendedReturn = 0;
+                if (col1 && alloc1 > 0 && row && row[col1] !== null) {
+                    const ret1 = typeof row[col1] === 'number' ? row[col1] : parseValue(row[col1]);
+                    blendedReturn += ret1 * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0 && row && row[col2] !== null) {
+                    const ret2 = typeof row[col2] === 'number' ? row[col2] : parseValue(row[col2]);
+                    blendedReturn += ret2 * (alloc2 / 100);
+                }
+                
+                portfolioValue *= (1 + blendedReturn);
+                
+                if (portfolioValue > peak) {
+                    peak = portfolioValue;
+                }
+                
+                const drawdown = (portfolioValue - peak) / peak;
+                if (drawdown < maxDrawdown) {
+                    maxDrawdown = drawdown;
+                }
+            }
+            
+            return maxDrawdown;
+        }
+        
+        function calculateInvestmentGrowth(col1, alloc1, col2, alloc2) {
+            // Calculate actual compounded growth from annual returns with rebalancing
+            let portfolioValue = 100000;
+            
+            const years = Math.round(yearsValue); // Use value from A17
+            
+            for (let year = 1; year <= years; year++) {
+                const rowIndex = 19 + year;
+                const row = excelData[rowIndex];
+                
+                let blendedReturn = 0;
+                if (col1 && alloc1 > 0 && row && row[col1] !== null) {
+                    const ret1 = typeof row[col1] === 'number' ? row[col1] : parseValue(row[col1]);
+                    blendedReturn += ret1 * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0 && row && row[col2] !== null) {
+                    const ret2 = typeof row[col2] === 'number' ? row[col2] : parseValue(row[col2]);
+                    blendedReturn += ret2 * (alloc2 / 100);
+                }
+                
+                portfolioValue *= (1 + blendedReturn);
+            }
+            
+            return portfolioValue;
+        }
+
+        function calculateRiskMetrics(col1, alloc1, col2, alloc2) {
+            const years = Math.round(yearsValue);
+            const returns = [];
+            const sp500Returns = [];
+            const sp500ColIndex = 12; // Column M (S&P 500) - 0-based index
+            
+            // Collect blended annual returns and S&P 500 returns
+            for (let year = 1; year <= years; year++) {
+                const rowIndex = 19 + year;
+                const row = excelData[rowIndex];
+                
+                let blendedReturn = 0;
+                if (col1 && alloc1 > 0 && row && row[col1] !== null) {
+                    const ret1 = typeof row[col1] === 'number' ? row[col1] : parseValue(row[col1]);
+                    blendedReturn += ret1 * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0 && row && row[col2] !== null) {
+                    const ret2 = typeof row[col2] === 'number' ? row[col2] : parseValue(row[col2]);
+                    blendedReturn += ret2 * (alloc2 / 100);
+                }
+                
+                returns.push(blendedReturn);
+                
+                // Get S&P 500 return
+                if (row && row[sp500ColIndex] !== null && row[sp500ColIndex] !== undefined) {
+                    const spRet = typeof row[sp500ColIndex] === 'number' ? row[sp500ColIndex] : parseValue(row[sp500ColIndex]);
+                    sp500Returns.push(spRet);
+                }
+            }
+            
+            // Calculate mean (Expected Return)
+            const mean = returns.reduce((sum, r) => sum + r, 0) / returns.length;
+            const sp500Mean = sp500Returns.reduce((sum, r) => sum + r, 0) / sp500Returns.length;
+            
+            // Calculate standard deviation
+            const squaredDiffs = returns.map(r => Math.pow(r - mean, 2));
+            const variance = squaredDiffs.reduce((sum, sq) => sum + sq, 0) / (returns.length - 1);
+            const stdDev = Math.sqrt(variance);
+            
+            // Sharpe Ratio (3% risk-free rate)
+            const riskFree = 0.03;
+            const sharpe = (mean - riskFree) / stdDev;
+            
+            // Sortino Ratio (downside deviation)
+            const downsideReturns = returns.filter(r => r < 0);
+            let sortino = 0;
+            if (downsideReturns.length > 1) {
+                const downsideMean = 0;
+                const downsideSquaredDiffs = downsideReturns.map(r => Math.pow(r - downsideMean, 2));
+                const downsideVariance = downsideSquaredDiffs.reduce((sum, sq) => sum + sq, 0) / (downsideReturns.length - 1);
+                const downsideDev = Math.sqrt(downsideVariance);
+                sortino = (mean - riskFree) / downsideDev;
+            } else {
+                sortino = sharpe; // Fallback if insufficient downside data
+            }
+            
+            // Win Rate
+            const positiveYears = returns.filter(r => r > 0).length;
+            const winRate = positiveYears / returns.length;
+            
+            // Calculate CAGR for Alpha (compound annual growth rate)
+            let compoundedValue = 1.0;
+            for (let i = 0; i < returns.length; i++) {
+                compoundedValue *= (1 + returns[i]);
+            }
+            const cagr = Math.pow(compoundedValue, 1/returns.length) - 1;
+            
+            // Beta calculation
+            const covariance = returns.reduce((sum, ret, i) => 
+                sum + (ret - mean) * (sp500Returns[i] - sp500Mean), 0) / (returns.length - 1);
+            const sp500Variance = sp500Returns.reduce((sum, ret) => 
+                sum + Math.pow(ret - sp500Mean, 2), 0) / (sp500Returns.length - 1);
+            const beta = sp500Variance !== 0 ? covariance / sp500Variance : 0;
+            
+            // Expected Return (CAPM) = Risk-Free + Beta * (Market Return - Risk-Free)
+            const expectedReturn = riskFree + beta * (sp500Mean - riskFree);
+            
+            // Alpha = Arithmetic Mean - Expected Return (not CAGR, because it's based on Beta/regression)
+            const alpha = mean - expectedReturn;
+            
+            // Treynor Ratio = (Arithmetic Mean - Risk-Free) / Beta (uses mean because it's based on Beta)
+            const treynor = beta !== 0 ? (mean - riskFree) / beta : 0;
+            
+            return {
+                sharpe: sharpe,
+                sortino: sortino,
+                volatility: stdDev,
+                winRate: winRate,
+                expectedReturn: expectedReturn,
+                beta: beta,
+                alpha: alpha,
+                treynor: treynor
+            };
+        }
+
+        function updateComparison() {
+            const option1Index = parseInt(document.getElementById('option1Select').value);
+            const option2Index = parseInt(document.getElementById('option2Select').value);
+            const option3Index = parseInt(document.getElementById('option3Select').value);
+            const option4Index = parseInt(document.getElementById('option4Select').value);
+            
+            const alloc1 = parseInt(document.getElementById('allocation1Select').value);
+            const alloc2 = parseInt(document.getElementById('allocation2Select').value);
+            const alloc3 = parseInt(document.getElementById('allocation3Select').value);
+            const alloc4 = parseInt(document.getElementById('allocation4Select').value);
+            
+            // Validate Portfolio 1
+            if (!option1Index && !option2Index) {
+                alert('Please select at least one model for Portfolio 1');
+                return;
+            }
+            
+            if (alloc1 + alloc2 !== 100) {
+                alert('Portfolio 1 allocations must total 100%');
+                return;
+            }
+            
+            // Validate Portfolio 2
+            if (!option3Index && !option4Index) {
+                alert('Please select at least one model for Portfolio 2');
+                return;
+            }
+            
+            if (alloc3 + alloc4 !== 100) {
+                alert('Portfolio 2 allocations must total 100%');
+                return;
+            }
+            
+            generateComparison(option1Index, alloc1, option2Index, alloc2, option3Index, alloc3, option4Index, alloc4);
+        }
+        
+        function generateComparison(col1, alloc1, col2, alloc2, col3, alloc3, col4, alloc4) {
+            // Get headers
+            const header1 = col1 ? columnHeaders.find(h => h.index === col1) : null;
+            const header2 = col2 ? columnHeaders.find(h => h.index === col2) : null;
+            const header3 = col3 ? columnHeaders.find(h => h.index === col3) : null;
+            const header4 = col4 ? columnHeaders.find(h => h.index === col4) : null;
+            
+            // Build portfolio names
+            let portfolio1Name = '';
+            if (header1 && alloc1 > 0) portfolio1Name += `${alloc1}% ${header1.name}`;
+            if (header2 && alloc2 > 0) {
+                if (portfolio1Name) portfolio1Name += ' / ';
+                portfolio1Name += `${alloc2}% ${header2.name}`;
+            }
+            
+            let portfolio2Name = '';
+            if (header3 && alloc3 > 0) portfolio2Name += `${alloc3}% ${header3.name}`;
+            if (header4 && alloc4 > 0) {
+                if (portfolio2Name) portfolio2Name += ' / ';
+                portfolio2Name += `${alloc4}% ${header4.name}`;
+            }
+            
+            // Update headers
+            document.getElementById('comparisonSubtitle').textContent = 
+                `${portfolio1Name} vs ${portfolio2Name}`;
+            document.getElementById('col1HeaderTable').textContent = 'Portfolio 1';
+            document.getElementById('col2HeaderTable').textContent = 'Portfolio 2';
+            
+            // Update portfolio description keys
+            document.getElementById('portfolio1Description').textContent = portfolio1Name;
+            document.getElementById('portfolio2Description').textContent = portfolio2Name;
+            document.getElementById('portfolio1DescriptionRisk').textContent = portfolio1Name;
+            document.getElementById('portfolio2DescriptionRisk').textContent = portfolio2Name;
+            
+            // Short names for labels (use "Portfolio 1/2" for simplicity)
+            const shortName1 = 'Portfolio 1';
+            const shortName2 = 'Portfolio 2';
+            
+            // Update labels
+            document.getElementById('col1Label1').textContent = 'Portfolio 1:';
+            document.getElementById('col1Label2').textContent = 'Portfolio 1:';
+            document.getElementById('col2Label1').textContent = 'Portfolio 2:';
+            document.getElementById('col2Label2').textContent = 'Portfolio 2:';
+            
+            // Generate performance table - calculate CAGRs from annual returns
+            const tbody = document.getElementById('performanceTableBody');
+            tbody.innerHTML = '';
+            
+            // Row 3: 1 Year (just year 20)
+            const oneYearRow = excelData[2];
+            if (oneYearRow && oneYearRow[0] === 'Total Return' && oneYearRow[1] === '1 year') {
+                let value1 = 0;
+                if (col1 && alloc1 > 0) value1 += parseValue(oneYearRow[col1]) * (alloc1 / 100);
+                if (col2 && alloc2 > 0) value1 += parseValue(oneYearRow[col2]) * (alloc2 / 100);
+                
+                let value2 = 0;
+                if (col3 && alloc3 > 0) value2 += parseValue(oneYearRow[col3]) * (alloc3 / 100);
+                if (col4 && alloc4 > 0) value2 += parseValue(oneYearRow[col4]) * (alloc4 / 100);
+                
+                const diff = value1 - value2;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Total Return</td>
+                    <td>1 year</td>
+                    <td>${formatPercent(value1)}</td>
+                    <td>${formatPercent(value2)}</td>
+                    <td class="${diff >= 0 ? 'positive' : 'negative'}">${formatPercent(diff)}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+            
+            // Row 4: YTD
+            const ytdRow = excelData[3];
+            if (ytdRow && ytdRow[0] === 'Total Return' && ytdRow[1] === 'YTD') {
+                let value1 = 0;
+                if (col1 && alloc1 > 0) value1 += parseValue(ytdRow[col1]) * (alloc1 / 100);
+                if (col2 && alloc2 > 0) value1 += parseValue(ytdRow[col2]) * (alloc2 / 100);
+                
+                let value2 = 0;
+                if (col3 && alloc3 > 0) value2 += parseValue(ytdRow[col3]) * (alloc3 / 100);
+                if (col4 && alloc4 > 0) value2 += parseValue(ytdRow[col4]) * (alloc4 / 100);
+                
+                const diff = value1 - value2;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>Total Return</td>
+                    <td>YTD</td>
+                    <td>${formatPercent(value1)}</td>
+                    <td>${formatPercent(value2)}</td>
+                    <td class="${diff >= 0 ? 'positive' : 'negative'}">${formatPercent(diff)}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+            
+            // Display CAGRs from summary rows (calculated from daily model)
+            // Row 5 = 5 Year, Row 6 = 10 Year, Row 7 = 15 Year, Row 8 = 20 Year
+            const cagrPeriods = [
+                {label: '5 Year', rowIndex: 4},  // Row 5
+                {label: '10 Year', rowIndex: 5}, // Row 6
+                {label: '15 Year', rowIndex: 6}, // Row 7
+                {label: `${Math.round(yearsValue)} Year`, rowIndex: 7} // Row 8
+            ];
+            
+            cagrPeriods.forEach(period => {
+                const row = excelData[period.rowIndex];
+                if (!row) return;
+                
+                // Portfolio 1 blended CAGR
+                let cagr1 = 0;
+                if (col1 && alloc1 > 0) {
+                    const val = parseValue(row[col1]);
+                    cagr1 += val * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0) {
+                    const val = parseValue(row[col2]);
+                    cagr1 += val * (alloc2 / 100);
+                }
+                
+                // Portfolio 2 blended CAGR
+                let cagr2 = 0;
+                if (col3 && alloc3 > 0) {
+                    const val = parseValue(row[col3]);
+                    cagr2 += val * (alloc3 / 100);
+                }
+                if (col4 && alloc4 > 0) {
+                    const val = parseValue(row[col4]);
+                    cagr2 += val * (alloc4 / 100);
+                }
+                
+                const diff = cagr1 - cagr2;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>CAGR</td>
+                    <td>${period.label}</td>
+                    <td>${formatPercent(cagr1)}</td>
+                    <td>${formatPercent(cagr2)}</td>
+                    <td class="${diff >= 0 ? 'positive' : 'negative'}">${formatPercent(diff)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Calculate $100K Investment Growth using summary CAGRs (from daily model)
+            // For 20-year period, use row 8 CAGR
+            const cagr20Row = excelData[7]; // Row 8, index 7
+            if (cagr20Row) {
+                // Portfolio 1 blended CAGR from summary
+                let cagr1 = 0;
+                if (col1 && alloc1 > 0) {
+                    const val = parseValue(cagr20Row[col1]);
+                    cagr1 += val * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0) {
+                    const val = parseValue(cagr20Row[col2]);
+                    cagr1 += val * (alloc2 / 100);
+                }
+                
+                // Portfolio 2 blended CAGR from summary
+                let cagr2 = 0;
+                if (col3 && alloc3 > 0) {
+                    const val = parseValue(cagr20Row[col3]);
+                    cagr2 += val * (alloc3 / 100);
+                }
+                if (col4 && alloc4 > 0) {
+                    const val = parseValue(cagr20Row[col4]);
+                    cagr2 += val * (alloc4 / 100);
+                }
+                
+                // Calculate future values: 100000 * (1 + CAGR)^years
+                const fv1 = 100000 * Math.pow(1 + cagr1, yearsValue);
+                const fv2 = 100000 * Math.pow(1 + cagr2, yearsValue);
+                const fvDiff = fv1 - fv2;
+                
+                document.getElementById('option1_100k').textContent = formatCurrency(fv1);
+                document.getElementById('option2_100k').textContent = formatCurrency(fv2);
+                const diffEl = document.getElementById('diff100k');
+                diffEl.textContent = formatCurrency(fvDiff);
+                diffEl.className = fvDiff >= 0 ? 'positive' : 'negative';
+            }
+            
+            // Calculate true maximum drawdown from annual returns
+            const dd1 = calculateMaxDrawdown(col1, alloc1, col2, alloc2);
+            const dd2 = calculateMaxDrawdown(col3, alloc3, col4, alloc4);
+            const ddDiff = dd1 - dd2;
+            
+            document.getElementById('option1Drawdown').textContent = formatPercent(dd1);
+            document.getElementById('option2Drawdown').textContent = formatPercent(dd2);
+            const ddDiffEl = document.getElementById('drawdownDiff');
+            ddDiffEl.textContent = formatPercent(ddDiff);
+            ddDiffEl.className = ddDiff >= 0 ? 'positive' : 'negative';
+            
+            // Calculate and display risk metrics
+            const risk1 = calculateRiskMetrics(col1, alloc1, col2, alloc2);
+            const risk2 = calculateRiskMetrics(col3, alloc3, col4, alloc4);
+            
+            // Update labels for risk metrics
+            document.getElementById('col1Label3').textContent = shortName1 + ':';
+            document.getElementById('col1Label4').textContent = shortName1 + ':';
+            document.getElementById('col1Label5').textContent = shortName1 + ':';
+            document.getElementById('col1Label6').textContent = shortName1 + ':';
+            document.getElementById('col1Label7').textContent = shortName1 + ':';
+            document.getElementById('col1Label8').textContent = shortName1 + ':';
+            document.getElementById('col1Label9').textContent = shortName1 + ':';
+            document.getElementById('col1Label10').textContent = shortName1 + ':';
+            document.getElementById('col2Label3').textContent = shortName2 + ':';
+            document.getElementById('col2Label4').textContent = shortName2 + ':';
+            document.getElementById('col2Label5').textContent = shortName2 + ':';
+            document.getElementById('col2Label6').textContent = shortName2 + ':';
+            document.getElementById('col2Label7').textContent = shortName2 + ':';
+            document.getElementById('col2Label8').textContent = shortName2 + ':';
+            document.getElementById('col2Label9').textContent = shortName2 + ':';
+            document.getElementById('col2Label10').textContent = shortName2 + ':';
+            
+            // Beta (now position 3)
+            document.getElementById('option1Beta').textContent = risk1.beta.toFixed(3);
+            document.getElementById('option2Beta').textContent = risk2.beta.toFixed(3);
+            const betaDiff = risk1.beta - risk2.beta;
+            const betaDiffEl = document.getElementById('betaDiff');
+            betaDiffEl.textContent = betaDiff.toFixed(3);
+            betaDiffEl.className = betaDiff <= 0 ? 'positive' : 'negative';
+            
+            // Expected Return (now position 4)
+            document.getElementById('option1ExpReturn').textContent = formatPercent(risk1.expectedReturn);
+            document.getElementById('option2ExpReturn').textContent = formatPercent(risk2.expectedReturn);
+            const expReturnDiff = risk1.expectedReturn - risk2.expectedReturn;
+            const expReturnDiffEl = document.getElementById('expReturnDiff');
+            expReturnDiffEl.textContent = formatPercent(expReturnDiff);
+            expReturnDiffEl.className = expReturnDiff >= 0 ? 'positive' : 'negative';
+            
+            // Alpha (now position 5)
+            document.getElementById('option1Alpha').textContent = formatPercent(risk1.alpha);
+            document.getElementById('option2Alpha').textContent = formatPercent(risk2.alpha);
+            const alphaDiff = risk1.alpha - risk2.alpha;
+            const alphaDiffEl = document.getElementById('alphaDiff');
+            alphaDiffEl.textContent = formatPercent(alphaDiff);
+            alphaDiffEl.className = alphaDiff >= 0 ? 'positive' : 'negative';
+            
+            // Sharpe Ratio (now position 6)
+            document.getElementById('option1Sharpe').textContent = risk1.sharpe.toFixed(3);
+            document.getElementById('option2Sharpe').textContent = risk2.sharpe.toFixed(3);
+            const sharpeDiff = risk1.sharpe - risk2.sharpe;
+            const sharpeDiffEl = document.getElementById('sharpeDiff');
+            sharpeDiffEl.textContent = sharpeDiff.toFixed(3);
+            sharpeDiffEl.className = sharpeDiff >= 0 ? 'positive' : 'negative';
+            
+            // Sortino Ratio (now position 7)
+            document.getElementById('option1Sortino').textContent = risk1.sortino.toFixed(3);
+            document.getElementById('option2Sortino').textContent = risk2.sortino.toFixed(3);
+            const sortinoDiff = risk1.sortino - risk2.sortino;
+            const sortinoDiffEl = document.getElementById('sortinoDiff');
+            sortinoDiffEl.textContent = sortinoDiff.toFixed(3);
+            sortinoDiffEl.className = sortinoDiff >= 0 ? 'positive' : 'negative';
+            
+            // Treynor Ratio (now position 8)
+            document.getElementById('option1Treynor').textContent = risk1.treynor.toFixed(3);
+            document.getElementById('option2Treynor').textContent = risk2.treynor.toFixed(3);
+            const treynorDiff = risk1.treynor - risk2.treynor;
+            const treynorDiffEl = document.getElementById('treynorDiff');
+            treynorDiffEl.textContent = treynorDiff.toFixed(3);
+            treynorDiffEl.className = treynorDiff >= 0 ? 'positive' : 'negative';
+            
+            // Volatility (now position 9)
+            document.getElementById('option1Vol').textContent = formatPercent(risk1.volatility);
+            document.getElementById('option2Vol').textContent = formatPercent(risk2.volatility);
+            const volDiff = risk1.volatility - risk2.volatility;
+            const volDiffEl = document.getElementById('volDiff');
+            volDiffEl.textContent = formatPercent(volDiff);
+            volDiffEl.className = volDiff <= 0 ? 'positive' : 'negative';
+            
+            // Win Rate (now position 10)
+            document.getElementById('option1WinRate').textContent = (risk1.winRate * 100).toFixed(1) + '%';
+            document.getElementById('option2WinRate').textContent = (risk2.winRate * 100).toFixed(1) + '%';
+            const winRateDiff = risk1.winRate - risk2.winRate;
+            const winRateDiffEl = document.getElementById('winRateDiff');
+            winRateDiffEl.textContent = (winRateDiff * 100).toFixed(1) + '%';
+            winRateDiffEl.className = winRateDiff >= 0 ? 'positive' : 'negative';
+            
+            // Create growth chart
+            createGrowthChart(col1, alloc1, col2, alloc2, col3, alloc3, col4, alloc4, portfolio1Name, portfolio2Name);
+            
+            document.getElementById('reportContent').style.display = 'block';
+        }
+        
+        function createGrowthChart(col1, alloc1, col2, alloc2, col3, alloc3, col4, alloc4, portfolio1Name, portfolio2Name) {
+            const years = Math.round(yearsValue);
+            
+            // Calculate year-by-year growth for both portfolios
+            const portfolio1Values = [100000]; // Start with $100K
+            const portfolio2Values = [100000];
+            const labels = ['Year 0'];
+            
+            let value1 = 100000;
+            let value2 = 100000;
+            
+            for (let year = 1; year <= years; year++) {
+                const rowIndex = 19 + year;
+                const row = excelData[rowIndex];
+                
+                // Portfolio 1 blended return
+                let return1 = 0;
+                if (col1 && alloc1 > 0 && row && row[col1] !== null) {
+                    const ret = typeof row[col1] === 'number' ? row[col1] : parseValue(row[col1]);
+                    return1 += ret * (alloc1 / 100);
+                }
+                if (col2 && alloc2 > 0 && row && row[col2] !== null) {
+                    const ret = typeof row[col2] === 'number' ? row[col2] : parseValue(row[col2]);
+                    return1 += ret * (alloc2 / 100);
+                }
+                
+                // Portfolio 2 blended return
+                let return2 = 0;
+                if (col3 && alloc3 > 0 && row && row[col3] !== null) {
+                    const ret = typeof row[col3] === 'number' ? row[col3] : parseValue(row[col3]);
+                    return2 += ret * (alloc3 / 100);
+                }
+                if (col4 && alloc4 > 0 && row && row[col4] !== null) {
+                    const ret = typeof row[col4] === 'number' ? row[col4] : parseValue(row[col4]);
+                    return2 += ret * (alloc4 / 100);
+                }
+                
+                value1 *= (1 + return1);
+                value2 *= (1 + return2);
+                
+                portfolio1Values.push(value1);
+                portfolio2Values.push(value2);
+                labels.push(`Year ${year}`);
+            }
+            
+            // Update chart subtitle
+            document.getElementById('chartSubtitle').textContent = `${portfolio1Name} vs ${portfolio2Name}`;
+            
+            // Destroy existing chart if it exists
+            if (growthChart) {
+                growthChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            growthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: portfolio1Name,
+                            data: portfolio1Values,
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 2,
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: portfolio2Name,
+                            data: portfolio2Values,
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 2,
+                            pointHoverRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Roboto Slab', serif",
+                                    weight: 600
+                                },
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                family: "'Roboto Slab', serif"
+                            },
+                            bodyFont: {
+                                size: 13,
+                                family: "'Roboto Slab', serif"
+                            },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += '$' + Math.round(context.parsed.y).toLocaleString();
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11,
+                                    family: "'Roboto Slab', serif"
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: "'Roboto Slab', serif"
+                                },
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return '$' + (value / 1000000).toFixed(1) + 'M';
+                                    }
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+        
+        function calculateDifference(val1, val2, isCurrency = false) {
+            const num1 = parseValue(val1);
+            const num2 = parseValue(val2);
+            
+            if (isNaN(num1) || isNaN(num2)) return 0;
+            
+            return num1 - num2;
+        }
+        
+        function parseValue(value) {
+            if (typeof value === 'number') return value;
+            if (typeof value === 'string') {
+                const cleaned = value.replace(/[$,%,\s]/g, '');
+                const num = parseFloat(cleaned);
+                
+                if (value.includes('%')) {
+                    return num / 100;
+                }
+                return num;
+            }
+            return 0;
+        }
+        
+        function formatValue(value) {
+            if (value === null || value === undefined) return 'N/A';
+            if (typeof value === 'string') return value;
+            if (typeof value === 'number') {
+                if (Math.abs(value) <= 1) {
+                    return formatPercent(value);
+                }
+                return formatCurrency(value);
+            }
+            return value;
+        }
+        
+        function formatPercent(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0.00%';
+            if (typeof value === 'number') {
+                return (value * 100).toFixed(2) + '%';
+            }
+            if (typeof value === 'string' && value.includes('%')) {
+                return value;
+            }
+            return value + '%';
+        }
+        
+        function formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '$0';
+            if (typeof value === 'number') {
+                return '$' + value.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
+            if (typeof value === 'string' && value.includes('$')) {
+                return value;
+            }
+            return '$' + value;
+        }
+        
+        async function copyAllAsImage() {
+            const copyStatus = document.getElementById('copyStatus');
+            const buttons = document.querySelectorAll('.copy-button');
+            
+            buttons[0].disabled = true;
+            buttons[0].textContent = '⏳ Generating...';
+            
+            try {
+                // Create a temporary container with everything
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = '540px'; // 60% of 900px to match display
+                tempDiv.style.background = '#ffffff';
+                tempDiv.style.padding = '20px';
+                document.body.appendChild(tempDiv);
+                
+                // Add main header
+                const mainHeader = document.createElement('div');
+                mainHeader.className = 'header';
+                const h1 = document.createElement('h1');
+                h1.textContent = 'Performance Comparison';
+                h1.style.fontSize = '28px';
+                h1.style.fontWeight = '700';
+                h1.style.color = '#1a1a1a';
+                h1.style.marginBottom = '5px';
+                mainHeader.appendChild(h1);
+                
+                const subtitle = document.createElement('div');
+                subtitle.className = 'subtitle';
+                subtitle.textContent = document.getElementById('comparisonSubtitle').textContent;
+                subtitle.style.fontSize = '14px';
+                subtitle.style.color = '#666';
+                subtitle.style.fontStyle = 'italic';
+                subtitle.style.marginBottom = '15px';
+                mainHeader.appendChild(subtitle);
+                tempDiv.appendChild(mainHeader);
+                
+                // Clone Performance Metrics section
+                const perfHeader = document.querySelector('.section-header');
+                if (perfHeader) {
+                    tempDiv.appendChild(perfHeader.cloneNode(true));
+                }
+                
+                // Clone portfolio key
+                const portfolioKey = document.getElementById('portfolioKey');
+                if (portfolioKey) {
+                    tempDiv.appendChild(portfolioKey.cloneNode(true));
+                }
+                
+                const perfTable = document.querySelector('.performance-table');
+                if (perfTable) {
+                    const tableClone = perfTable.cloneNode(true);
+                    // Ensure tbody content is captured
+                    const originalTbody = perfTable.querySelector('tbody');
+                    const cloneTbody = tableClone.querySelector('tbody');
+                    if (originalTbody && cloneTbody) {
+                        cloneTbody.innerHTML = originalTbody.innerHTML;
+                    }
+                    tempDiv.appendChild(tableClone);
+                }
+                
+                // Clone Investment Analysis section
+                const invHeader = document.querySelectorAll('.section-header')[1];
+                if (invHeader) {
+                    tempDiv.appendChild(invHeader.cloneNode(true));
+                }
+                
+                const metricsContainer = document.querySelector('.metrics-container');
+                if (metricsContainer) {
+                    tempDiv.appendChild(metricsContainer.cloneNode(true));
+                }
+                
+                // Clone the note
+                const note = document.querySelectorAll('#presentationContent > div[style*="font-size: 11px"]')[0];
+                if (note) {
+                    tempDiv.appendChild(note.cloneNode(true));
+                }
+                
+                // Clone Portfolio Growth section
+                const growthHeader = document.querySelectorAll('.section-header')[2];
+                if (growthHeader) {
+                    tempDiv.appendChild(growthHeader.cloneNode(true));
+                }
+                
+                // Add chart content
+                const chartContentDiv = document.createElement('div');
+                chartContentDiv.style.background = '#ffffff';
+                chartContentDiv.style.padding = '15px';
+                chartContentDiv.style.borderRadius = '8px';
+                chartContentDiv.style.marginTop = '6px';
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.style.textAlign = 'center';
+                titleDiv.style.marginBottom = '10px';
+                
+                const h3 = document.createElement('h3');
+                h3.textContent = '$100,000 Investment Growth';
+                h3.style.fontSize = '18px';
+                h3.style.color = '#1a1a1a';
+                h3.style.fontWeight = '600';
+                h3.style.marginBottom = '3px';
+                titleDiv.appendChild(h3);
+                
+                const chartSubtitle = document.getElementById('chartSubtitle').cloneNode(true);
+                titleDiv.appendChild(chartSubtitle);
+                chartContentDiv.appendChild(titleDiv);
+                
+                const chartCanvas = document.getElementById('growthChart');
+                if (chartCanvas) {
+                    const canvasClone = document.createElement('canvas');
+                    canvasClone.width = chartCanvas.width;
+                    canvasClone.height = chartCanvas.height;
+                    const ctx = canvasClone.getContext('2d');
+                    ctx.drawImage(chartCanvas, 0, 0);
+                    canvasClone.style.width = '100%';
+                    canvasClone.style.height = 'auto';
+                    chartContentDiv.appendChild(canvasClone);
+                }
+                
+                const chartNote = document.createElement('div');
+                chartNote.textContent = 'Growth calculated from annual returns with annual rebalancing.';
+                chartNote.style.textAlign = 'center';
+                chartNote.style.fontSize = '11px';
+                chartNote.style.color = '#999';
+                chartNote.style.fontStyle = 'italic';
+                chartNote.style.marginTop = '8px';
+                chartContentDiv.appendChild(chartNote);
+                
+                tempDiv.appendChild(chartContentDiv);
+                
+                // Clone Risk Metrics section
+                const riskHeader = document.querySelectorAll('.section-header')[3];
+                if (riskHeader) {
+                    tempDiv.appendChild(riskHeader.cloneNode(true));
+                }
+                
+                const riskContent = document.getElementById('riskMetricsContent');
+                if (riskContent) {
+                    tempDiv.appendChild(riskContent.cloneNode(true));
+                }
+                
+                const canvas = await html2canvas(tempDiv, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                
+                // Clean up
+                document.body.removeChild(tempDiv);
+                
+                canvas.toBlob(async (blob) => {
+                    try {
+                        await navigator.clipboard.write([
+                            new ClipboardItem({'image/png': blob})
+                        ]);
+                        
+                        copyStatus.textContent = '✓ All sections copied to clipboard!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                        
+                    } catch (err) {
+                        const url = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = 'portfolio-comparison-all.png';
+                        link.href = url;
+                        link.click();
+                        
+                        copyStatus.textContent = '✓ All sections downloaded!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                    }
+                }, 'image/png');
+                
+            } catch (err) {
+                alert('Failed to generate image: ' + err.message);
+            } finally {
+                buttons[0].disabled = false;
+                buttons[0].textContent = '📑 Copy All';
+            }
+        }
+        
+        async function copyReportAsImage() {
+            const copyStatus = document.getElementById('copyStatus');
+            const buttons = document.querySelectorAll('.copy-button');
+            
+            buttons[1].disabled = true;
+            buttons[1].textContent = '⏳ Generating...';
+            
+            try {
+                // Create a temporary container with just the performance metrics and investment analysis
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = '540px'; // 60% of 900px to match display
+                tempDiv.style.background = '#ffffff';
+                tempDiv.style.padding = '20px';
+                document.body.appendChild(tempDiv);
+                
+                // Add main header
+                const mainHeader = document.createElement('div');
+                mainHeader.className = 'header';
+                const h1 = document.createElement('h1');
+                h1.textContent = 'Performance Comparison';
+                h1.style.fontSize = '28px';
+                h1.style.fontWeight = '700';
+                h1.style.color = '#1a1a1a';
+                h1.style.marginBottom = '5px';
+                mainHeader.appendChild(h1);
+                
+                const subtitle = document.createElement('div');
+                subtitle.className = 'subtitle';
+                subtitle.textContent = document.getElementById('comparisonSubtitle').textContent;
+                subtitle.style.fontSize = '14px';
+                subtitle.style.color = '#666';
+                subtitle.style.fontStyle = 'italic';
+                subtitle.style.marginBottom = '15px';
+                mainHeader.appendChild(subtitle);
+                tempDiv.appendChild(mainHeader);
+                
+                // Clone the section header
+                const perfHeader = document.querySelector('.section-header');
+                if (perfHeader) {
+                    tempDiv.appendChild(perfHeader.cloneNode(true));
+                }
+                
+                // Clone portfolio key
+                const portfolioKey = document.getElementById('portfolioKey');
+                if (portfolioKey) {
+                    tempDiv.appendChild(portfolioKey.cloneNode(true));
+                }
+                
+                // Clone the performance table with all its content
+                const perfTable = document.querySelector('.performance-table');
+                if (perfTable) {
+                    const tableClone = perfTable.cloneNode(true);
+                    // Ensure tbody content is captured
+                    const originalTbody = perfTable.querySelector('tbody');
+                    const cloneTbody = tableClone.querySelector('tbody');
+                    if (originalTbody && cloneTbody) {
+                        cloneTbody.innerHTML = originalTbody.innerHTML;
+                    }
+                    tempDiv.appendChild(tableClone);
+                }
+                
+                // Clone the Investment Analysis section
+                const invHeader = document.querySelectorAll('.section-header')[1];
+                if (invHeader) {
+                    tempDiv.appendChild(invHeader.cloneNode(true));
+                }
+                
+                const metricsContainer = document.querySelector('.metrics-container');
+                if (metricsContainer) {
+                    tempDiv.appendChild(metricsContainer.cloneNode(true));
+                }
+                
+                // Clone the note
+                const note = document.querySelectorAll('#presentationContent > div[style*="font-size: 11px"]')[0];
+                if (note) {
+                    tempDiv.appendChild(note.cloneNode(true));
+                }
+                
+                const canvas = await html2canvas(tempDiv, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                
+                // Clean up
+                document.body.removeChild(tempDiv);
+                
+                canvas.toBlob(async (blob) => {
+                    try {
+                        await navigator.clipboard.write([
+                            new ClipboardItem({'image/png': blob})
+                        ]);
+                        
+                        copyStatus.textContent = '✓ Performance data copied to clipboard!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                        
+                    } catch (err) {
+                        const url = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = 'performance-comparison.png';
+                        link.href = url;
+                        link.click();
+                        
+                        copyStatus.textContent = '✓ Performance data downloaded!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                    }
+                }, 'image/png');
+                
+            } catch (err) {
+                alert('Failed to generate image: ' + err.message);
+            } finally {
+                buttons[1].disabled = false;
+                buttons[1].textContent = '📋 Copy Performance Report';
+            }
+        }
+        
+        async function copyRiskMetricsAsImage() {
+            const riskMetricsContent = document.getElementById('riskMetricsContent');
+            const copyStatus = document.getElementById('copyStatus');
+            const buttons = document.querySelectorAll('.copy-button');
+            
+            buttons[3].disabled = true;
+            buttons[3].textContent = '⏳ Generating...';
+            
+            try {
+                // Create temp container with 60% width to match display
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = '540px'; // 60% of 900px container
+                tempDiv.style.background = '#ffffff';
+                tempDiv.style.padding = '20px';
+                tempDiv.style.borderRadius = '8px';
+                document.body.appendChild(tempDiv);
+                
+                // Add section header
+                const header = document.createElement('div');
+                header.className = 'section-header';
+                header.style.marginTop = '0';
+                header.textContent = 'Advanced Risk Metrics';
+                tempDiv.appendChild(header);
+                
+                // Add portfolio key
+                const portfolioKey = document.createElement('div');
+                portfolioKey.style.textAlign = 'center';
+                portfolioKey.style.fontSize = '13px';
+                portfolioKey.style.color = '#666';
+                portfolioKey.style.fontStyle = 'italic';
+                portfolioKey.style.marginTop = '3px';
+                portfolioKey.style.marginBottom = '8px';
+                const portfolio1Name = document.getElementById('portfolio1DescriptionRisk').textContent;
+                const portfolio2Name = document.getElementById('portfolio2DescriptionRisk').textContent;
+                portfolioKey.innerHTML = `<span>${portfolio1Name}</span> vs <span>${portfolio2Name}</span>`;
+                tempDiv.appendChild(portfolioKey);
+                
+                // Clone risk metrics content
+                const riskContentClone = document.createElement('div');
+                riskContentClone.innerHTML = riskMetricsContent.innerHTML;
+                riskContentClone.style.background = '#fafbfc';
+                riskContentClone.style.padding = '12px';
+                riskContentClone.style.borderRadius = '8px';
+                tempDiv.appendChild(riskContentClone);
+                
+                const canvas = await html2canvas(tempDiv, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                
+                // Clean up
+                document.body.removeChild(tempDiv);
+                
+                canvas.toBlob(async (blob) => {
+                    try {
+                        await navigator.clipboard.write([
+                            new ClipboardItem({'image/png': blob})
+                        ]);
+                        
+                        copyStatus.textContent = '✓ Risk metrics copied to clipboard!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                        
+                    } catch (err) {
+                        const url = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = 'risk-metrics.png';
+                        link.href = url;
+                        link.click();
+                        
+                        copyStatus.textContent = '✓ Risk metrics downloaded!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                    }
+                }, 'image/png');
+                
+            } catch (err) {
+                alert('Failed to generate image: ' + err.message);
+            } finally {
+                buttons[3].disabled = false;
+                buttons[3].textContent = '📊 Copy Risk Metrics';
+            }
+        }
+        
+        async function copyGrowthChartAsImage() {
+            const copyStatus = document.getElementById('copyStatus');
+            const buttons = document.querySelectorAll('.copy-button');
+            
+            buttons[2].disabled = true;
+            buttons[2].textContent = '⏳ Generating...';
+            
+            try {
+                // Create temp container
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.width = '540px'; // 60% of 900px
+                tempDiv.style.background = '#ffffff';
+                tempDiv.style.padding = '20px';
+                document.body.appendChild(tempDiv);
+                
+                // Add Portfolio Growth section header
+                const growthHeader = document.querySelectorAll('.section-header')[2];
+                if (growthHeader) {
+                    tempDiv.appendChild(growthHeader.cloneNode(true));
+                }
+                
+                // Add chart content container
+                const chartContentDiv = document.createElement('div');
+                chartContentDiv.style.background = '#ffffff';
+                chartContentDiv.style.padding = '15px';
+                chartContentDiv.style.borderRadius = '8px';
+                chartContentDiv.style.marginTop = '6px';
+                
+                // Add chart title and subtitle
+                const titleDiv = document.createElement('div');
+                titleDiv.style.textAlign = 'center';
+                titleDiv.style.marginBottom = '10px';
+                
+                const h3 = document.createElement('h3');
+                h3.textContent = '$100,000 Investment Growth';
+                h3.style.fontSize = '18px';
+                h3.style.color = '#1a1a1a';
+                h3.style.fontWeight = '600';
+                h3.style.marginBottom = '3px';
+                titleDiv.appendChild(h3);
+                
+                const subtitle = document.getElementById('chartSubtitle').cloneNode(true);
+                titleDiv.appendChild(subtitle);
+                chartContentDiv.appendChild(titleDiv);
+                
+                // Add the chart canvas
+                const chartCanvas = document.getElementById('growthChart');
+                if (chartCanvas) {
+                    const canvasClone = document.createElement('canvas');
+                    canvasClone.width = chartCanvas.width;
+                    canvasClone.height = chartCanvas.height;
+                    const ctx = canvasClone.getContext('2d');
+                    ctx.drawImage(chartCanvas, 0, 0);
+                    canvasClone.style.width = '100%';
+                    canvasClone.style.height = 'auto';
+                    chartContentDiv.appendChild(canvasClone);
+                }
+                
+                // Add chart note
+                const chartNote = document.createElement('div');
+                chartNote.textContent = 'Growth calculated from annual returns with annual rebalancing.';
+                chartNote.style.textAlign = 'center';
+                chartNote.style.fontSize = '11px';
+                chartNote.style.color = '#999';
+                chartNote.style.fontStyle = 'italic';
+                chartNote.style.marginTop = '8px';
+                chartContentDiv.appendChild(chartNote);
+                
+                tempDiv.appendChild(chartContentDiv);
+                
+                // Generate image using html2canvas
+                const canvas = await html2canvas(tempDiv, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                
+                // Clean up
+                document.body.removeChild(tempDiv);
+                
+                // Convert to blob and copy
+                canvas.toBlob(async (blob) => {
+                    try {
+                        await navigator.clipboard.write([
+                            new ClipboardItem({'image/png': blob})
+                        ]);
+                        
+                        copyStatus.textContent = '✓ Growth chart copied to clipboard!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                        
+                    } catch (err) {
+                        const url = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.download = 'growth-chart.png';
+                        link.href = url;
+                        link.click();
+                        
+                        copyStatus.textContent = '✓ Growth chart downloaded!';
+                        copyStatus.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            copyStatus.style.display = 'none';
+                        }, 3000);
+                    }
+                }, 'image/png');
+                
+            } catch (err) {
+                alert('Failed to generate image: ' + err.message);
+            } finally {
+                buttons[2].disabled = false;
+                buttons[2].textContent = '📈 Copy Growth Chart';
+            }
+        }
+    </script>
+</body>
+</html>
