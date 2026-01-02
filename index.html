@@ -1467,13 +1467,15 @@ const EXCEL_DATA = [
 </head>
 <body>
     <div class="container">
-        <div class="upload-section">
-            <h3 id="uploadHeading" style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
-            <div class="upload-row">
-                <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                    📁 Select Excel File
-                </button>
-                <input type="file" id="fileInput" accept=".xlsx, .xls">
+        <div class="upload-section" id="uploadSectionContainer">
+            <div id="uploadOnlySection">
+                <h3 id="uploadHeading" style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
+                <div class="upload-row">
+                    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                        📁 Select Excel File
+                    </button>
+                    <input type="file" id="fileInput" accept=".xlsx, .xls">
+                </div>
             </div>
             
                         <!-- Portfolio 1 Container -->
@@ -2100,14 +2102,10 @@ const EXCEL_DATA = [
                 document.getElementById('portfolio1Container').style.display = 'block';
                 document.getElementById('portfolio2Container').style.display = 'block';
                 
-                // Hide the upload section since data is already loaded
-                const uploadRow = document.querySelector('.upload-row');
-                const uploadHeading = document.getElementById('uploadHeading');
-                if (uploadRow) {
-                    uploadRow.style.display = 'none';
-                }
-                if (uploadHeading) {
-                    uploadHeading.style.display = 'none';
+                // Hide the upload controls since data is already loaded
+                const uploadOnly = document.getElementById('uploadOnlySection');
+                if (uploadOnly) {
+                    uploadOnly.style.display = 'none';
                 }
                 
                 const successMsg = document.getElementById('successMessage');
