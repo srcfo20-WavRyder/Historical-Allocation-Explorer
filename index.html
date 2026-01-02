@@ -1468,7 +1468,7 @@ const EXCEL_DATA = [
 <body>
     <div class="container">
         <div class="upload-section">
-            <h3 style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
+            <h3 id="uploadHeading" style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
             <div class="upload-row">
                 <button class="upload-button" onclick="document.getElementById('fileInput').click()">
                     📁 Select Excel File
@@ -2100,10 +2100,14 @@ const EXCEL_DATA = [
                 document.getElementById('portfolio1Container').style.display = 'block';
                 document.getElementById('portfolio2Container').style.display = 'block';
                 
-                // Hide the upload button since data is already loaded
+                // Hide the upload section since data is already loaded
                 const uploadRow = document.querySelector('.upload-row');
+                const uploadHeading = document.getElementById('uploadHeading');
                 if (uploadRow) {
                     uploadRow.style.display = 'none';
+                }
+                if (uploadHeading) {
+                    uploadHeading.style.display = 'none';
                 }
                 
                 const successMsg = document.getElementById('successMessage');
@@ -3598,5 +3602,3 @@ const EXCEL_DATA = [
     
         
         // ============================================================================
-/ /   F o r c e   u p d a t e  
- 
