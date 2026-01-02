@@ -1467,16 +1467,7 @@ const EXCEL_DATA = [
 </head>
 <body>
     <div class="container">
-        <div class="upload-section" id="uploadSectionContainer">
-            <div id="uploadOnlySection">
-                <h3 id="uploadHeading" style="margin-bottom: 15px; color: #495057;">Upload Excel & Select Options</h3>
-                <div class="upload-row">
-                    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                        📁 Select Excel File
-                    </button>
-                    <input type="file" id="fileInput" accept=".xlsx, .xls">
-                </div>
-            </div>
+        <div class="upload-section">
             
                         <!-- Portfolio 1 Container -->
             <div class="portfolio-container" id="portfolio1Container" style="display: none;">
@@ -2102,124 +2093,12 @@ const EXCEL_DATA = [
                 document.getElementById('portfolio1Container').style.display = 'block';
                 document.getElementById('portfolio2Container').style.display = 'block';
                 
-                // Hide the upload controls since data is already loaded
-                const uploadOnly = document.getElementById('uploadOnlySection');
-                if (uploadOnly) {
-                    uploadOnly.style.display = 'none';
-                }
-                
                 const successMsg = document.getElementById('successMessage');
                 successMsg.textContent = '✓ Performance data loaded successfully!';
                 successMsg.style.display = 'block';
             });
         }
         
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const errorMsg = document.getElementById('errorMessage');
-            const successMsg = document.getElementById('successMessage');
-            
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
-                    
-                    if (jsonData.length < 2) {
-                        throw new Error('Excel file must have at least 2 rows');
-                    }
-                    
-                    excelData = jsonData;
-                    
-                    // Read years value from A17 (row 17, column A = index [16][0])
-                    if (jsonData[16] && jsonData[16][0]) {
-                        yearsValue = parseFloat(jsonData[16][0]);
-                        if (isNaN(yearsValue) || yearsValue <= 0) {
-                            yearsValue = 20; // Fallback to 20 if invalid
-                        }
-                    }
-                    
-                    // Parse headers - automatically detect all available columns
-                    columnHeaders = [];
-                    const letterRow = jsonData[0];
-                    const nameRow = jsonData[1];
-                    
-                    // Start from column 2 (index 2) and check all columns until we hit empty ones
-                    for (let i = 2; i < letterRow.length; i++) {
-                        // Include column if it has either a letter OR a name (more flexible)
-                        if (letterRow[i] || nameRow[i]) {
-                            columnHeaders.push({
-                                letter: letterRow[i] || `Col${i}`,
-                                name: nameRow[i] || letterRow[i] || `Column ${i}`,
-                                index: i
-                            });
-                        }
-                    }
-                    
-                    // Also check if there are more columns beyond the current length
-                    // by looking at the data rows to find the actual last column with data
-                    let maxCol = letterRow.length;
-                    for (let rowIdx = 2; rowIdx < Math.min(15, jsonData.length); rowIdx++) {
-                        if (jsonData[rowIdx] && jsonData[rowIdx].length > maxCol) {
-                            maxCol = jsonData[rowIdx].length;
-                        }
-                    }
-                    
-                    // Add any additional columns found in data rows
-                    for (let i = letterRow.length; i < maxCol; i++) {
-                        // Check if this column has data in any of the first few data rows
-                        let hasData = false;
-                        for (let rowIdx = 2; rowIdx < Math.min(15, jsonData.length); rowIdx++) {
-                            if (jsonData[rowIdx] && jsonData[rowIdx][i]) {
-                                hasData = true;
-                                break;
-                            }
-                        }
-                        
-                        if (hasData) {
-                            columnHeaders.push({
-                                letter: `Col${String.fromCharCode(65 + i - 2)}`,
-                                name: `Column ${String.fromCharCode(65 + i - 2)}`,
-                                index: i
-                            });
-                        }
-                    }
-                    
-                    if (columnHeaders.length === 0) {
-                        throw new Error('No valid options found in Excel file');
-                    }
-                    
-                    populateSelectors();
-                    
-                    successMsg.textContent = `✓ File loaded! Found ${columnHeaders.length} options.`;
-                    successMsg.style.display = 'block';
-                    document.getElementById('selectorRow').style.display = 'flex';
-                    document.getElementById('selectorRow2').style.display = 'flex';
-                    
-                    setTimeout(() => {
-                        successMsg.style.display = 'none';
-                    }, 3000);
-                    
-                } catch (error) {
-                    errorMsg.textContent = '❌ Error: ' + error.message;
-                    errorMsg.style.display = 'block';
-                }
-            };
-            
-            reader.onerror = function() {
-                errorMsg.textContent = '❌ Error reading file';
-                errorMsg.style.display = 'block';
-            };
-            
-            reader.readAsArrayBuffer(file);
-        });
         
         function populateSelectors() {
             const option1Select = document.getElementById('option1Select');
