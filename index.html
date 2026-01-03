@@ -2432,11 +2432,16 @@ const EXCEL_DATA = [
             document.getElementById('col1HeaderTable').textContent = 'Portfolio 1';
             document.getElementById('col2HeaderTable').textContent = 'Portfolio 2';
             
-            // Update portfolio description keys
-            document.getElementById('portfolio1Description').textContent = portfolio1Name;
-            document.getElementById('portfolio2Description').textContent = portfolio2Name;
-            document.getElementById('portfolio1DescriptionRisk').textContent = portfolio1Name;
-            document.getElementById('portfolio2DescriptionRisk').textContent = portfolio2Name;
+            // Update portfolio description keys (with null checks)
+            const port1Desc = document.getElementById('portfolio1Description');
+            const port2Desc = document.getElementById('portfolio2Description');
+            const port1DescRisk = document.getElementById('portfolio1DescriptionRisk');
+            const port2DescRisk = document.getElementById('portfolio2DescriptionRisk');
+            
+            if (port1Desc) port1Desc.textContent = portfolio1Name;
+            if (port2Desc) port2Desc.textContent = portfolio2Name;
+            if (port1DescRisk) port1DescRisk.textContent = portfolio1Name;
+            if (port2DescRisk) port2DescRisk.textContent = portfolio2Name;
             
             // Short names for labels (use "Portfolio 1/2" for simplicity)
             const shortName1 = 'Portfolio 1';
