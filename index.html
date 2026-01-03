@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<!-- Test comment added on 01/03/2026 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance Comparison Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+        <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
+            <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
+            <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
+            <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary" style="margin-right: 10px;">
+                📊 Upload New Data File
+            </button>
+            <button id="downloadUpdatedHtml" onclick="downloadUpdatedHTML()" class="btn-secondary" style="display: none;">
+                💾 Download Updated Tool
+            </button>
+            <div id="updateStatus" style="margin-top: 15px; font-weight: bold;"></div>
+        </div>
+
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1031,18 +1044,8 @@ const EXCEL_DATA = [
         }
         
         .header {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
+            text-align: center;
             margin-bottom: 15px;
-        }
-        
-        .header > div:first-child {
-            flex-shrink: 0;
-        }
-        
-        .header > div:last-child {
-            flex: 1;
         }
         
         h1 {
@@ -1280,20 +1283,6 @@ const EXCEL_DATA = [
 </style>
 </head>
 <body>
-    <!-- Update Tool Data Section -->
-    <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-        <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
-        <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
-        <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
-        <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary" style="margin-right: 10px;">
-            📊 Upload New Data File
-        </button>
-        <button id="downloadUpdatedHtml" onclick="downloadUpdatedHTML()" class="btn-secondary" style="display: none;">
-            💾 Download Updated Tool
-        </button>
-        <div id="updateStatus" style="margin-top: 15px; font-weight: bold;"></div>
-    </div>
-    
     <div class="container">
         <div class="upload-section">
             <h3 style="margin-bottom: 15px; color: #495057;">Select Portfolio Combinations</h3>
@@ -1605,6 +1594,9 @@ const EXCEL_DATA = [
                 </div>
 
                 <div class="section-header">Performance Metrics</div>
+                <div id="portfolioKey" style="display: none;">
+                    <span id="portfolio1Description">Portfolio 1</span> vs <span id="portfolio2Description">Portfolio 2</span>
+                </div>
                 <table class="performance-table">
                     <thead>
                         <tr>
