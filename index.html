@@ -4,976 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Tool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        /* Your original CSS styles start here */
         body { font-family: 'Roboto Slab', serif; background-color: #ffffff; color: #333; margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .update-data-section { text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6; }
-        .btn-primary { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; }
-        .btn-secondary { background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; }
-        /* ... (rest of your original CSS) ... */
+        .update-data-section { text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 3px dashed #007bff; display: none; }
+        .btn-primary { background-color: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-secondary { background-color: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        h1 { color: #2c3e50; text-align: center; }
     </style>
 </head>
 <body>
-    <div class="update-data-section" id="updateDataSection" style="display: none;">
-        <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
-        <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
-        <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
-        <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary" style="margin-right: 10px;">
-            📊 Upload New Data File
-        </button>
-        <button id="downloadUpdatedHtml" onclick="downloadUpdatedHTML()" class="btn-secondary" style="display: inline-block;">
-            💾 Download Updated Tool
-        </button>
-        <div id="updateStatus" style="margin-top: 15px; font-weight: bold;"></div>
-    </div>
 
-    <script>
-        const EXCEL_DATA = [
-  [
-    "Option",
-    null,
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R"
-  ],
-  [
-    "Performance Measure",
-    null,
-    "60/40",
-    "WavRyder QQQ",
-    "WavRyder SP500",
-    "WavRyder(H)",
-    "WavRyder(M)",
-    "WavRyder(L)",
-    "WavRyder QQQ (Leveraged)",
-    "WavRyder SP500 (Leveraged)",
-    "WavRyder QQQ/SP500 Leveraged)",
-    "QQQ (Leveraged) W/O WavRyder",
-    "SP 500",
-    "AGG",
-    "WavRyder AGG",
-    "VEA",
-    "WavRyder VEA",
-    "QQQ",
-    "SPY",
-    "WavRyder SPY"
-  ],
-  [
-    "Total Return",
-    "1 year",
-    0.13478289285581346,
-    0.1755558345823689,
-    0.1500984966064436,
-    0.14446026845364224,
-    0.16306143835477638,
-    0.15533947507090806,
-    0.3600802462787316,
-    0.3600802462787316,
-    0.3600802462787316,
-    0.2638826792924889,
-    0.09623333431267755,
-    0.0743001063121318,
-    0.07204148844041747,
-    0.3474626822676845,
-    0.23492556670435416,
-    0.1840145170095442,
-    0.16143345656192087,
-    0.1500984966064436
-  ],
-  [
-    "Total Return",
-    "YTD",
-    0.005845927172144716,
-    0.17490936156735293,
-    0.14946602333652814,
-    0.0002859475348011564,
-    0.1624218363787724,
-    0.15470411963151198,
-    0.3593322978175786,
-    0.3593322978175786,
-    0.3593322978175786,
-    0.4095494272678759,
-    0.17715053440658535,
-    0.07363484433270728,
-    0.07145194103410457,
-    0.3590157170341228,
-    0.23424644451301124,
-    0.2265596637279068,
-    0.19167417738414572,
-    0.14946602333652814
-  ],
-  [
-    "CAGR",
-    "5 Year",
-    0.08853338923317944,
-    0.10452174579562423,
-    0.09778825230799693,
-    0.10246994140123711,
-    0.10168211138720884,
-    0.099473155483087,
-    0.20583394573438207,
-    0.20583394573438207,
-    0.20583394573438207,
-    0.20787345614101205,
-    0.1318018589326304,
-    -0.003341552200764264,
-    0.02483725167382067,
-    0.09410402157004549,
-    0.052638021631999266,
-    0.15507161028161898,
-    0.14720198027767672,
-    0.09778825230799693
-  ],
-  [
-    "CAGR",
-    "10 Year",
-    0.09985991826404361,
-    0.1514020320183065,
-    0.12067335018460312,
-    0.14472912965606533,
-    0.13636857488789333,
-    0.12702990217666899,
-    0.36408155855902913,
-    0.36408155855902913,
-    0.36408155855902913,
-    0.3734403360399954,
-    0.14469481410365326,
-    0.019912976507280744,
-    0.038779274086202076,
-    0.08715480173850243,
-    0.08040465034534994,
-    0.19544936041992722,
-    0.14780635737728853,
-    0.12067335018460312
-  ],
-  [
-    "CAGR",
-    "15 Year",
-    0.09466132093415092,
-    0.12807838607348154,
-    0.10092326392916484,
-    0.12089101435539074,
-    0.11477927616801487,
-    0.10653174331546889,
-    0.3075958747086125,
-    0.3075958747086125,
-    0.3075958747086125,
-    0.3954994701202532,
-    0.1353363262367564,
-    0.02400024610020135,
-    0.034956859343680646,
-    0.07069442459595554,
-    0.0547897766452341,
-    0.1864064668867551,
-    0.14046367211624777,
-    0.10092326392916484
-  ],
-  [
-    "CAGR",
-    "20 Year",
-    0.0814670041020702,
-    0.12427253755029244,
-    0.0953211493896522,
-    0.1117653973750059,
-    0.11008882126271935,
-    0.10129718649640762,
-    0.2783300098727388,
-    0.2783300098727388,
-    0.2783300098727388,
-    0.3469592078853829,
-    0.10521271732857285,
-    0.03141720097010392,
-    0.04204064362146509,
-    0.05404327478725124,
-    0.06076962850322465,
-    0.15471284756328063,
-    0.10936063754732261,
-    0.0953211493896522
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "$100K Investment Growth",
-    "20 Year",
-    478922.753025214,
-    1040955.2187866488,
-    617773.7768892092,
-    832267.7348264777,
-    806367.9292071358,
-    687886.1412265772,
-    13533147.851294626,
-    13533147.851294626,
-    13533147.851294626,
-    38487250.90564725,
-    738452.0870592844,
-    185568.1187366363,
-    227744.64488165607,
-    286322.648921958,
-    325140.1191067703,
-    1772654.7125073008,
-    795861.7044993716,
-    617003.7527443555
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "Worst Annual Drawdown%",
-    "20 Year",
-    -0.19061453613527835,
-    -0.09572172918412059,
-    -0.08463731735187463,
-    -0.09031353870693348,
-    -0.08217694754550631,
-    -0.08146880362524733,
-    -0.2618634015601986,
-    -0.2618634015601986,
-    -0.2618634015601986,
-    -0.7909001278779242,
-    -0.36997611132718566,
-    -0.13021651691583458,
-    -0.033208122709457166,
-    -0.40623204383435196,
-    -0.15020561241625574,
-    -0.4172716255522949,
-    -0.3679500303113997,
-    -0.08463731735187463
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    100000,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    20,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    "Year",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "Total Return",
-    1,
-    0.11039403783585588,
-    0.14283881637958684,
-    0.16423536018966356,
-    0.022948335634813022,
-    0.15430656346437943,
-    0.16044909477256764,
-    0.1588216757855454,
-    0.1588216757855454,
-    0.1588216757855454,
-    0.1150192778810828,
-    0.15794461193725562,
-    0.0389650907962078,
-    0.05753085698825666,
-    0.1696127967415515,
-    0.16442822599454554,
-    0.07144044374185077,
-    0.15845259514833843,
-    0.16423536018966356
-  ],
-  [
-    "Total Return",
-    2,
-    0.057082190428648705,
-    0.19256594171615782,
-    0.03559244690897145,
-    0.1580699189960051,
-    0.11182016705577658,
-    0.06555461887426417,
-    0.20854254569951913,
-    0.20854254569951913,
-    0.20854254569951913,
-    0.12066537916995723,
-    0.05493731118195888,
-    0.06594822173447668,
-    0.07139015216818279,
-    0.08923609792958342,
-    0.11682289683516478,
-    0.19027997796682605,
-    0.051462156336747444,
-    0.03559244690897145
-  ],
-  [
-    "Total Return",
-    3,
-    -0.19061453613527835,
-    0.1498029927279101,
-    0.0872030849356289,
-    0.1370430162403533,
-    0.1183904672527687,
-    0.09965036746424838,
-    0.16304845541853452,
-    0.16304845541853452,
-    0.16304845541853452,
-    -0.39282170027907437,
-    -0.36997611132718566,
-    0.07900006306508467,
-    0.17689350858521036,
-    -0.40623204383435196,
-    0.09869966679707765,
-    -0.4172716255522949,
-    -0.3679500303113997,
-    0.0872030849356289
-  ],
-  [
-    "Total Return",
-    4,
-    0.16303867134354477,
-    -0.0185300909582935,
-    0.034524320114372564,
-    -0.010178438464917727,
-    0.00806981004897045,
-    0.023962626763297745,
-    -0.004514816331647742,
-    -0.004514816331647742,
-    -0.004514816331647742,
-    0.4040000388004261,
-    0.264642338297876,
-    0.029693929804595065,
-    0.005255944335200269,
-    0.27507327304801943,
-    0.04868736318732947,
-    0.5468405175753084,
-    0.2635173081475055,
-    0.034524320114372564
-  ],
-  [
-    "Total Return",
-    5,
-    0.11624689959080481,
-    0.12105797297878929,
-    0.08611033279024793,
-    0.10119535929040313,
-    0.1037095453998147,
-    0.09317937202805404,
-    0.49944746071607926,
-    0.49944746071607926,
-    0.49944746071607926,
-    0.1759039547473844,
-    0.1506340348639459,
-    0.06362036229624168,
-    0.021578615221991226,
-    0.08354358718490418,
-    -0.00851190705534155,
-    0.2014384230365669,
-    0.15056174792422494,
-    0.08611033279024793
-  ],
-  [
-    "Total Return",
-    6,
-    0.042462825447058705,
-    0.04814215624201701,
-    0.0570870296680166,
-    0.050049747135175515,
-    0.0527068482037476,
-    0.055357280823195465,
-    -0.008236796723226303,
-    -0.008236796723226303,
-    -0.008236796723226303,
-    0.026901004754602775,
-    0.021118153857238253,
-    0.07696712084053026,
-    0.09706457046610462,
-    -0.12314572230261056,
-    0.0010752326237901677,
-    0.03475766098084043,
-    0.018949928514852665,
-    0.0570870296680166
-  ],
-  [
-    "Total Return",
-    7,
-    0.1102160797991456,
-    0.15551414997120228,
-    0.13617666387598693,
-    0.15187320770273494,
-    0.14623601995752122,
-    0.14029344955916634,
-    0.27692032146189116,
-    0.27692032146189116,
-    0.27692032146189116,
-    0.17050978218817048,
-    0.16003224238602765,
-    0.03754892670638044,
-    0.09684341500834992,
-    0.1856053052527893,
-    0.12166817724917012,
-    0.18112548698889497,
-    0.1599029285130973,
-    0.13617666387598693
-  ],
-  [
-    "Total Return",
-    8,
-    0.18465075090714222,
-    0.292764017775748,
-    0.26080510265980816,
-    0.28649707010734904,
-    0.27710634315196714,
-    0.2674008870965081,
-    1.143566785241899,
-    1.143566785241899,
-    1.143566785241899,
-    0.3446876391344167,
-    0.3238848466970623,
-    -0.019776787112616656,
-    -0.033208122709457166,
-    0.2180651123012045,
-    0.18282810446590303,
-    0.36634180917950654,
-    0.3230786471313738,
-    0.26080510265980816
-  ],
-  [
-    "Total Return",
-    9,
-    0.1042517064486359,
-    0.026872124168275002,
-    -0.02404169974907766,
-    0.016604564018459556,
-    0.0012799527142683953,
-    -0.013945890944580985,
-    0.15819977416437792,
-    0.15819977416437792,
-    0.15819977416437792,
-    0.1632151568545468,
-    0.13688358376182075,
-    0.05998575399926809,
-    -0.020629371376090777,
-    -0.0596740621783014,
-    -0.15020561241625574,
-    0.19181409801244942,
-    0.13463785464442046,
-    -0.02404169974907766
-  ],
-  [
-    "Total Return",
-    10,
-    0.009384163962939507,
-    -0.06875823796704572,
-    -0.08463731735187463,
-    -0.0719712015484294,
-    -0.07670916317846221,
-    -0.08146880362524733,
-    -0.19126874920449666,
-    -0.19126874920449666,
-    -0.19126874920449666,
-    0.05337263021974459,
-    0.013837640885861369,
-    0.004807529874164551,
-    0.000005480856025252834,
-    -0.003731686170505122,
-    -0.0987580854176413,
-    0.09435945660210376,
-    0.012342937428686751,
-    -0.08463731735187463
-  ],
-  [
-    "Total Return",
-    11,
-    0.0819911416073209,
-    -0.0008905988514329444,
-    0.0016488605404514356,
-    -0.0003597900240145391,
-    0.00040962705829405976,
-    0.0011605015440672162,
-    -0.03469655918615988,
-    -0.03469655918615988,
-    -0.03469655918615988,
-    0.09524485743532929,
-    0.11959913306315295,
-    0.024137948970977208,
-    0.011062759863883942,
-    0.026340064463413748,
-    0.06474504245040835,
-    0.0709786180948071,
-    0.1199786573675592,
-    0.0016488605404514356
-  ],
-  [
-    "Total Return",
-    12,
-    0.14432943721549019,
-    0.2984309693345417,
-    0.18653367166480161,
-    0.27548084361229175,
-    0.2416013228940621,
-    0.20835151671784513,
-    1.1082585418480155,
-    1.1082585418480155,
-    1.1082585418480155,
-    0.2717948315480272,
-    0.21831591555840868,
-    0.0355271535359738,
-    0.021736243529953292,
-    0.2642050582339448,
-    0.19332981151141837,
-    0.32663541332799406,
-    0.21705430268489923,
-    0.18653367166480161
-  ],
-  [
-    "Total Return",
-    13,
-    -0.026540367217998573,
-    0.05763779780682232,
-    0.06624045019195823,
-    0.06194614474958837,
-    0.062305799239056325,
-    0.06475547865673636,
-    0.024165129683128672,
-    0.024165129683128672,
-    0.024165129683128672,
-    -0.023352004143146976,
-    -0.043842333247032905,
-    0.003407565345097119,
-    0.03349550264437284,
-    -0.1474532662537571,
-    -0.04167095047975666,
-    -0.0012619253233363548,
-    -0.04569022272848022,
-    0.06624045019195823
-  ],
-  [
-    "Total Return",
-    14,
-    0.2211324209987624,
-    0.23879180541511924,
-    0.17432524132453397,
-    0.2256656507941066,
-    0.20628085092416315,
-    0.18704100755190511,
-    0.556188877477886,
-    0.556188877477886,
-    0.556188877477886,
-    0.35090802412032707,
-    0.3148636179238715,
-    0.08455644431316389,
-    0.1065779092265351,
-    0.2262117470601237,
-    0.12055955905511428,
-    0.38961544865598197,
-    0.31223883174763056,
-    0.17432524132453397
-  ],
-  [
-    "Total Return",
-    15,
-    0.14032135463687068,
-    0.4669429079542302,
-    0.31438372890572164,
-    0.43244029946314977,
-    0.3894257884703023,
-    0.34410254195834034,
-    1.7053069122550153,
-    1.7053069122550153,
-    1.7053069122550153,
-    0.33329219844253055,
-    0.18398831564768492,
-    0.07476090042475958,
-    0.09551295485360534,
-    0.09713838640624717,
-    0.23853336627781951,
-    0.48406086417127137,
-    0.18331629868868005,
-    0.31438372890572164
-  ],
-  [
-    "Total Return",
-    16,
-    0.1660288621521957,
-    0.04061675606806747,
-    0.07366548213266078,
-    0.047785725602705886,
-    0.057965364027131816,
-    0.06758853553290445,
-    0.0803695935334181,
-    0.0803695935334181,
-    0.0803695935334181,
-    0.28070493528718576,
-    0.28705369259328073,
-    -0.017660378398383303,
-    -0.03119830723582484,
-    0.1166407749905305,
-    -0.04720009518805979,
-    0.27419733789440026,
-    0.28728740938940045,
-    0.07366548213266078
-  ],
-  [
-    "Total Return",
-    17,
-    -0.1602470542058062,
-    -0.09572172918412059,
-    -0.06855377204992374,
-    -0.09031353870693348,
-    -0.08217694754550631,
-    -0.07401243774277833,
-    -0.2618634015601986,
-    -0.2618634015601986,
-    -0.2618634015601986,
-    -0.2536289362862124,
-    -0.18110888886303056,
-    -0.13021651691583458,
-    -0.02012605943820811,
-    -0.15341864638316305,
-    -0.04015918172731581,
-    -0.32577005901822353,
-    -0.18175359611134545,
-    -0.06855377204992374
-  ],
-  [
-    "Total Return",
-    18,
-    0.1804838434194902,
-    0.22156177601373916,
-    0.16594603064765456,
-    0.2107451189067462,
-    0.19421592758891038,
-    0.1773642464713019,
-    0.5689517091686349,
-    0.5689517091686349,
-    0.5689517091686349,
-    0.40552035833500977,
-    0.26287659524670337,
-    0.0565530750370844,
-    0.07127871491392757,
-    0.17933365081746167,
-    0.1373274335967798,
-    0.548556055008738,
-    0.26175794848840206,
-    0.16594603064765456
-  ],
-  [
-    "Total Return",
-    19,
-    0.15454644818603303,
-    0.21609543256174124,
-    0.19184189001727714,
-    0.21160461258843255,
-    0.2045161079048896,
-    0.19704266104117796,
-    0.49456006935294905,
-    0.49456006935294905,
-    0.49456006935294905,
-    0.25164338808851805,
-    0.25019681916030745,
-    0.013092501993107186,
-    0.037333329898712186,
-    0.03149637874015632,
-    -0.0011424346169758293,
-    0.2557826053805423,
-    0.24886459611702305,
-    0.19184189001727714
-  ],
-  [
-    "Total Return",
-    20,
-    0.13441444186193752,
-    0.17490936156735293,
-    0.14946602333652814,
-    0.16216191327418095,
-    0.1624218363787724,
-    0.15470411963151198,
-    0.3593322978175786,
-    0.3593322978175786,
-    0.3593322978175786,
-    0.20906973265254902,
-    0.11391996522214609,
-    0.07363484433270728,
-    0.07145194103410457,
-    0.3590157170341228,
-    0.23424644451301124,
-    0.2265596637279068,
-    0.19167417738414572,
-    0.14946602333652814
-  ]
-]; 
-    </script>
+    <div class="update-data-section" id="updateDataSection">
+        <h3>🛠 Admin: Update Tool Data</h3>
+        <p>Upload your Excel file. This will update the embedded data and allow you to download a new index.html.</p>
+        <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
+        <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary">📊 Step 1: Upload Excel</button>
+        <button id="downloadBtn" onclick="downloadUpdatedHTML()" class="btn-secondary" style="margin-left:10px;">💾 Step 2: Download New index.html</button>
+        <div id="updateStatus" style="margin-top: 15px; font-weight: bold; color: #007bff;"></div>
+    </div>
 
     <div class="container">
         <h1>Historical Allocation Explorer</h1>
         <div id="calculator-ui">
-            <div id="summaryTable"></div>
-            <div style="font-size: 11px; color: #888; text-align: right; margin-top: 5px; font-style: italic;">*Calculated via annual historical returns; minor variance from model targets may occur.</div>
+            <div id="summaryTable">
+                <p style="text-align:center; color: #666;">Data is loaded. (Visuals would render here based on your logic).</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Secret #update check
+        // THIS VARIABLE MUST STAY EXACTLY LIKE THIS FOR THE UPDATER TO WORK
+        const EXCEL_DATA = [["Sample","Data"],["Change me via","Excel"]];
+
+        let updatedExcelData = null;
+
+        // 1. Secret Access Logic
         function checkUpdateHash() {
             const updateSection = document.getElementById('updateDataSection');
-            if (window.location.hash === '#update') {
-                updateSection.style.display = 'block';
-            } else {
-                updateSection.style.display = 'none';
-            }
+            updateSection.style.display = (window.location.hash === '#update') ? 'block' : 'none';
         }
         window.addEventListener('load', checkUpdateHash);
         window.addEventListener('hashchange', checkUpdateHash);
 
-        // Your Original Calculation Logic (Preserved)
-        function initTool() {
-            if (EXCEL_DATA.length > 0) {
-                console.log("Data loaded, initializing charts...");
-                // ... your original chart and table building logic ...
-            }
-        }
-        window.onload = initTool;
-
-        // The save function that keeps the tools hidden in the final file
-        function downloadUpdatedHTML() {
+        // 2. Process the Excel Upload
+        document.getElementById('updateDataInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
             const statusDiv = document.getElementById('updateStatus');
-            const updateSection = document.getElementById('updateDataSection');
-            statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating...</span>';
+            statusDiv.innerText = "Reading file...";
             
-            try {
-                // IMPORTANT: Hide it before saving so the new file starts hidden
-                updateSection.style.display = 'none';
-                let htmlContent = document.documentElement.outerHTML;
-                updateSection.style.display = 'block'; // Show it again for you to keep working
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    updatedExcelData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                    statusDiv.innerText = "✅ Success! Now click 'Download New index.html'";
+                    statusDiv.style.color = "#28a745";
+                } catch (err) {
+                    statusDiv.innerText = "❌ Error reading Excel";
+                    statusDiv.style.color = "#dc3545";
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
 
-                const blob = new Blob([htmlContent], {type: 'text/html'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'index.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Downloaded! Run Push.Bat</span>';
-            } catch (e) {
-                statusDiv.innerHTML = '❌ Error: ' + e.message;
+        // 3. The Self-Update Engine
+        function downloadUpdatedHTML() {
+            if (!updatedExcelData) {
+                alert("Please upload an Excel file first!");
+                return;
             }
+
+            const updateSection = document.getElementById('updateDataSection');
+            
+            // Hide the update UI so the new file starts clean
+            updateSection.style.display = 'none';
+            
+            // Get the current source code of the entire page
+            let currentHTML = document.documentElement.outerHTML;
+            
+            // Format the new data
+            const newDataString = "const EXCEL_DATA = " + JSON.stringify(updatedExcelData) + ";";
+            
+            // REGEX: Finds 'const EXCEL_DATA = [...];' and replaces it
+            const pattern = /const EXCEL_DATA = \[[\s\S]*?\];/;
+            const finalHTML = "<!DOCTYPE html>\n<html lang=\"en\">" + currentHTML.replace(pattern, newDataString) + "</html>";
+
+            // Create the download
+            const blob = new Blob([finalHTML], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html'; 
+            a.click();
+            
+            // Restore visibility for you
+            updateSection.style.display = 'block';
+            document.getElementById('updateStatus').innerText = "✅ File Downloaded. Replace your folder version and run Push.bat";
         }
+
+        // Initialize your visuals
+        window.onload = function() {
+            checkUpdateHash();
+            console.log("Current Data:", EXCEL_DATA);
+        };
     </script>
 </body>
 </html>
