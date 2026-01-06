@@ -1,0 +1,81 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Comparison Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <style>:is([id*='google_ads_iframe'],[id*='taboola-'],.taboolaHeight,.taboola-placeholder,#top-ad,#credential_picker_container,#credentials-picker-container,#credential_picker_iframe,[id*='google-one-tap-iframe'],#google-one-tap-popup-container,.google-one-tap__module,.google-one-tap-modal-div,#amp_floatingAdDiv,#ez-content-blocker-container) {display:none!important;min-height:0!important;height:0!important;}</style></head><body>
+        
+        <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
+            <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
+            <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
+            <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
+            <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary" style="margin-right: 10px;">
+                📊 Upload New Data File
+            </button>
+            <button id="downloadUpdatedHtml" onclick="downloadUpdatedHTML()" class="btn-secondary" style="display: inline-block;">
+                💾 Download Updated Tool
+            </button>
+            <div id="updateStatus" style="margin-top: 15px; font-weight: bold;"><span style="color: #007bff;">⏳ Generating updated HTML file...</span></div>
+        </div>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <script>
+        /**
+         * ADDED: Logic to show/hide the update section based on the URL hash
+         */
+        function checkUpdateAccess() {
+            const updateSection = document.getElementById('updateDataSection');
+            if (window.location.hash === '#update') {
+                updateSection.style.display = 'block';
+            } else {
+                updateSection.style.display = 'none';
+            }
+        }
+
+        // Run when the page loads
+        window.addEventListener('load', checkUpdateAccess);
+        // Run if the user types #update while already on the page
+        window.addEventListener('hashchange', checkUpdateAccess);
+
+        // Auto-generated from performance_data.xlsx
+        const EXCEL_DATA = [
+          [ "Option", null, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R" ],
+          [ "Performance Measure", null, "60/40", "WavRyder QQQ", "WavRyder SP500", "WavRyder(H)", "WavRyder(M)", "WavRyder(L)", "WavRyder QQQ (Leveraged)", "WavRyder SP500 (Leveraged)", "WavRyder QQQ/SP500 Leveraged)", "QQQ (Leveraged) W/O WavRyder", "SP 500", "AGG", "WavRyder AGG", "VEA", "WavRyder VEA", "QQQ", "SPY", "WavRyder SPY" ],
+          // ... [Rest of your EXCEL_DATA array here] ...
+        ];
+
+        // ... [Rest of your existing script logic for charts and processing] ...
+
+        function downloadUpdatedHTML() {
+            const statusDiv = document.getElementById('updateStatus');
+            statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating updated HTML file...</span>';
+            
+            try {
+                let htmlContent = document.documentElement.outerHTML;
+                const jsData = 'const EXCEL_DATA = ' + JSON.stringify(updatedExcelData, null, 2) + ';';
+                const pattern = /const EXCEL_DATA = \[[\s\S]*?\];/;
+                htmlContent = htmlContent.replace(pattern, jsData);
+                
+                const blob = new Blob([htmlContent], {type: 'text/html'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'index_updated.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Downloaded! Upload index_updated.html to GitHub</span>';
+            } catch (error) {
+                statusDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body></html>
