@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance Comparison Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-        </head><body><div class="update-data-section" id="updateDataSection" style="display: block; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
+        </head><body><div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 3px dashed #007bff;">
             <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
             <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
             <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
@@ -707,6 +707,8 @@ const EXCEL_DATA = [
 
 </script>
     <style>
+
+	#updateDataSection { display: none !important; }
         * {
             margin: 0;
             padding: 0;
@@ -3664,6 +3666,19 @@ const EXCEL_DATA = [
     }
 }
 
+function checkHash() {
+    const adminPanel = document.getElementById('updateDataSection');
+    if (window.location.hash === '#update') {
+        adminPanel.setAttribute('style', 'display: block !important; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 3px dashed #007bff;');
+    } else {
+        adminPanel.setAttribute('style', 'display: none !important;');
+    }
+}
+
+// Run this when the page first loads
+window.addEventListener('load', checkHash);
+// Run this if the user types #update while already on the page
+window.addEventListener('hashchange', checkHash);
 </script>
 
 
