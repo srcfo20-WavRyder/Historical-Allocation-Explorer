@@ -1,10 +1,17 @@
-<!DOCTYPE html>
+/*  */
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Tool</title>
-    </head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
 <body>
     <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
         <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
@@ -904,31 +911,29 @@
 ];
     </script>
 
+    <div id="summaryTable"></div>
+            <div style="font-size: 11px; color: #888; text-align: right; margin-top: 5px; font-style: italic;">*Calculated via annual historical returns; minor variance from model targets may occur.</div>
     <script>
         function checkUpdateHash() {
             const updateSection = document.getElementById('updateDataSection');
-            // If the URL ends in #update, show the tools
             if (window.location.hash === '#update') {
                 updateSection.style.display = 'block';
             } else {
                 updateSection.style.display = 'none';
             }
         }
-
-        // Run whenever the page loads or the hash changes
         window.addEventListener('load', checkUpdateHash);
         window.addEventListener('hashchange', checkUpdateHash);
 
-        // This ensures the saved file remains hidden
         function downloadUpdatedHTML() {
             const statusDiv = document.getElementById('updateStatus');
             const updateSection = document.getElementById('updateDataSection');
             statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating...</span>';
             
             try {
-                updateSection.style.display = 'none'; // Hide before saving
+                updateSection.style.display = 'none'; // Ensure it's hidden in the saved file
                 let htmlContent = document.documentElement.outerHTML;
-                updateSection.style.display = 'block'; // Show again for current session
+                updateSection.style.display = 'block'; // Keep it visible for the current session
 
                 const blob = new Blob([htmlContent], {type: 'text/html'});
                 const url = URL.createObjectURL(blob);
@@ -938,7 +943,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Downloaded! Run Push.Bat</span>';
+                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Success! Use Push.Bat</span>';
             } catch (e) {
                 statusDiv.innerHTML = '❌ Error: ' + e.message;
             }
