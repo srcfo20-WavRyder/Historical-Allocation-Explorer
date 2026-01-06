@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Tool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     </head>
 <body>
     <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
@@ -905,12 +904,10 @@
 ];
     </script>
 
-    <div id="summaryTable"></div>
-            <div style="font-size: 11px; color: #888; text-align: right; margin-top: 5px; font-style: italic;">*Calculated via annual historical returns; minor variance from model targets may occur.</div>
-
     <script>
         function checkUpdateHash() {
             const updateSection = document.getElementById('updateDataSection');
+            // If the URL ends in #update, show the tools
             if (window.location.hash === '#update') {
                 updateSection.style.display = 'block';
             } else {
@@ -918,21 +915,20 @@
             }
         }
 
-        // Check for the hash when page loads and when URL changes
+        // Run whenever the page loads or the hash changes
         window.addEventListener('load', checkUpdateHash);
         window.addEventListener('hashchange', checkUpdateHash);
 
-        // Your existing downloadUpdatedHTML function should be here
+        // This ensures the saved file remains hidden
         function downloadUpdatedHTML() {
             const statusDiv = document.getElementById('updateStatus');
             const updateSection = document.getElementById('updateDataSection');
             statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating...</span>';
             
             try {
-                // Temporarily hide for the save
-                updateSection.style.display = 'none';
+                updateSection.style.display = 'none'; // Hide before saving
                 let htmlContent = document.documentElement.outerHTML;
-                updateSection.style.display = 'block';
+                updateSection.style.display = 'block'; // Show again for current session
 
                 const blob = new Blob([htmlContent], {type: 'text/html'});
                 const url = URL.createObjectURL(blob);
@@ -942,7 +938,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Success! Use Push.Bat</span>';
+                statusDiv.innerHTML = '<span style="color: #28a745;">✅ Downloaded! Run Push.Bat</span>';
             } catch (e) {
                 statusDiv.innerHTML = '❌ Error: ' + e.message;
             }
