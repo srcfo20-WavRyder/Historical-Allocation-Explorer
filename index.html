@@ -1589,7 +1589,7 @@ const EXCEL_DATA = [
             }
         }
         
-        /* Landscape orientation on phones - ensure table stays centered */
+        /* Landscape orientation on phones - ensure content fills screen */
         @media screen and (max-height: 500px) and (orientation: landscape) {
             .performance-table {
                 margin-left: auto;
@@ -1597,10 +1597,24 @@ const EXCEL_DATA = [
                 display: table;
             }
             
+            .metrics-container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            #growthChartContent {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 10px 5px 3px 5px !important;
+            }
+            
+            #growthChartContent > div:nth-child(2) {
+                width: 100% !important;
+            }
+            
             #presentationContent {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                width: 100% !important;
+                max-width: 100% !important;
             }
         }
 
