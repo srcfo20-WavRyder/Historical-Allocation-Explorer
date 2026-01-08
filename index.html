@@ -1412,8 +1412,14 @@ const EXCEL_DATA = [
             }
             
             .container {
-                padding: 10px;
-                margin: 10px auto;
+                padding: 5px;
+                margin: 5px auto;
+            }
+            
+            #presentationContent {
+                width: 100% !important;
+                margin: 0;
+                padding: 0;
             }
             
             .header h1 {
@@ -1458,20 +1464,27 @@ const EXCEL_DATA = [
             }
             
             .performance-table {
-                font-size: 12px;
+                font-size: 11px;
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
+                width: 100%;
+                margin: 0;
             }
             
             .performance-table th,
             .performance-table td {
-                padding: 8px 6px;
+                padding: 6px 4px;
             }
             
             .section-header {
-                font-size: 20px;
-                padding: 12px;
+                font-size: 18px;
+                padding: 8px 5px;
+                margin: 0;
+            }
+            
+            #portfolioKey {
+                padding: 0 5px;
             }
             
             .metrics-container {
@@ -1508,12 +1521,27 @@ const EXCEL_DATA = [
         }
         
         @media screen and (max-width: 480px) {
+            .container {
+                padding: 3px;
+                margin: 3px auto;
+            }
+            
             .header h1 {
                 font-size: 20px;
             }
             
             .performance-table {
                 font-size: 10px;
+            }
+            
+            .performance-table th,
+            .performance-table td {
+                padding: 5px 3px;
+            }
+            
+            .section-header {
+                font-size: 16px;
+                padding: 6px 3px;
             }
             
             .metric-title {
