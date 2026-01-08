@@ -4577,19 +4577,15 @@ const EXCEL_DATA = [
                   </div> 
                 
 </div></div></div><script>
-// --- START OF MISSING LOGIC ---
+// 1. GLOBAL VARIABLES - These must be outside functions so everyone can see them
 let processedPortfolioData = {};
+let performanceChart = null;
 
 function processExcelData(data) {
-    if (!data || data.length < 2) return;
-    const headers = data[1]; // The row with "60/40", "WavRyder QQQ", etc.
-    
-    // Clear and rebuild the data map
-    processedPortfolioData = {};
-    
-    // Loop through each column (skipping the first two labels)
-    for (let col = 2; col < headers.length; col++) {
-        const portfolioName = headers[col];
+    processedPortfolioData = {}; // Clear previous
+    // Starting from column 1 (skipping row labels in column 0)
+    for (let col = 1; col < data[0].length; col++) {
+        const portfolioName = data[1][col];
         if (!portfolioName) continue;
         
         processedPortfolioData[portfolioName] = {
@@ -4600,54 +4596,64 @@ function processExcelData(data) {
             drawdown: data[13][col]
         };
     }
-    console.log("Data processed successfully");
+    console.log("Data processed successfully:", processedPortfolioData);
+}
+
+// 2. INITIALIZE CHART - This creates the chart object on page load
+function initChart() {
+    const ctx = document.getElementById('performanceChart');
+    if (!ctx) return;
+
+    performanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1 Year Return', '5 Year CAGR', '10 Year CAGR'],
+            datasets: [
+                { label: 'Portfolio 1', data: [], backgroundColor: '#007bff' },
+                { label: 'Portfolio 2', data: [], backgroundColor: '#6c757d' }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, ticks: { callback: v => (v * 100).toFixed(0) + '%' } } }
+        }
+    });
 }
 
 function updatePerformanceComparison() {
     const p1 = document.getElementById('portfolio1Selection').value;
     const p2 = document.getElementById('portfolio2Selection').value;
     
-    // 1. Check if both are selected
     if (p1 && p2) {
         const data1 = processedPortfolioData[p1];
         const data2 = processedPortfolioData[p2];
 
-        if (data1 && data2) {
-            // 2. Update the Summary Table (Make sure these IDs match your HTML)
-            // Example: document.getElementById('p1-return').innerText = (data1.totalReturn1yr * 100).toFixed(2) + '%';
+        if (data1 && data2 && performanceChart) {
+            // Update the chart bars
+            performanceChart.data.datasets[0].label = p1;
+            performanceChart.data.datasets[1].label = p2;
+            performanceChart.data.datasets[0].data = [data1.totalReturn1yr, data1.cagr5yr, data1.cagr10yr];
+            performanceChart.data.datasets[1].data = [data2.totalReturn1yr, data2.cagr5yr, data2.cagr10yr];
             
-            // 3. Update Chart.js
-            // This assumes you have a chart instance named 'performanceChart'
-            if (window.performanceChart) {
-                window.performanceChart.data.datasets[0].label = p1;
-                window.performanceChart.data.datasets[1].label = p2;
-                
-                // Set the data points from your processed object
-                window.performanceChart.data.datasets[0].data = [
-                    data1.totalReturn1yr, 
-                    data1.cagr5yr, 
-                    data1.cagr10yr
-                ];
-                window.performanceChart.data.datasets[1].data = [
-                    data2.totalReturn1yr, 
-                    data2.cagr5yr, 
-                    data2.cagr10yr
-                ];
-                
-                window.performanceChart.update();
-            }
+            performanceChart.update();
+            console.log("Chart updated!");
         }
     }
-}// --- END OF MISSING LOGIC ---
+}
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the empty chart first
+    initChart();
+
     const reportWrapper = document.getElementById('reportWrapper');
     const p1Select = document.getElementById('portfolio1Selection');
     const p2Select = document.getElementById('portfolio2Selection');
 
     const handleSelection = () => {
-        if (reportWrapper) reportWrapper.style.display = 'block';
-        updatePerformanceComparison();
+        if (p1Select.value && p2Select.value) {
+            if (reportWrapper) reportWrapper.style.display = 'block';
+            updatePerformanceComparison();
+        }
     };
 
     if (p1Select) p1Select.addEventListener('change', handleSelection);
@@ -4655,7 +4661,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
         processExcelData(EXCEL_DATA); 
-        // We don't call update here so it stays hidden until you pick a portfolio
     }
 });
 </script>
+</body></html>
