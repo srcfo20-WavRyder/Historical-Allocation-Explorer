@@ -25,9 +25,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <!-- Load performance data from external file -->
     <script>
+<!-- BEGIN EXCEL_DATA -->
+<script id="excel-data">
+  const EXCEL_DATA = [];
+</script>
+<!-- END EXCEL_DATA -->
 // Auto-generated from performance_data.xlsx
-const EXCEL_DATA = [
-  [
     "Option",
     null,
     "A",
@@ -4927,56 +4930,57 @@ const EXCEL_DATA = [
                 });
             });
         }
-        
-        function downloadUpdatedHTML() {
-    if (!updatedExcelData) {
-        alert("Please upload a new Excel file first!");
-        return;
-    }
+<script>
+function downloadUpdatedHTML() {
+  try {
+    // 1. Get current HTML
+    let html = document.documentElement.outerHTML;
 
-    const statusDiv = document.getElementById('updateStatus');
-    statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating updated file...</span>';
+    // 2. Build fresh EXCEL_DATA string
+    const dataString =
+`const EXCEL_DATA = ${JSON.stringify(EXCEL_DATA, null, 2)};`;
 
-    try {
-        // 1. Get current page content (including the doctype)
-        let htmlContent = document.documentElement.outerHTML;
-        const doctype = "<!DOCTYPE html>\n";
-        
-        // 2. Prepare the new data string
-        const newDataString = 'const EXCEL_DATA = ' + JSON.stringify(updatedExcelData, null, 2) + ';';
+    // 3. Remove ANY existing EXCEL_DATA block (safe + global)
+    html = html.replace(
+      /const EXCEL_DATA\s*=\s*\[[\s\S]*?\];/g,
+      ""
+    );
 
-        // 3. Robust Search Pattern: Handles const/let/var and extra spaces
-        const pattern = /(const|var|let)\s+EXCEL_DATA\s*=\s*\[[\s\S]*?\]\s*;?/;
+    // 4. Inject clean dataset just before closing </script>
+    html = html.replace(
+      /<\/script>/,
+      `${dataString}\n</script>`
+    );
 
-        // 4. Check if the pattern exists before trying to replace
-        if (!pattern.test(htmlContent)) {
-            statusDiv.innerHTML = '<span style="color: #dc3545;">❌ Error: Could not find "EXCEL_DATA" in the code. Contact Support.</span>';
-            console.error("Replacement target not found. HTML structure may have changed.");
-            return;
-        }
+    // 5. FINAL VALIDATION (this is critical)
+    const scriptCheck = html.match(/<script[^>]*>([\s\S]*?)<\/script>/g)
+      ?.map(s => s.replace(/<script[^>]*>|<\/script>/g, ""))
+      .join("\n") || "";
 
-        // 5. Perform the replacement
-        htmlContent = htmlContent.replace(pattern, newDataString);
+    new Function(scriptCheck); // throws if invalid JS
 
-        // 6. Create the download link
-        const blob = new Blob([doctype + htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'index.html'; // Automatically named index.html for you
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+    // 6. Create downloadable file
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
 
-        statusDiv.innerHTML = '<span style="color: #28a745;">✅ Success! Move the new index.html to your project folder and run push.bat.</span>';
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    a.click();
 
-    } catch (error) {
-        statusDiv.innerHTML = `<span style="color: #dc3545;">❌ Critical Error: ${error.message}</span>`;
-        console.error(error);
-    }
+    URL.revokeObjectURL(url);
+
+    alert("✅ Download complete — GitHub safe!");
+
+  } catch (err) {
+    console.error(err);
+    alert(
+      "❌ Download aborted.\n\n" +
+      "JavaScript validation failed:\n" +
+      err.message
+    );
+  }
 }
-
 </script>
 
 
