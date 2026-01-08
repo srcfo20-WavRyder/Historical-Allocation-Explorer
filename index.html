@@ -1485,6 +1485,10 @@ const EXCEL_DATA = [
                 padding: 6px 4px;
             }
             
+            #growthChartContent {
+                padding: 15px 10px 3px 10px !important;
+            }
+            
             .section-header {
                 font-size: 18px;
                 padding: 8px 5px;
@@ -1549,6 +1553,10 @@ const EXCEL_DATA = [
             .performance-table th,
             .performance-table td {
                 padding: 5px 3px;
+            }
+            
+            #growthChartContent {
+                padding: 10px 8px 2px 8px !important;
             }
             
             .section-header {
@@ -1931,7 +1939,6 @@ const EXCEL_DATA = [
                     </div>
                 </div>
                 <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 6px;">
-                    <strong>Methodology Notes:</strong>
                     <ul style="text-align: left; display: inline-block; margin: 5px 0;">
                         <li>Back-test CAGRs and growth from daily model</li>
                         <li><strong>Multi-model portfolios assume annual rebalancing to target allocations</strong></li>
@@ -1942,7 +1949,7 @@ const EXCEL_DATA = [
                 </div>
                 
                 <div class="section-header" style="margin-top: 15px;">Portfolio Growth Over Time</div>
-                <div id="growthChartContent" style="background: #ffffff; padding: 15px; border-radius: 8px; margin-top: 6px;">
+                <div id="growthChartContent" style="background: #ffffff; padding: 15px 15px 5px 15px; border-radius: 8px; margin-top: 6px;">
                     <div style="text-align: center; margin-bottom: 10px;">
                         <h3 style="font-size: 18px; color: #1a1a1a; font-weight: 600; margin-bottom: 3px;">$100K Growth Over 20 Years</h3>
                         <div id="chartSubtitle" style="font-size: 13px; color: #666; font-style: italic;">Portfolio Comparison</div>
@@ -1950,12 +1957,12 @@ const EXCEL_DATA = [
                     <div style="position: relative; height: 400px;">
                         <canvas id="growthChart"></canvas>
                     </div>
-                    <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 8px;">
+                    <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 0px; margin-bottom: 0px;">
                         Growth calculated from annual returns with annual rebalancing.
                     </div>
                 </div>
                 
-                <div class="section-header" style="margin-top: 15px;">Advanced Risk Metrics</div>
+                <div class="section-header" style="margin-top: 0px;">Advanced Risk Metrics</div>
                 <div style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
                     <span id="portfolio1DescriptionRisk">Portfolio 1</span> vs <span id="portfolio2DescriptionRisk">Portfolio 2</span>
                 </div>
