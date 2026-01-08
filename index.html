@@ -1430,19 +1430,25 @@ const EXCEL_DATA = [
                 padding: 12px;
             }
             
+            /* Keep horizontal layout on mobile - same as desktop */
             .selector-row-stack {
-                flex-direction: column;
-                gap: 8px;
+                gap: 6px;
+                margin-left: 3px;
+                margin-right: 3px;
             }
             
             .selector-label-stack {
-                width: 100%;
-                text-align: left;
+                font-size: 13px;
             }
             
             .select-stack {
-                width: 100% !important;
                 font-size: 14px;
+                padding: 6px 6px;
+            }
+            
+            .select-alloc-stack {
+                font-size: 14px;
+                padding: 6px 3px;
             }
             
             .update-button {
