@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance Comparison Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-        </head><body><div class="update-data-section" id="updateDataSection" style="display: block; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
+        </head><body><div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
             <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
             <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
             <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
@@ -6344,6 +6344,25 @@ document.addEventListener('DOMContentLoaded', function() {
         processData(EXCEL_DATA); 
         
         // Hide the "Generating updated file..." status if it's visible by default
+        const statusDiv = document.getElementById('updateStatus');
+        if (statusDiv) statusDiv.innerHTML = '';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Check URL for #update to show/hide the upload section
+    const updateSection = document.getElementById('updateDataSection');
+    if (window.location.hash === '#update') {
+        updateSection.style.display = 'block';
+    }
+
+    // 2. Automatically load the hardcoded EXCEL_DATA
+    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
+        console.log("Found persistent data, initializing models...");
+        // This function exists in your code to handle the data array
+        processData(EXCEL_DATA); 
+        
+        // Clear the "Generating" status message on initial load
         const statusDiv = document.getElementById('updateStatus');
         if (statusDiv) statusDiv.innerHTML = '';
     }
