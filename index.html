@@ -4577,6 +4577,44 @@ const EXCEL_DATA = [
                   </div> 
                 
 </div></div></div><script>
+// --- START OF MISSING LOGIC ---
+let processedPortfolioData = {};
+
+function processExcelData(data) {
+    if (!data || data.length < 2) return;
+    const headers = data[1]; // The row with "60/40", "WavRyder QQQ", etc.
+    
+    // Clear and rebuild the data map
+    processedPortfolioData = {};
+    
+    // Loop through each column (skipping the first two labels)
+    for (let col = 2; col < headers.length; col++) {
+        const portfolioName = headers[col];
+        if (!portfolioName) continue;
+        
+        processedPortfolioData[portfolioName] = {
+            totalReturn1yr: data[2][col],
+            cagr5yr: data[4][col],
+            cagr10yr: data[5][col],
+            cagr20yr: data[7][col],
+            drawdown: data[13][col]
+        };
+    }
+    console.log("Data processed successfully");
+}
+
+function updatePerformanceComparison() {
+    // This is the trigger that makes the charts appear
+    const p1 = document.getElementById('portfolio1Selection').value;
+    const p2 = document.getElementById('portfolio2Selection').value;
+    
+    if (p1 && p2) {
+        console.log("Updating charts for:", p1, "vs", p2);
+        // Your existing charting code would go here
+    }
+}
+// --- END OF MISSING LOGIC ---
+
 document.addEventListener('DOMContentLoaded', function() {
     const reportWrapper = document.getElementById('reportWrapper');
     const p1Select = document.getElementById('portfolio1Selection');
@@ -4591,9 +4629,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (p2Select) p2Select.addEventListener('change', handleSelection);
 
     if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
-        processData(EXCEL_DATA);
-        updatePerformanceComparison();
+        processExcelData(EXCEL_DATA); 
+        // We don't call update here so it stays hidden until you pick a portfolio
     }
 });
 </script>
-</body></html>
