@@ -6368,6 +6368,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Check for #update in URL to show the upload section
+    if (window.location.hash === '#update') {
+        document.getElementById('updateDataSection').style.display = 'block';
+    }
+
+    // 2. Link the Portfolio Dropdowns to the refresh logic
+    const p1Select = document.getElementById('portfolio1Selection');
+    const p2Select = document.getElementById('portfolio2Selection');
+
+    if (p1Select && p2Select) {
+        // This ensures the charts redraw every time you change a selection
+        p1Select.addEventListener('change', updatePerformanceComparison);
+        p2Select.addEventListener('change', updatePerformanceComparison);
+    }
+
+    // 3. Initial Load of Data
+    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
+        processData(EXCEL_DATA); // Parses the hidden data
+        updatePerformanceComparison(); // Draws the charts for the first time
+    }
+});
 </script>
 
 
