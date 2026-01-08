@@ -4571,34 +4571,17 @@ const EXCEL_DATA = [
                             <strong>Sortino:</strong> Like Sharpe but only penalizes downside volatility; higher is better.<br>
                             <strong>Treynor:</strong> Return per unit of market risk (Beta); higher is better.<br>
                             <strong>Volatility:</strong> Standard deviation of returns; lower means more stable.<br>
-		            <strong>Win Rate:</strong> Percentage of positive years; higher means more consistent gains.
+			    <strong>Win Rate:</strong> Percentage of positive years; higher means more consistent gains.
                         </div>
-                    </div>
+                    </div> 
+                  </div> 
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
+ <script>
 document.addEventListener('DOMContentLoaded', function() {
     const reportWrapper = document.getElementById('reportWrapper');
     const p1Select = document.getElementById('portfolio1Selection');
     const p2Select = document.getElementById('portfolio2Selection');
-    const updateSection = document.getElementById('updateDataSection');
 
-    // 1. Show Update Section if #update is in URL
-    if (updateSection) {
-        updateSection.style.display = (window.location.hash === '#update') ? 'block' : 'none';
-    }
-
-    // 2. Initialize Data
-    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
-        processData(EXCEL_DATA); 
-        updatePerformanceComparison(); 
-    }
-
-    // 3. Show Report on Selection
     const handleSelection = () => {
         if (reportWrapper) reportWrapper.style.display = 'block';
         updatePerformanceComparison();
@@ -4606,7 +4589,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (p1Select) p1Select.addEventListener('change', handleSelection);
     if (p2Select) p2Select.addEventListener('change', handleSelection);
+
+    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
+        processData(EXCEL_DATA);
+        updatePerformanceComparison();
+    }
 });
 </script>
 </body></html>
-                            
