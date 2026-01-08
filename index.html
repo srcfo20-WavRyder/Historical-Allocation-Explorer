@@ -7,14 +7,14 @@
         </head>
 <body>
 
-<div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
+<div class="update-data-section" id="updateDataSection" style="display: block; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
             <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
             <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
             <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
             <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary">
                 📊 Upload New Data File
             </button>
-            <div id="updateStatus" style="margin-top: 15px; font-weight: bold; display: none;"></div>
+            <div id="updateStatus" style="margin-top: 15px; font-weight: bold; display: block;"><span style="color: #007bff;">⏳ Generating updated HTML file...</span></div>
         </div>
 
 
