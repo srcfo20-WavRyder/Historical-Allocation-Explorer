@@ -1135,10 +1135,15 @@ const EXCEL_DATA = [
         }
         
         h1 {
-            font-size: 32px;
+            font-size: 42px;
             color: #1a1a1a;
             margin-bottom: 3px;
-            font-weight: 700;
+            font-weight: 900;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: none;
+            max-width: 300px;
+            line-height: 1.1;
         }
         
         .subtitle {
@@ -1418,17 +1423,20 @@ const EXCEL_DATA = [
             
             #presentationContent {
                 width: 100% !important;
-                margin: 0;
+                margin: 0 auto;
                 padding: 0;
             }
             
             .header h1 {
-                font-size: 24px;
+                font-size: 32px;
+                line-height: 1.1;
+                max-width: 250px;
             }
             
             .portfolio-container {
                 padding: 15px;
-                margin: 10px 0;
+                margin: 10px auto;
+                max-width: 100%;
             }
             
             .portfolio-header {
@@ -1469,7 +1477,7 @@ const EXCEL_DATA = [
                 overflow-x: auto;
                 white-space: nowrap;
                 width: 100%;
-                margin: 0;
+                margin: 0 auto;
             }
             
             .performance-table th,
@@ -1480,11 +1488,13 @@ const EXCEL_DATA = [
             .section-header {
                 font-size: 18px;
                 padding: 8px 5px;
-                margin: 0;
+                margin: 0 auto;
+                text-align: center;
             }
             
             #portfolioKey {
                 padding: 0 5px;
+                text-align: center;
             }
             
             .metrics-container {
@@ -1527,7 +1537,9 @@ const EXCEL_DATA = [
             }
             
             .header h1 {
-                font-size: 20px;
+                font-size: 28px;
+                line-height: 1.1;
+                max-width: 220px;
             }
             
             .performance-table {
