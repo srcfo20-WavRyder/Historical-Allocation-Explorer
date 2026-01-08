@@ -4604,16 +4604,41 @@ function processExcelData(data) {
 }
 
 function updatePerformanceComparison() {
-    // This is the trigger that makes the charts appear
     const p1 = document.getElementById('portfolio1Selection').value;
     const p2 = document.getElementById('portfolio2Selection').value;
     
+    // 1. Check if both are selected
     if (p1 && p2) {
-        console.log("Updating charts for:", p1, "vs", p2);
-        // Your existing charting code would go here
+        const data1 = processedPortfolioData[p1];
+        const data2 = processedPortfolioData[p2];
+
+        if (data1 && data2) {
+            // 2. Update the Summary Table (Make sure these IDs match your HTML)
+            // Example: document.getElementById('p1-return').innerText = (data1.totalReturn1yr * 100).toFixed(2) + '%';
+            
+            // 3. Update Chart.js
+            // This assumes you have a chart instance named 'performanceChart'
+            if (window.performanceChart) {
+                window.performanceChart.data.datasets[0].label = p1;
+                window.performanceChart.data.datasets[1].label = p2;
+                
+                // Set the data points from your processed object
+                window.performanceChart.data.datasets[0].data = [
+                    data1.totalReturn1yr, 
+                    data1.cagr5yr, 
+                    data1.cagr10yr
+                ];
+                window.performanceChart.data.datasets[1].data = [
+                    data2.totalReturn1yr, 
+                    data2.cagr5yr, 
+                    data2.cagr10yr
+                ];
+                
+                window.performanceChart.update();
+            }
+        }
     }
-}
-// --- END OF MISSING LOGIC ---
+}// --- END OF MISSING LOGIC ---
 
 document.addEventListener('DOMContentLoaded', function() {
     const reportWrapper = document.getElementById('reportWrapper');
