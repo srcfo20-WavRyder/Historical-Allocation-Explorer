@@ -1135,14 +1135,14 @@ const EXCEL_DATA = [
         }
         
         h1 {
-            font-size: 42px;
+            font-size: 34px;
             color: #1a1a1a;
             margin-bottom: 3px;
             font-weight: 900;
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: none;
-            max-width: 300px;
+            max-width: 240px;
             line-height: 1.1;
         }
         
@@ -1165,7 +1165,7 @@ const EXCEL_DATA = [
         .performance-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin: 10px auto;
         }
         
         .performance-table thead tr {
@@ -1428,9 +1428,9 @@ const EXCEL_DATA = [
             }
             
             .header h1 {
-                font-size: 32px;
+                font-size: 26px;
                 line-height: 1.1;
-                max-width: 250px;
+                max-width: 200px;
             }
             
             .portfolio-container {
@@ -1489,6 +1489,14 @@ const EXCEL_DATA = [
                 padding: 15px 10px 3px 10px !important;
             }
             
+            #growthChartContent > div:nth-child(2) {
+                height: 300px !important;
+            }
+            
+            #growthChartContent > div:nth-child(3) {
+                margin-top: -10px !important;
+            }
+            
             .section-header {
                 font-size: 18px;
                 padding: 8px 5px;
@@ -1541,9 +1549,9 @@ const EXCEL_DATA = [
             }
             
             .header h1 {
-                font-size: 28px;
+                font-size: 22px;
                 line-height: 1.1;
-                max-width: 220px;
+                max-width: 180px;
             }
             
             .performance-table {
@@ -1559,6 +1567,14 @@ const EXCEL_DATA = [
                 padding: 10px 8px 2px 8px !important;
             }
             
+            #growthChartContent > div:nth-child(2) {
+                height: 250px !important;
+            }
+            
+            #growthChartContent > div:nth-child(3) {
+                margin-top: -15px !important;
+            }
+            
             .section-header {
                 font-size: 16px;
                 padding: 6px 3px;
@@ -1570,6 +1586,21 @@ const EXCEL_DATA = [
             
             .metric-table {
                 font-size: 12px;
+            }
+        }
+        
+        /* Landscape orientation on phones - ensure table stays centered */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .performance-table {
+                margin-left: auto;
+                margin-right: auto;
+                display: table;
+            }
+            
+            #presentationContent {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
         }
 
