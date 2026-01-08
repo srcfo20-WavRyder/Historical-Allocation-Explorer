@@ -6324,6 +6324,31 @@ const EXCEL_DATA = [
     }
 }
 
+// Function to load the hardcoded EXCEL_DATA on startup
+window.onload = function() {
+    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
+        console.log("Initial data found, processing...");
+        // This function name should match your existing logic that 
+        // processes data after an upload (e.g., processData or updateAll)
+        processExcelData(EXCEL_DATA); 
+    } else {
+        console.log("No initial data found.");
+    }
+};
+
+// Initialization logic to load persistent data on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
+        console.log("Found persistent data, initializing models...");
+        // This specific function in your code handles the data array
+        processData(EXCEL_DATA); 
+        
+        // Hide the "Generating updated file..." status if it's visible by default
+        const statusDiv = document.getElementById('updateStatus');
+        if (statusDiv) statusDiv.innerHTML = '';
+    }
+});
+
 </script>
 
 
