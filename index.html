@@ -4578,7 +4578,7 @@ const EXCEL_DATA = [
             </div>
         </div>
     </div>
-</div> ```
+</div>
 
     <script>
         // Check if EXCEL_DATA is loaded from performance_data.js
@@ -6330,17 +6330,6 @@ const EXCEL_DATA = [
 }
 
 // Function to load the hardcoded EXCEL_DATA on startup
-window.onload = function() {
-    if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
-        console.log("Initial data found, processing...");
-        // This function name should match your existing logic that 
-        // processes data after an upload (e.g., processData or updateAll)
-        processExcelData(EXCEL_DATA); 
-    } else {
-        console.log("No initial data found.");
-    }
-};
-
 document.addEventListener('DOMContentLoaded', function() {
     const updateSection = document.getElementById('updateDataSection');
     const reportWrapper = document.getElementById('reportWrapper');
@@ -6348,34 +6337,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const p2Select = document.getElementById('portfolio2Selection');
 
     // 1. URL Hash Logic: Only show update tools if #update is in URL
-    if (window.location.hash === '#update') {
-        updateSection.style.display = 'block';
-    } else {
-        updateSection.style.display = 'none';
+    if (updateSection) {
+        if (window.location.hash === '#update') {
+            updateSection.style.display = 'block';
+        } else {
+            updateSection.style.display = 'none';
+        }
     }
 
     // 2. Data Initialization: Load the persistent EXCEL_DATA
+    // Note: Using 'processData' as per your primary tool logic
     if (typeof EXCEL_DATA !== 'undefined' && EXCEL_DATA.length > 0) {
         console.log("Initializing persistent data...");
         processData(EXCEL_DATA); 
+        
+        // Ensure calculations run once in background
+        updatePerformanceComparison();
         
         // Clear status if it was stuck
         const statusDiv = document.getElementById('updateStatus');
         if (statusDiv) statusDiv.innerHTML = '';
     }
 
-    // 3. Trigger Logic: Show report and update charts on selection change
+    // 3. Trigger Logic: Show report ONLY when selections are changed
     const handleSelectionChange = () => {
-        if (reportWrapper) reportWrapper.style.display = 'block';
+        if (reportWrapper) {
+            reportWrapper.style.display = 'block';
+        }
         updatePerformanceComparison();
     };
 
-    if (p1Select && p2Select) {
-        p1Select.addEventListener('change', handleSelectionChange);
-        p2Select.addEventListener('change', handleSelectionChange);
-    }
+    if (p1Select) p1Select.addEventListener('change', handleSelectionChange);
+    if (p2Select) p2Select.addEventListener('change', handleSelectionChange);
 });
 </script>
-
-
-</body></html>
+</body>
+</html>
