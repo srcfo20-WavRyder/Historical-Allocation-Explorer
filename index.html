@@ -7,9 +7,28 @@
         </head>
 <body>
 
+<!-- Sticky Disclaimer Banner -->
+<div style="position: sticky; top: 0; z-index: 9999; background: #856404; color: white; 
+            padding: 8px; text-align: center; font-size: 12px; font-weight: 600;">
+    ⚠️ Educational Tool Only • Past Performance ≠ Future Results • Not Financial Advice
+</div>
+
 <div class="update-data-section" id="updateDataSection" style="display: none; text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
             <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
             <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
+            
+            <!-- Date Range Inputs -->
+            <div style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="startDateInput" style="font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 5px;">Start Date:</label>
+                    <input type="date" id="startDateInput" value="2005-12-30" style="padding: 8px 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 14px;">
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <label for="endDateInput" style="font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 5px;">End Date:</label>
+                    <input type="date" id="endDateInput" value="2025-12-31" style="padding: 8px 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 14px;">
+                </div>
+            </div>
+            
             <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
             <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary">
                 📊 Upload New Data File
@@ -26,6 +45,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Load performance data from external file -->
     <script>
+// Date range configuration - will be updated when data is refreshed
+const DATA_START_DATE = "December 30, 2005";
+const DATA_END_DATE = "December 31, 2025";
+const DATA_START_DATE_SHORT = "12/30/2005";
+const DATA_END_DATE_SHORT = "12/31/2025";
+const DATA_YEAR_RANGE = "2005-2025";
+const DATA_YEARS_COUNT = 20;
+
 // Auto-generated from performance_data.xlsx
 const EXCEL_DATA = [
   [
@@ -184,7 +211,7 @@ const EXCEL_DATA = [
   ],
   [
     "CAGR",
-    "20 Year",
+    "19 Year",
     0.0814670041020702,
     0.12427253755029244,
     0.0953211493896522,
@@ -208,7 +235,7 @@ const EXCEL_DATA = [
   [],
   [
     "const00K Investment Growth",
-    "20 Year",
+    "19 Year",
     478922.753025214,
     1040955.2187866488,
     617773.7768892092,
@@ -232,7 +259,7 @@ const EXCEL_DATA = [
   [],
   [
     "Worst Annual Drawdown%",
-    "20 Year",
+    "19 Year",
     -0.19061453613527835,
     -0.09572172918412059,
     -0.08463731735187463,
@@ -257,7 +284,7 @@ const EXCEL_DATA = [
     100000
   ],
   [
-    20
+    19
   ],
   [],
   [],
@@ -1384,6 +1411,100 @@ const EXCEL_DATA = [
             opacity: 0.95;
         }
 
+        /* Modal Disclaimer Overlay */
+        #disclaimerModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 20px;
+            animation: modalFadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 750px;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+            animation: slideDown 0.4s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+        
+        .modal-body {
+            padding: 30px;
+            color: #333;
+            line-height: 1.7;
+        }
+        
+        .modal-section {
+            margin-bottom: 25px;
+        }
+        
+        .modal-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+        
+        .modal-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .modal-list {
+            margin: 10px 0;
+            padding-left: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .modal-list li {
+            margin-bottom: 8px;
+        }
+        
+        #acceptDisclaimerBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+        }
+        
+        #acceptDisclaimerBtn:active {
+            transform: translateY(0);
+        }
+
         /* Pie Chart Container */
         .pie-charts-container {
             display: flex;
@@ -1655,6 +1776,74 @@ const EXCEL_DATA = [
                 <input type="file" id="fileInput" accept=".xlsx, .xls">
             </div>
             
+            
+            <!-- MODAL DISCLAIMER (First Visit Only) -->
+            <div id="disclaimerModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 style="margin: 0; font-size: 24px; font-weight: 700;">
+                            🔬 Hypothetical Historical Comparison Calculator — Important Information
+                        </h2>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="modal-section">
+                            <div class="modal-section-title">What This Tool Shows</div>
+                            <div class="modal-text">
+                                This calculator illustrates how selected, rules-based portfolio models and strategies would have performed historically over the period <span id="modalStartDate">December 30, 2005</span> through <span id="modalEndDate">December 31, 2025</span>, using hypothetical and backtested data. The results shown are not predictions, projections, or forecasts of future investment performance.
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <div class="modal-section-title">Key Limitations</div>
+                            <ul class="modal-list">
+                                <li><strong>Historical hindsight:</strong> Backtested results are developed using historical data and benefit from hindsight.</li>
+                                <li><strong>Simplified assumptions:</strong> Results do not include fees, expenses, taxes, commissions, or transaction costs.</li>
+                                <li><strong>Idealized execution:</strong> Assumes consistent application of the strategy without behavioral, timing, or implementation errors.</li>
+                                <li><strong>Period sensitivity:</strong> Results are specific to the selected time period; different time periods may produce materially different outcomes.</li>
+                                <li><strong>Survivorship considerations:</strong> Strategies and data reflect instruments available during the analyzed period.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <div class="modal-section-title">Appropriate Uses</div>
+                            <ul class="modal-list">
+                                <li>Educational illustration of historical market behavior</li>
+                                <li>Comparative analysis of different portfolio constructions and rules-based strategies</li>
+                                <li>Understanding concepts such as volatility, drawdowns, and risk-adjusted returns</li>
+                                <li>Informational reference for discussion with a qualified financial professional</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <div class="modal-section-title" style="color: #d32f2f;">Inappropriate Uses</div>
+                            <ul class="modal-list">
+                                <li>Making investment decisions without professional guidance</li>
+                                <li>Expecting future results to resemble historical outcomes</li>
+                                <li>Treating hypothetical results as actual performance</li>
+                                <li>Relying on this tool as a substitute for individualized financial advice</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="modal-section" style="background: #fff9e6; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            <div class="modal-section-title" style="color: #856404;">Legal Disclosure</div>
+                            <div class="modal-text" style="font-size: 13px; color: #856404;">
+                                This tool is provided for educational and informational purposes only and does not constitute investment advice, a recommendation, or an offer to buy or sell any security. Past performance is not indicative of future results. All investments involve risk, including the possible loss of principal. Market conditions change, and future outcomes may differ materially from historical scenarios.
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 30px;">
+                            <button id="acceptDisclaimerBtn" style="background: linear-gradient(135deg, #1976d2, #2196f3); 
+                                    color: white; border: none; padding: 15px 50px; font-size: 16px; font-weight: 600; 
+                                    border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+                                    transition: all 0.3s ease;">
+                                I Understand
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
                         <!-- Portfolio 1 Container -->
             <div class="portfolio-container" id="portfolio1Container" style="display: block;">
                 <div class="portfolio-header">Portfolio 1</div>
@@ -1784,6 +1973,28 @@ const EXCEL_DATA = [
             <div class="portfolio-container portfolio-2" id="portfolio2Container" style="display: block;">
                 <div class="portfolio-header">Portfolio 2</div>
                 
+                <!-- Quick Templates -->
+                <div style="text-align: center; margin: 10px 0 15px 0; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 2px solid #e9ecef;">
+                    <label style="font-size: 13px; font-weight: 600; color: #495057; display: block; margin-bottom: 8px;">
+                        ⚡ Quick Templates - Load Common Allocations:
+                    </label>
+                    <select id="templateSelect" onchange="loadTemplate()" style="padding: 8px 12px; font-size: 14px; font-weight: 600; border: 2px solid #007bff; 
+                                                     border-radius: 6px; background: white; cursor: pointer; min-width: 200px;">
+                        <option value="">-- Select a Template --</option>
+                        <option value="conservative">🛡️ Conservative (40/60 Stocks/Bonds)</option>
+                        <option value="moderate">⚖️ Moderate (50/50 Stocks/Bonds)</option>
+                        <option value="balanced">📊 Balanced (60/40 Stocks/Bonds)</option>
+                        <option value="growth">📈 Growth (70/30 Stocks/Bonds)</option>
+                        <option value="aggressive">🚀 Aggressive (80/20 Stocks/Bonds)</option>
+                        <option value="global">🌍 Global Balanced (60/30/10 SPY/AGG/VEA)</option>
+                    </select>
+                    <div style="font-size: 11px; color: #6c757d; margin-top: 6px; font-style: italic;">
+                        Or build custom portfolio below
+                    </div>
+                </div>
+                
+                <!-- Regular Model Selection Section -->
+                <div id="regularInputSection">
                 <!-- A row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">A:</label>
@@ -1903,9 +2114,11 @@ const EXCEL_DATA = [
                         <option value="100">100</option>
                     </select>
                 </div>
+                </div>
+                <!-- End Regular Input Section -->
                 
                 <button class="upload-button" style="padding: 8px 20px; font-size: 14px; margin-top: 15px;" onclick="updateComparison()">
-                    🔄 Update
+                    📊 View Historical Comparison Analysis
                 </button>
             </div>
             
@@ -1935,7 +2148,15 @@ const EXCEL_DATA = [
                     <div style="text-align: center; margin-bottom: 15px;">
                         <img src="data:image/png;base64,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" alt="WavRyder Logo" style="max-width: 180px; height: auto;">
                     </div>
-                    <h1>Historical Performance Comparison</h1>
+                    <h1>Hypothetical Historical Comparison Calculator</h1>
+                    <div style="font-size: 14px; color: #6c757d; font-style: italic; margin-top: 5px; text-align: center;" id="mainSubtitle">
+                        "What If You Had Invested in <span id="subtitleYear">2005</span>?"
+                    </div>
+                </div>
+                
+                <!-- Data Period Notice -->
+                <div style="text-align: center; font-size: 12px; color: #6c757d; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
+                    📅 Hypothetical Scenario Period: <strong><span id="headerStartDate">December 30, 2005</span> - <span id="headerEndDate">December 31, 2025</span></strong> (<span id="headerYearsCount">20</span> years) | Last Updated: January 10, 2025
                 </div>
                 
                 <!-- Learn More Button -->
@@ -1950,7 +2171,15 @@ const EXCEL_DATA = [
                     </a>
                 </div>
 
-                <div class="section-header">Performance Metrics</div>
+                <div style="text-align: center; margin: 10px 0;">
+                    <div style="display: inline-block; background: linear-gradient(135deg, #6c757d, #495057); 
+                                color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; 
+                                font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        📊 HYPOTHETICAL SCENARIO
+                    </div>
+                </div>
+
+                <div class="section-header">Hypothetical Performance Metrics</div>
                 <div id="portfolioKey" style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
                     <span id="portfolio1Description">Portfolio 1</span> vs <span id="portfolio2Description">Portfolio 2</span>
                 </div>
@@ -1981,7 +2210,7 @@ const EXCEL_DATA = [
                     </tbody>
                 </table>
 
-                <div class="section-header">20-Year Investment Lookback Analysis</div>
+                <div class="section-header">Hypothetical <span id="sectionYearsCount">20</span>-Year Investment Lookback (<span id="sectionYearRange">2005-2025</span>)</div>
                 <div class="metrics-container">
                     <div class="metric-card">
                         <div class="metric-title">$100k Investment Growth</div>
@@ -2020,29 +2249,49 @@ const EXCEL_DATA = [
                     </div>
                 </div>
                 <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 6px;">
+                    <div style="font-weight: 600; font-size: 12px; color: #1565c0; margin-bottom: 8px;">
+                        📋 Hypothetical Scenario Methodology (<span id="methodologyYearRange">2005-2025</span>)
+                    </div>
                     <ul style="text-align: left; display: inline-block; margin: 5px 0;">
-                        <li>Back-test CAGRs and growth from daily model</li>
+                        <li>Hypothetical back-test CAGRs and growth from daily model (Jan 2006 - Dec 2024)</li>
                         <li><strong>Multi-model portfolios assume annual rebalancing to target allocations</strong></li>
                         <li>Max annual drawdown based on year-end values</li>
                         <li>Transaction costs, taxes, and slippage not included</li>
+                        <li><strong>This is a hypothetical historical scenario - past performance ≠ future results</strong></li>
                     </ul>
                 </div>
                 
-                <div class="section-header" style="margin-top: 15px;">Portfolio Growth Over Time</div>
+                <div style="text-align: center; margin: 15px 0 10px 0;">
+                    <div style="display: inline-block; background: linear-gradient(135deg, #6c757d, #495057); 
+                                color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; 
+                                font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        📊 HYPOTHETICAL SCENARIO
+                    </div>
+                </div>
+                
+                <div class="section-header" style="margin-top: 5px;">Hypothetical Portfolio Growth Over Time</div>
                 <div id="growthChartContent" style="background: #ffffff; padding: 15px 15px 5px 15px; border-radius: 8px; margin-top: 6px;">
                     <div style="text-align: center; margin-bottom: 10px;">
-                        <h3 style="font-size: 18px; color: #1a1a1a; font-weight: 600; margin-bottom: 3px;">$100K Growth Over 20 Years</h3>
+                        <h3 style="font-size: 18px; color: #1a1a1a; font-weight: 600; margin-bottom: 3px;">Hypothetical $100K Growth (<span id="chartYearRange">2005-2025</span>)</h3>
                         <div id="chartSubtitle" style="font-size: 13px; color: #666; font-style: italic;">Portfolio Comparison</div>
                     </div>
                     <div style="position: relative; height: 400px;">
                         <canvas id="growthChart"></canvas>
                     </div>
                     <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 0px; margin-bottom: 0px;">
-                        Growth calculated from annual returns with annual rebalancing.
+                        Hypothetical growth calculated from annual returns with annual rebalancing. This is not a prediction of future results.
                     </div>
                 </div>
                 
-                <div class="section-header" style="margin-top: 0px;">Advanced Risk Metrics</div>
+                <div style="text-align: center; margin: 10px 0;">
+                    <div style="display: inline-block; background: linear-gradient(135deg, #6c757d, #495057); 
+                                color: white; padding: 6px 12px; border-radius: 20px; font-size: 11px; 
+                                font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                        📊 HYPOTHETICAL SCENARIO
+                    </div>
+                </div>
+                
+                <div class="section-header" style="margin-top: 5px;">Hypothetical Advanced Risk Metrics</div>
                 <div style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
                     <span id="portfolio1DescriptionRisk">Portfolio 1</span> vs <span id="portfolio2DescriptionRisk">Portfolio 2</span>
                 </div>
@@ -2209,6 +2458,43 @@ const EXCEL_DATA = [
                             <strong>Win Rate:</strong> Percentage of positive years; higher means more consistent gains.
                         </div>
                     </div>
+                    
+                    <!-- Risk Metrics Disclaimer -->
+                    <div style="margin-top: 12px; padding: 12px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 6px; font-size: 12px; line-height: 1.5;">
+                        <div style="font-weight: 600; color: #856404; margin-bottom: 6px;">⚠️ Risk Metrics Disclaimer:</div>
+                        <div style="color: #856404;">
+                            All risk metrics are calculated from historical data (<span id="riskMetricsYearRange">2005-2025</span>) and may not reflect future performance. 
+                            Actual risk and returns will vary based on market conditions, fees, taxes, and individual circumstances. 
+                            These metrics are for educational comparison purposes only.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final Comprehensive Disclaimer -->
+            <div style="margin: 30px auto 20px auto; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; max-width: 900px;">
+                <h4 style="color: #495057; font-size: 16px; font-weight: 700; margin: 0 0 12px 0; text-align: center;">
+                    📋 COMPREHENSIVE DISCLOSURE
+                </h4>
+                <div style="color: #6c757d; font-size: 12px; line-height: 1.6; text-align: left;">
+                    <p style="margin: 0 0 10px 0;">
+                        <strong>Hypothetical and Backtested Results:</strong> The performance data presented is based on hypothetical, backtested historical analysis and does not represent actual trading results. Backtested performance is developed with the benefit of hindsight and has inherent limitations. No representation is being made that any account will or is likely to achieve profits or losses similar to those shown.
+                    </p>
+                    <p style="margin: 0 0 10px 0;">
+                        <strong>Investment Risk:</strong> All investments involve risk, including the potential loss of principal. Different investment strategies and asset classes involve varying levels of risk. There can be no assurance that any strategy or portfolio model will be profitable or appropriate for any particular individual.
+                    </p>
+                    <p style="margin: 0 0 10px 0;">
+                        <strong>No Guarantee of Results:</strong> Past performance is not indicative of future results. Market conditions change over time, and historical returns may not be repeated. Actual results will vary based on market conditions, timing, fees, taxes, and other factors.
+                    </p>
+                    <p style="margin: 0 0 10px 0;">
+                        <strong>Fees and Expenses:</strong> The results shown do not reflect the impact of management fees, advisory fees, trading costs, or other expenses that would reduce returns. Fees and expenses have a compounding effect and can significantly reduce investment returns over time.
+                    </p>
+                    <p style="margin: 0 0 10px 0;">
+                        <strong>Tax Considerations:</strong> Results do not reflect the impact of taxes. Tax consequences can materially affect investment outcomes and vary based on individual circumstances and account type.
+                    </p>
+                    <p style="margin: 0 0 0 0;">
+                        <strong>No Investment Advice:</strong> This tool is provided solely for educational and informational purposes and should not be construed as investment advice or a recommendation. Users should consider consulting a qualified financial advisor or other professional before making investment decisions. WavRyder and its affiliates are not responsible for investment decisions made based on information presented by this tool.
+                    </p>
                 </div>
             </div>
         </div>
@@ -2234,7 +2520,7 @@ const EXCEL_DATA = [
         // Initialize working data from hard-coded EXCEL_DATA
         let excelData = EXCEL_DATA;
         let columnHeaders = [];
-        let yearsValue = 20; // Default, will be read from A17
+        let yearsValue = 19; // Default, will be read from A17
         let growthChart = null; // Chart.js instance
         
         // Function to process Excel data (used by both file upload and data file)
@@ -2293,6 +2579,9 @@ const EXCEL_DATA = [
         // Auto-load data from performance_data.js if available
         if (DATA_FILE_LOADED) {
             window.addEventListener('DOMContentLoaded', () => {
+                // Update all date displays on page load
+                updateDateDisplays();
+                
                 processExcelData(EXCEL_DATA);
                 
                 // Show portfolio containers since data is loaded
@@ -2321,10 +2610,80 @@ const EXCEL_DATA = [
                     }
                 }
                 
+                // Check disclaimer acceptance - show modal if not accepted or if #show-disclaimer in URL
+                const disclaimerAccepted = localStorage.getItem('disclaimerAccepted');
+                const forceShowDisclaimer = window.location.hash === '#show-disclaimer';
+                
+                if (!disclaimerAccepted || forceShowDisclaimer) {
+                    showDisclaimerModal();
+                }
+                
                 const successMsg = document.getElementById('successMessage');
                 successMsg.textContent = '✓ Performance data loaded successfully!';
                 successMsg.style.display = 'block';
             });
+            
+            // Function to show disclaimer modal
+            function showDisclaimerModal() {
+                const modal = document.getElementById('disclaimerModal');
+                if (modal) {
+                    // Update modal dates
+                    const modalStartDate = document.getElementById('modalStartDate');
+                    const modalEndDate = document.getElementById('modalEndDate');
+                    if (modalStartDate) modalStartDate.textContent = DATA_START_DATE;
+                    if (modalEndDate) modalEndDate.textContent = DATA_END_DATE;
+                    
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+                }
+            }
+            
+            // Function to hide disclaimer modal
+            function hideDisclaimerModal() {
+                const modal = document.getElementById('disclaimerModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = ''; // Restore scrolling
+                }
+            }
+            
+            // Accept disclaimer button handler
+            document.getElementById('acceptDisclaimerBtn').addEventListener('click', function() {
+                // Save acceptance to localStorage
+                localStorage.setItem('disclaimerAccepted', 'true');
+                localStorage.setItem('disclaimerAcceptedDate', new Date().toISOString());
+                
+                // Hide modal
+                hideDisclaimerModal();
+            });
+            
+            // Function to update all date displays throughout the page
+            function updateDateDisplays() {
+                // Extract start year from DATA_YEAR_RANGE (e.g., "2005-2025" -> "2005")
+                const startYear = DATA_YEAR_RANGE.split('-')[0];
+                
+                // Update all dynamic date spans
+                const dateElements = [
+                    { id: 'modalStartDate', value: DATA_START_DATE },
+                    { id: 'modalEndDate', value: DATA_END_DATE },
+                    { id: 'headerStartDate', value: DATA_START_DATE },
+                    { id: 'headerEndDate', value: DATA_END_DATE },
+                    { id: 'headerYearsCount', value: DATA_YEARS_COUNT },
+                    { id: 'sectionYearsCount', value: DATA_YEARS_COUNT },
+                    { id: 'sectionYearRange', value: DATA_YEAR_RANGE },
+                    { id: 'methodologyYearRange', value: DATA_YEAR_RANGE },
+                    { id: 'chartYearRange', value: DATA_YEAR_RANGE },
+                    { id: 'riskMetricsYearRange', value: DATA_YEAR_RANGE },
+                    { id: 'subtitleYear', value: startYear }
+                ];
+                
+                dateElements.forEach(elem => {
+                    const element = document.getElementById(elem.id);
+                    if (element) {
+                        element.textContent = elem.value;
+                    }
+                });
+            }
         }
         
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -2355,7 +2714,7 @@ const EXCEL_DATA = [
                     if (jsonData[16] && jsonData[16][0]) {
                         yearsValue = parseFloat(jsonData[16][0]);
                         if (isNaN(yearsValue) || yearsValue <= 0) {
-                            yearsValue = 20; // Fallback to 20 if invalid
+                            yearsValue = 19; // Fallback to 19 if invalid
                         }
                     }
                     
@@ -2719,6 +3078,82 @@ const EXCEL_DATA = [
                 treynor: treynor
             };
         }
+        
+        // Quick Templates - Load common allocations into Portfolio 2
+        function loadTemplate() {
+            const template = document.getElementById('templateSelect').value;
+            
+            if (!template) return;
+            
+            // Template definitions: [Model Index, Allocation %]
+            const templates = {
+                conservative: {
+                    A: [18, 40],  // 40% SPY (index 18)
+                    B: [13, 60],  // 60% AGG (index 13)
+                    C: [null, 0],
+                    D: [null, 0]
+                },
+                moderate: {
+                    A: [18, 50],  // 50% SPY
+                    B: [13, 50],  // 50% AGG
+                    C: [null, 0],
+                    D: [null, 0]
+                },
+                balanced: {
+                    A: [18, 60],  // 60% SPY
+                    B: [13, 40],  // 40% AGG
+                    C: [null, 0],
+                    D: [null, 0]
+                },
+                growth: {
+                    A: [18, 70],  // 70% SPY
+                    B: [13, 30],  // 30% AGG
+                    C: [null, 0],
+                    D: [null, 0]
+                },
+                aggressive: {
+                    A: [18, 80],  // 80% SPY
+                    B: [13, 20],  // 20% AGG
+                    C: [null, 0],
+                    D: [null, 0]
+                },
+                global: {
+                    A: [18, 60],  // 60% SPY
+                    B: [13, 30],  // 30% AGG
+                    C: [15, 10],  // 10% VEA (index 15)
+                    D: [null, 0]
+                }
+            };
+            
+            const config = templates[template];
+            
+            // Load Portfolio 2 selectors (option3-8, allocation3-8)
+            // A row
+            document.getElementById('option3Select').value = config.A[0] || '';
+            document.getElementById('allocation3Select').value = config.A[1];
+            
+            // B row
+            document.getElementById('option4Select').value = config.B[0] || '';
+            document.getElementById('allocation4Select').value = config.B[1];
+            
+            // C row
+            document.getElementById('option7Select').value = config.C[0] || '';
+            document.getElementById('allocation7Select').value = config.C[1];
+            
+            // D row
+            document.getElementById('option8Select').value = config.D[0] || '';
+            document.getElementById('allocation8Select').value = config.D[1];
+            
+            // Visual feedback
+            const templateSelectBox = document.getElementById('templateSelect');
+            templateSelectBox.style.background = '#d4edda';
+            templateSelectBox.style.borderColor = '#28a745';
+            
+            setTimeout(() => {
+                templateSelectBox.style.background = 'white';
+                templateSelectBox.style.borderColor = '#007bff';
+            }, 1000);
+        }
 
         function updateComparison() {
             const option1Index = parseInt(document.getElementById('option1Select').value) || 0;
@@ -2887,7 +3322,7 @@ const EXCEL_DATA = [
             }
             
             // Display CAGRs from summary rows (calculated from daily model)
-            // Row 5 = 5 Year, Row 6 = 10 Year, Row 7 = 15 Year, Row 8 = 20 Year
+            // Row 5 = 5 Year, Row 6 = 10 Year, Row 7 = 15 Year, Row 8 = 19 Year
             // Calculate true CAGRs from annual returns (not weighted average of pre-calculated CAGRs)
             const cagrPeriods = [
                 {label: '5 Year', startYear: Math.round(yearsValue) - 4, endYear: Math.round(yearsValue)},
@@ -3824,6 +4259,29 @@ const EXCEL_DATA = [
             const file = e.target.files[0];
             if (!file) return;
             
+            // Get date values from input boxes
+            const startDateInput = document.getElementById('startDateInput').value;
+            const endDateInput = document.getElementById('endDateInput').value;
+            
+            if (!startDateInput || !endDateInput) {
+                alert('Please enter both start and end dates');
+                return;
+            }
+            
+            // Parse dates
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+            
+            // Calculate years
+            const yearsDiff = Math.round((endDate - startDate) / (365.25 * 24 * 60 * 60 * 1000));
+            
+            // Format dates for display
+            const startDateLong = startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const endDateLong = endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            const startDateShort = startDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+            const endDateShort = endDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+            const yearRange = `${startDate.getFullYear()}-${endDate.getFullYear()}`;
+            
             const statusDiv = document.getElementById('updateStatus');
             statusDiv.style.display = 'block';
             statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Reading file...</span>';
@@ -3858,13 +4316,25 @@ const EXCEL_DATA = [
                         const newDataString = 'const EXCEL_DATA = ' + JSON.stringify(jsonData, null, 2) + ';';
                         
                         // Replace EXCEL_DATA in the HTML code
-                        const pattern = /(const|var|let)\s+EXCEL_DATA\s*=\s*\[[\s\S]*?\];/;
+                        const dataPattern = /(const|var|let)\s+EXCEL_DATA\s*=\s*\[[\s\S]*?\];/;
                         
-                        if (!pattern.test(htmlContent)) {
+                        if (!dataPattern.test(htmlContent)) {
                             throw new Error('Could not find EXCEL_DATA in HTML. Contact support.');
                         }
                         
-                        htmlContent = htmlContent.replace(pattern, newDataString);
+                        htmlContent = htmlContent.replace(dataPattern, newDataString);
+                        
+                        // Replace date constants
+                        htmlContent = htmlContent.replace(/const DATA_START_DATE = "[^"]*";/, `const DATA_START_DATE = "${startDateLong}";`);
+                        htmlContent = htmlContent.replace(/const DATA_END_DATE = "[^"]*";/, `const DATA_END_DATE = "${endDateLong}";`);
+                        htmlContent = htmlContent.replace(/const DATA_START_DATE_SHORT = "[^"]*";/, `const DATA_START_DATE_SHORT = "${startDateShort}";`);
+                        htmlContent = htmlContent.replace(/const DATA_END_DATE_SHORT = "[^"]*";/, `const DATA_END_DATE_SHORT = "${endDateShort}";`);
+                        htmlContent = htmlContent.replace(/const DATA_YEAR_RANGE = "[^"]*";/, `const DATA_YEAR_RANGE = "${yearRange}";`);
+                        htmlContent = htmlContent.replace(/const DATA_YEARS_COUNT = \d+;/, `const DATA_YEARS_COUNT = ${yearsDiff};`);
+                        
+                        // Replace the years value in EXCEL_DATA row 16 (where it says [20] or [19])
+                        htmlContent = htmlContent.replace(/\[\s*19\s*\]/, `[${yearsDiff}]`);
+                        htmlContent = htmlContent.replace(/\[\s*20\s*\]/, `[${yearsDiff}]`);
                         
                         // Auto-download the updated file
                         const blob = new Blob([doctype + htmlContent], { type: 'text/html' });
@@ -3877,7 +4347,7 @@ const EXCEL_DATA = [
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                         
-                        statusDiv.innerHTML = `<span style="color: #28a745;">✅ Success! Downloaded index.html with ${modelCount} models.<br><br><strong>Next Steps:</strong><br>1. Replace your current index.html with the downloaded file<br>2. Upload to GitHub and push changes<br>3. Refresh this page to see new data</span>`;
+                        statusDiv.innerHTML = `<span style="color: #28a745;">✅ Success! Downloaded index.html with ${modelCount} models and date range ${startDateLong} - ${endDateLong} (${yearsDiff} years).<br><br><strong>Next Steps:</strong><br>1. Replace your current index.html with the downloaded file<br>2. Upload to GitHub and push changes<br>3. Refresh this page to see new data</span>`;
                         
                     } catch (error) {
                         throw new Error('Failed to generate HTML: ' + error.message);
@@ -4127,7 +4597,7 @@ const EXCEL_DATA = [
                     
                     pdf.setFontSize(16);
                     pdf.setFont(undefined, 'bold');
-                    pdf.text('20-Year Investment Lookback Analysis', margin, yPosition);
+                    pdf.text('19-Year Investment Lookback Analysis', margin, yPosition);
                     yPosition += 10;
                     
                     const canvas4 = await html2canvas(metricsSection, { scale: 2, backgroundColor: '#ffffff' });
