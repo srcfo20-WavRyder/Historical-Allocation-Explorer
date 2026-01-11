@@ -2688,10 +2688,10 @@ const MODEL_CONFIG = {
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
                         <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">
-                            🛡️ Conservative 60/40
+                            🛡️ Conservative
                         </div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">
-                            Traditional 60/40 vs WavRyder Conservative
+                            Traditional 60/40 vs Conservative + WR Adj
                         </div>
                     </button>
                     
@@ -2701,10 +2701,10 @@ const MODEL_CONFIG = {
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
                         <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">
-                            🚀 100% S&P500 Defense
+                            🚀 Aggressive Growth
                         </div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">
-                            S&P500 vs WavRyder Moderate - See drawdown protection
+                            Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj
                         </div>
                     </button>
                     
@@ -2717,7 +2717,7 @@ const MODEL_CONFIG = {
                             📉 Balanced Growth
                         </div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">
-                            Traditional balanced vs WavRyder Aggressive
+                            Traditional balanced vs Aggressive + WR Adj
                         </div>
                     </button>
                     
@@ -2727,10 +2727,10 @@ const MODEL_CONFIG = {
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
                         <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">
-                            💼 Growth Portfolio
+                            💼 Moderate Growth
                         </div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">
-                            Custom comparison - Edit in #update mode
+                            Traditional Moderate 50/50 vs Moderate + WR Adj
                         </div>
                     </button>
                 </div>
@@ -3892,6 +3892,120 @@ const MODEL_CONFIG = {
                     }
                     
                     populateSelectors();
+                    
+                    // ==========================================
+                    // READ CONFIGURATION SECTIONS (Row 45+)
+                    // ==========================================
+                    
+                    // SECTION 1: Scenario Configurations (Row 48-51, after headers at 47)
+                    if (jsonData.length >= 51) {
+                        try {
+                            for (let i = 0; i < 4; i++) {
+                                const row = jsonData[47 + i]; // Row 48-51 (0-indexed as 47-50)
+                                if (row && row[1] && row[2]) { // Has title and description
+                                    const scenarioNum = i + 1;
+                                    const scenarioKey = `scenario${scenarioNum}`;
+                                    
+                                    // Find column indices by name
+                                    function findColumnIndex(colName) {
+                                        if (!colName) return null;
+                                        const header = columnHeaders.find(h => h.name === colName);
+                                        return header ? header.index : null;
+                                    }
+                                    
+                                    SCENARIO_CONFIG[scenarioKey] = {
+                                        title: row[1],
+                                        desc: row[2],
+                                        portfolio1: {
+                                            option1: findColumnIndex(row[3]),
+                                            alloc1: parseInt(row[4]) || 0,
+                                            option2: findColumnIndex(row[5]),
+                                            alloc2: parseInt(row[6]) || 0,
+                                            option5: null,
+                                            alloc5: 0,
+                                            option6: null,
+                                            alloc6: 0
+                                        },
+                                        portfolio2: {
+                                            option3: findColumnIndex(row[7]),
+                                            alloc3: parseInt(row[8]) || 0,
+                                            option4: findColumnIndex(row[9]),
+                                            alloc4: parseInt(row[10]) || 0,
+                                            option7: null,
+                                            alloc7: 0,
+                                            option8: null,
+                                            alloc8: 0
+                                        }
+                                    };
+                                    
+                                    // Update button text in DOM
+                                    const titleEl = document.getElementById(`${scenarioKey}_title`);
+                                    const descEl = document.getElementById(`${scenarioKey}_desc`);
+                                    if (titleEl) titleEl.textContent = row[1];
+                                    if (descEl) descEl.textContent = row[2];
+                                }
+                            }
+                            console.log('✅ Loaded scenario configurations from Excel');
+                        } catch (e) {
+                            console.warn('Could not read scenario config:', e);
+                        }
+                    }
+                    
+                    // SECTION 2: Model Availability (Row 55+, after headers at 55)
+                    if (jsonData.length >= 56) {
+                        try {
+                            MODEL_CONFIG.portfolio1 = [];
+                            MODEL_CONFIG.portfolio2 = [];
+                            
+                            let configRow = 55; // Start reading from row 56 (0-indexed as 55)
+                            while (configRow < jsonData.length && jsonData[configRow] && jsonData[configRow][0]) {
+                                const modelName = jsonData[configRow][0];
+                                const showInCurrent = (jsonData[configRow][1] || '').toUpperCase();
+                                const showInModeled = (jsonData[configRow][2] || '').toUpperCase();
+                                
+                                // Find this model's column index
+                                const header = columnHeaders.find(h => h.name === modelName);
+                                if (header) {
+                                    if (showInCurrent === 'YES') {
+                                        MODEL_CONFIG.portfolio1.push(header.index);
+                                    }
+                                    if (showInModeled === 'YES') {
+                                        MODEL_CONFIG.portfolio2.push(header.index);
+                                    }
+                                }
+                                
+                                configRow++;
+                                if (configRow >= jsonData.length || !jsonData[configRow] || !jsonData[configRow][0]) {
+                                    break;
+                                }
+                            }
+                            console.log('✅ Loaded model availability from Excel');
+                            console.log('Current models:', MODEL_CONFIG.portfolio1);
+                            console.log('Modeled models:', MODEL_CONFIG.portfolio2);
+                            
+                            // Re-populate selectors with new model config
+                            populateSelectors();
+                        } catch (e) {
+                            console.warn('Could not read model config:', e);
+                        }
+                    }
+                    
+                    // SECTION 3: User Instructions (find "USER INSTRUCTIONS TEXT" section)
+                    for (let i = 45; i < Math.min(jsonData.length, 100); i++) {
+                        if (jsonData[i] && jsonData[i][0] && 
+                            jsonData[i][0].toString().includes('USER INSTRUCTIONS TEXT')) {
+                            // Instructions should be 2 rows below the header
+                            if (jsonData[i + 2] && jsonData[i + 2][0]) {
+                                const instructionsText = jsonData[i + 2][0];
+                                const instructionsEl = document.getElementById('customInstructions');
+                                if (instructionsEl && instructionsText) {
+                                    instructionsEl.innerHTML = instructionsText;
+                                    console.log('✅ Loaded custom instructions from Excel');
+                                }
+                            }
+                            break;
+                        }
+                    }
                     
                     successMsg.textContent = `✓ File loaded! Found ${columnHeaders.length} options.`;
                     successMsg.style.display = 'block';
@@ -6164,11 +6278,27 @@ const MODEL_CONFIG = {
                 console.log('Could not load custom instructions');
             }
             
-            // Show edit button if in #update mode
-            if (window.location.hash === '#update') {
-                const editBtn = document.getElementById('editInstructionsBtn');
-                if (editBtn) editBtn.style.display = 'block';
+            // Show/hide edit button based on #update mode
+            const editBtn = document.getElementById('editInstructionsBtn');
+            if (editBtn) {
+                if (window.location.hash === '#update') {
+                    editBtn.style.display = 'block';
+                } else {
+                    editBtn.style.display = 'none';
+                }
             }
+            
+            // Listen for hash changes to show/hide edit button dynamically
+            window.addEventListener('hashchange', function() {
+                const editBtn = document.getElementById('editInstructionsBtn');
+                if (editBtn) {
+                    if (window.location.hash === '#update') {
+                        editBtn.style.display = 'block';
+                    } else {
+                        editBtn.style.display = 'none';
+                    }
+                }
+            });
         }
         
         // ============================================================================
@@ -6382,28 +6512,28 @@ const MODEL_CONFIG = {
         // SCENARIO CONFIGURATION DATA - Editable in #update mode
         const SCENARIO_CONFIG = {
             scenario1: {
-                title: '🛡️ Conservative 60/40',
-                desc: 'Traditional 60/40 vs WavRyder Conservative',
+                title: '🛡️ Conservative',
+                desc: 'Traditional 60/40 vs Conservative + WR Adj',
                 portfolio1: { option1: 18, alloc1: 60, option2: 13, alloc2: 40, option5: null, alloc5: 0, option6: null, alloc6: 0 },
                 portfolio2: { option3: 7, alloc3: 60, option4: 13, alloc4: 40, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario2: {
-                title: '🚀 100% S&P500 Defense',
-                desc: 'S&P500 vs WavRyder Moderate - See drawdown protection',
-                portfolio1: { option1: 18, alloc1: 100, option2: null, alloc2: 0, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '🚀 Aggressive Growth',
+                desc: 'Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj',
+                portfolio1: { option1: 18, alloc1: 80, option2: 13, alloc2: 20, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 5, alloc3: 50, option4: 9, alloc4: 50, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario3: {
                 title: '📉 Balanced Growth',
-                desc: 'Traditional balanced vs WavRyder Aggressive',
+                desc: 'Traditional balanced vs Aggressive + WR Adj',
                 portfolio1: { option1: 18, alloc1: 50, option2: 13, alloc2: 50, option5: null, alloc5: 0, option6: null, alloc6: 0 },
                 portfolio2: { option3: 5, alloc3: 80, option4: 13, alloc4: 20, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario4: {
-                title: '💼 Growth Portfolio',
-                desc: 'Custom comparison - Edit in #update mode',
-                portfolio1: { option1: 18, alloc1: 70, option2: 13, alloc2: 30, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '💼 Moderate Growth',
+                desc: 'Traditional Moderate 50/50 vs Moderate + WR Adj',
+                portfolio1: { option1: 18, alloc1: 50, option2: 13, alloc2: 50, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             }
         };
         
