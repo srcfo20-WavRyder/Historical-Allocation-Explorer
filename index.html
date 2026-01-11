@@ -3909,8 +3909,15 @@ const MODEL_CONFIG = {
                                     
                                     // Find column indices by name
                                     function findColumnIndex(colName) {
-                                        if (!colName) return null;
-                                        const header = columnHeaders.find(h => h.name === colName);
+                                        if (!colName || colName === 'None' || colName === '') return null;
+                                        // Trim whitespace and do case-insensitive search
+                                        const cleanName = colName.toString().trim();
+                                        const header = columnHeaders.find(h => 
+                                            h.name.toString().trim().toLowerCase() === cleanName.toLowerCase()
+                                        );
+                                        if (!header) {
+                                            console.warn(`⚠️ Column "${cleanName}" not found in headers`);
+                                        }
                                         return header ? header.index : null;
                                     }
                                     
@@ -4022,6 +4029,19 @@ const MODEL_CONFIG = {
                         } catch (e) {
                             console.error('Error reading instructions:', e);
                         }
+                    }
+                    
+                    // SECTION 4: Refresh #update UI to show loaded configurations
+                    if (window.location.hash === '#update') {
+                        // Refresh scenario input boxes
+                        setTimeout(() => {
+                            loadScenarioInputs();
+                        }, 100);
+                        
+                        // Refresh model checkbox table
+                        setTimeout(() => {
+                            populateModelCheckboxTable();
+                        }, 150);
                     }
                     
                     successMsg.textContent = `✓ File loaded! Found ${columnHeaders.length} options.`;
@@ -6479,22 +6499,31 @@ const MODEL_CONFIG = {
                 
                 if (!scenario) return;
                 
+                // Helper function to get column name from index
+                function getColumnName(colIndex) {
+                    if (!colIndex) return '';
+                    const header = columnHeaders.find(h => h.index === colIndex);
+                    return header ? header.name : colIndex;
+                }
+                
                 // Set title and description
                 document.getElementById(`s${num}_title`).value = scenario.title || '';
                 document.getElementById(`s${num}_desc`).value = scenario.desc || '';
                 
-                // Portfolio 1
-                document.getElementById(`s${num}_p1_a`).value = scenario.portfolio1.option1 || '';
+                // Portfolio 1 - show column names
+                document.getElementById(`s${num}_p1_a`).value = getColumnName(scenario.portfolio1.option1);
                 document.getElementById(`s${num}_p1_a_pct`).value = scenario.portfolio1.alloc1 || '';
-                document.getElementById(`s${num}_p1_b`).value = scenario.portfolio1.option2 || '';
+                document.getElementById(`s${num}_p1_b`).value = getColumnName(scenario.portfolio1.option2);
                 document.getElementById(`s${num}_p1_b_pct`).value = scenario.portfolio1.alloc2 || '';
                 
-                // Portfolio 2
-                document.getElementById(`s${num}_p2_a`).value = scenario.portfolio2.option3 || '';
+                // Portfolio 2 - show column names
+                document.getElementById(`s${num}_p2_a`).value = getColumnName(scenario.portfolio2.option3);
                 document.getElementById(`s${num}_p2_a_pct`).value = scenario.portfolio2.alloc3 || '';
-                document.getElementById(`s${num}_p2_b`).value = scenario.portfolio2.option4 || '';
+                document.getElementById(`s${num}_p2_b`).value = getColumnName(scenario.portfolio2.option4);
                 document.getElementById(`s${num}_p2_b_pct`).value = scenario.portfolio2.alloc4 || '';
             });
+            
+            console.log('✅ Populated scenario input fields');
         }
         
         // Initialize on page load
