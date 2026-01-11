@@ -83,26 +83,26 @@ const EXCEL_DATA = [
     "60/40",
     "WavRyder QQQ",
     "WavRyder SP500",
-    "WavRyder(H)",
-    "WavRyder(M)",
-    "WavRyder(L)",
-    "WavRyder QQQ (Leveraged)",
-    "WavRyder SP500 (Leveraged)",
+    "Aggressive WR Adj",
+    "Moderate WR Adj",
+    "Conservative WR Adj",
+    "Leveraged Nasdaq",
+    "Leveraged S&P500",
     "WavRyder QQQ/SP500 Leveraged)",
     "QQQ (Leveraged) W/O WavRyder",
     "SP 500",
-    "AGG",
+    "Bond",
     "WavRyder AGG",
-    "VEA",
+    "International",
     "WavRyder VEA",
     "QQQ",
-    "SPY",
+    "S&P500",
     "WavRyder SPY"
   ],
   [
     "Total Return",
     "1 year",
-    0.13478289285581346,
+    0.15943797807806193,
     0.1755558345823689,
     0.1500984966064436,
     0.14446026845364224,
@@ -112,7 +112,7 @@ const EXCEL_DATA = [
     0.3600802462787316,
     0.3600802462787316,
     0.2638826792924889,
-    0.09623333431267755,
+    0.21075548930533694,
     0.0743001063121318,
     0.07204148844041747,
     0.3474626822676845,
@@ -124,7 +124,7 @@ const EXCEL_DATA = [
   [
     "Total Return",
     "YTD",
-    0.005845927172144716,
+    0.012033409943059459,
     0.17490936156735293,
     0.14946602333652814,
     0.0002859475348011564,
@@ -134,7 +134,7 @@ const EXCEL_DATA = [
     0.3593322978175786,
     0.3593322978175786,
     0.4095494272678759,
-    0.17715053440658535,
+    0.017817339277334865,
     0.07363484433270728,
     0.07145194103410457,
     0.3590157170341228,
@@ -146,7 +146,7 @@ const EXCEL_DATA = [
   [
     "CAGR",
     "5 Year",
-    0.08853338923317944,
+    0.08839290373714581,
     0.10452174579562423,
     0.09778825230799693,
     0.10246994140123711,
@@ -156,7 +156,7 @@ const EXCEL_DATA = [
     0.20583394573438207,
     0.20583394573438207,
     0.20787345614101205,
-    0.1318018589326304,
+    0.1454794826110346,
     -0.003341552200764264,
     0.02483725167382067,
     0.09410402157004549,
@@ -168,7 +168,7 @@ const EXCEL_DATA = [
   [
     "CAGR",
     "10 Year",
-    0.09985991826404361,
+    0.10280793223370233,
     0.1514020320183065,
     0.12067335018460312,
     0.14472912965606533,
@@ -178,7 +178,7 @@ const EXCEL_DATA = [
     0.36408155855902913,
     0.36408155855902913,
     0.3734403360399954,
-    0.14469481410365326,
+    0.1562781365939605,
     0.019912976507280744,
     0.038779274086202076,
     0.08715480173850243,
@@ -190,7 +190,7 @@ const EXCEL_DATA = [
   [
     "CAGR",
     "15 Year",
-    0.09466132093415092,
+    0.0950789142003372,
     0.12807838607348154,
     0.10092326392916484,
     0.12089101435539074,
@@ -200,7 +200,7 @@ const EXCEL_DATA = [
     0.3075958747086125,
     0.3075958747086125,
     0.3954994701202532,
-    0.1353363262367564,
+    0.14123129973937631,
     0.02400024610020135,
     0.034956859343680646,
     0.07069442459595554,
@@ -211,18 +211,18 @@ const EXCEL_DATA = [
   ],
   [
     "CAGR",
-    "19 Year",
+    "20 Year",
     0.0814670041020702,
     0.12427253755029244,
     0.0953211493896522,
-    0.1117653973750059,
+    0.111765397375006,
     0.11008882126271935,
     0.10129718649640762,
     0.2783300098727388,
     0.2783300098727388,
     0.2783300098727388,
     0.3469592078853829,
-    0.10521271732857285,
+    0.10914961894543973,
     0.03141720097010392,
     0.04204064362146509,
     0.05404327478725124,
@@ -231,35 +231,119 @@ const EXCEL_DATA = [
     0.10936063754732261,
     0.0953211493896522
   ],
-  [],
-  [],
   [
-    "const00K Investment Growth",
-    "19 Year",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "$100K Investment Growth",
+    "20 Year",
     478922.753025214,
     1040955.2187866488,
     617773.7768892092,
     832267.7348264777,
-    806367.9292071358,
-    687886.1412265772,
-    13533147.851294626,
-    13533147.851294626,
-    13533147.851294626,
-    38487250.90564725,
-    738452.0870592844,
-    185568.1187366363,
-    227744.64488165607,
-    286322.648921958,
-    325140.1191067703,
-    1772654.7125073008,
-    795861.7044993716,
-    617003.7527443555
+    807522.4136532838,
+    688795.9652679005,
+    13578746.773944806,
+    13578746.773944806,
+    13578746.773944806,
+    38644604.751598254,
+    793967.4290669175,
+    185646.76996576786,
+    227873.15702203056,
+    286529.1639806508,
+    325402.98622521135,
+    1776151.2988027819,
+    796993.9830156679,
+    617773.7768892092
   ],
-  [],
-  [],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   [
     "Worst Annual Drawdown%",
-    "19 Year",
+    "20 Year",
     -0.19061453613527835,
     -0.09572172918412059,
     -0.08463731735187463,
@@ -279,18 +363,137 @@ const EXCEL_DATA = [
     -0.3679500303113997,
     -0.08463731735187463
   ],
-  [],
-  [
-    100000
-  ],
-  [
-    19
-  ],
-  [],
-  [],
   [
     null,
-    "Year"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    100000,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    20,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    "Year",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Total Return",
@@ -505,7 +708,7 @@ const EXCEL_DATA = [
     0.05337263021974459,
     0.013837640885861369,
     0.004807529874164551,
-    0.000005480856025252834,
+    5.480856025252834e-06,
     -0.003731686170505122,
     -0.0987580854176413,
     0.09435945660210376,
@@ -723,7 +926,7 @@ const EXCEL_DATA = [
     0.3593322978175786,
     0.3593322978175786,
     0.20906973265254902,
-    0.11391996522214609,
+    0.1787997220328026,
     0.07363484433270728,
     0.07145194103410457,
     0.3590157170341228,
@@ -733,6 +936,7 @@ const EXCEL_DATA = [
     0.14946602333652814
   ]
 ];
+
 </script>
     <style>
         * {
@@ -751,7 +955,7 @@ const EXCEL_DATA = [
         
         body {
             font-family: 'Roboto Slab', serif;
-            background: #f8f9fa;
+            background: #F9FBF7;
             padding: 40px 20px;
         }
         
@@ -1925,7 +2129,6 @@ const EXCEL_DATA = [
 
     <div class="container">
         <div class="upload-section">
-            <h3 style="margin-bottom: 15px; color: #495057;">Select Portfolio Combinations</h3>
             <div class="upload-row" style="display: none;">
                 <button class="upload-button" onclick="document.getElementById('fileInput').click()">
                     📁 Select Excel File
@@ -2024,6 +2227,9 @@ const EXCEL_DATA = [
                 </div>
             </div>
             
+            <!-- Select Portfolio Combinations Header -->
+            <h3 style="margin: 30px 0 20px 0; color: #495057; text-align: center; font-size: 20px;">Select Portfolio Combinations</h3>
+            
                         <!-- Portfolio 1 Container -->
             <div class="portfolio-container" id="portfolio1Container" style="display: block;">
                 <div class="portfolio-header">Portfolio 1</div>
@@ -2031,7 +2237,7 @@ const EXCEL_DATA = [
                 <!-- A row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">A:</label>
-                    <select id="option1Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option1Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation1Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -2061,7 +2267,7 @@ const EXCEL_DATA = [
                 <!-- B row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">B:</label>
-                    <select id="option2Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option2Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation2Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -2091,7 +2297,7 @@ const EXCEL_DATA = [
                 <!-- C row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">C:</label>
-                    <select id="option5Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option5Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation5Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -2121,7 +2327,7 @@ const EXCEL_DATA = [
                 <!-- D row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">D:</label>
-                    <select id="option6Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option6Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation6Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -2337,18 +2543,6 @@ const EXCEL_DATA = [
                 <!-- Data Period Notice -->
                 <div style="text-align: center; font-size: 12px; color: #6c757d; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
                     📅 Hypothetical Scenario Period: <strong><span id="headerStartDate">December 30, 2005</span> - <span id="headerEndDate">December 31, 2025</span></strong> (<span id="headerYearsCount">20</span> years) | Last Updated: January 10, 2025
-                </div>
-                
-                <!-- Learn More Button -->
-                <div style="text-align: center; margin: 15px 0 25px 0;">
-                    <a href="https://dans-newsletter-a7019d.beehiiv.com/" target="_blank" style="text-decoration: none;">
-                        <button class="learn-more-button" style="background: linear-gradient(135deg, #007bff, #0056b3); color: white; 
-                                       padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; 
-                                       font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3); 
-                                       transition: all 0.3s ease;">
-                            Click to Learn More
-                        </button>
-                    </a>
                 </div>
 
                 <div class="section-header">Hypothetical Performance Metrics</div>
@@ -3571,7 +3765,7 @@ const EXCEL_DATA = [
             }
             
             // Display CAGRs from summary rows (calculated from daily model)
-            // Row 5 = 5 Year, Row 6 = 10 Year, Row 7 = 15 Year, Row 8 = 19 Year
+            // Row 5 = 5 Year, Row 6 = 10 Year, Row 7 = 15 Year, Row 8 = 20 Year
             // Calculate true CAGRs from annual returns (not weighted average of pre-calculated CAGRs)
             const cagrPeriods = [
                 {label: '5 Year', startYear: Math.round(yearsValue) - 4, endYear: Math.round(yearsValue)},
