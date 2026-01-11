@@ -3897,11 +3897,12 @@ const MODEL_CONFIG = {
                     // READ CONFIGURATION SECTIONS (Row 45+)
                     // ==========================================
                     
-                    // SECTION 1: Scenario Configurations (Row 48-51, after headers at 47)
+                    // SECTION 1: Scenario Configurations (Rows 48-51 in Excel = indices 47-50 in JS)
                     if (jsonData.length >= 51) {
                         try {
                             for (let i = 0; i < 4; i++) {
-                                const row = jsonData[47 + i]; // Row 48-51 (0-indexed as 47-50)
+                                const rowIndex = 47 + i; // Excel rows 48-51 = JS indices 47-50
+                                const row = jsonData[rowIndex];
                                 if (row && row[1] && row[2]) { // Has title and description
                                     const scenarioNum = i + 1;
                                     const scenarioKey = `scenario${scenarioNum}`;
@@ -3913,7 +3914,7 @@ const MODEL_CONFIG = {
                                         return header ? header.index : null;
                                     }
                                     
-                                    SCENARIO_CONFIG[scenarioKey] = {
+                                    const newConfig = {
                                         title: row[1],
                                         desc: row[2],
                                         portfolio1: {
@@ -3938,30 +3939,38 @@ const MODEL_CONFIG = {
                                         }
                                     };
                                     
+                                    SCENARIO_CONFIG[scenarioKey] = newConfig;
+                                    
                                     // Update button text in DOM
                                     const titleEl = document.getElementById(`${scenarioKey}_title`);
                                     const descEl = document.getElementById(`${scenarioKey}_desc`);
                                     if (titleEl) titleEl.textContent = row[1];
                                     if (descEl) descEl.textContent = row[2];
+                                    
+                                    console.log(`✅ Loaded ${scenarioKey}:`, newConfig);
                                 }
                             }
-                            console.log('✅ Loaded scenario configurations from Excel');
                         } catch (e) {
-                            console.warn('Could not read scenario config:', e);
+                            console.error('Error reading scenario config:', e);
                         }
                     }
                     
-                    // SECTION 2: Model Availability (Row 55+, after headers at 55)
-                    if (jsonData.length >= 56) {
+                    // SECTION 2: Model Availability (Row 57+ in Excel = index 56+ in JS, after header at index 55)
+                    if (jsonData.length >= 57) {
                         try {
                             MODEL_CONFIG.portfolio1 = [];
                             MODEL_CONFIG.portfolio2 = [];
                             
-                            let configRow = 55; // Start reading from row 56 (0-indexed as 55)
-                            while (configRow < jsonData.length && jsonData[configRow] && jsonData[configRow][0]) {
+                            let configRow = 56; // Excel row 57 = JS index 56
+                            while (configRow < jsonData.length && jsonData[configRow]) {
                                 const modelName = jsonData[configRow][0];
-                                const showInCurrent = (jsonData[configRow][1] || '').toUpperCase();
-                                const showInModeled = (jsonData[configRow][2] || '').toUpperCase();
+                                const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
+                                const showInModeled = (jsonData[configRow][2] || '').toString().toUpperCase();
+                                
+                                // Stop if we hit empty row or next section
+                                if (!modelName || modelName.toString().includes('USER INSTRUCTIONS')) {
+                                    break;
+                                }
                                 
                                 // Find this model's column index
                                 const header = columnHeaders.find(h => h.name === modelName);
@@ -3975,35 +3984,43 @@ const MODEL_CONFIG = {
                                 }
                                 
                                 configRow++;
-                                if (configRow >= jsonData.length || !jsonData[configRow] || !jsonData[configRow][0]) {
-                                    break;
-                                }
                             }
                             console.log('✅ Loaded model availability from Excel');
                             console.log('Current models:', MODEL_CONFIG.portfolio1);
                             console.log('Modeled models:', MODEL_CONFIG.portfolio2);
                             
+                            // Update checkboxes in #update section to match Excel config
+                            columnHeaders.forEach(header => {
+                                const p1Checkbox = document.getElementById(`p1_${header.index}`);
+                                const p2Checkbox = document.getElementById(`p2_${header.index}`);
+                                
+                                if (p1Checkbox) {
+                                    p1Checkbox.checked = MODEL_CONFIG.portfolio1.includes(header.index);
+                                }
+                                if (p2Checkbox) {
+                                    p2Checkbox.checked = MODEL_CONFIG.portfolio2.includes(header.index);
+                                }
+                            });
+                            console.log('✅ Updated checkboxes to match Excel config');
+                            
                             // Re-populate selectors with new model config
                             populateSelectors();
                         } catch (e) {
-                            console.warn('Could not read model config:', e);
+                            console.error('Error reading model config:', e);
                         }
                     }
                     
-                    // SECTION 3: User Instructions (find "USER INSTRUCTIONS TEXT" section)
-                    for (let i = 45; i < Math.min(jsonData.length, 100); i++) {
-                        if (jsonData[i] && jsonData[i][0] && 
-                            jsonData[i][0].toString().includes('USER INSTRUCTIONS TEXT')) {
-                            // Instructions should be 2 rows below the header
-                            if (jsonData[i + 2] && jsonData[i + 2][0]) {
-                                const instructionsText = jsonData[i + 2][0];
-                                const instructionsEl = document.getElementById('customInstructions');
-                                if (instructionsEl && instructionsText) {
-                                    instructionsEl.innerHTML = instructionsText;
-                                    console.log('✅ Loaded custom instructions from Excel');
-                                }
+                    // SECTION 3: User Instructions (Row 79 in Excel = index 78 in JS)
+                    if (jsonData.length >= 79 && jsonData[78] && jsonData[78][0]) {
+                        try {
+                            const instructionsText = jsonData[78][0];
+                            const instructionsEl = document.getElementById('customInstructions');
+                            if (instructionsEl && instructionsText) {
+                                instructionsEl.innerHTML = instructionsText;
+                                console.log('✅ Loaded custom instructions from Excel');
                             }
-                            break;
+                        } catch (e) {
+                            console.error('Error reading instructions:', e);
                         }
                     }
                     
@@ -5915,27 +5932,11 @@ const MODEL_CONFIG = {
             
             tableBody.innerHTML = '';
             
-            // Get all available models from column headers
-            const models = [
-                { index: 2, name: '60/40' },
-                { index: 3, name: 'WavRyder QQQ' },
-                { index: 4, name: 'WavRyder SP500' },
-                { index: 5, name: 'Aggressive WR Adj' },
-                { index: 6, name: 'Moderate WR Adj' },
-                { index: 7, name: 'Conservative WR Adj' },
-                { index: 8, name: 'Leveraged Nasdaq' },
-                { index: 9, name: 'Leveraged S&P500' },
-                { index: 10, name: 'WavRyder QQQ/SP500 Leveraged)' },
-                { index: 11, name: 'QQQ (Leveraged) W/O WavRyder' },
-                { index: 12, name: 'SP 500' },
-                { index: 13, name: 'Bond' },
-                { index: 14, name: 'WavRyder AGG' },
-                { index: 15, name: 'International' },
-                { index: 16, name: 'WavRyder VEA' },
-                { index: 17, name: 'QQQ' },
-                { index: 18, name: 'S&P500' },
-                { index: 19, name: 'WavRyder SPY' }
-            ];
+            // Get all available models from column headers (dynamically loaded from Excel)
+            const models = columnHeaders.map(header => ({
+                index: header.index,
+                name: header.name
+            }));
             
             models.forEach(model => {
                 const row = document.createElement('tr');
