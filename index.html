@@ -303,7 +303,7 @@
                         💾 Save All Scenarios
                     </button>
                 </div>
-                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold; color: rgb(40, 167, 69);">✅ Scenarios saved! Download updated HTML file below.</div>
+                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold; color: rgb(40, 167, 69);">✅ File downloaded! Replace your current index.html with this file.</div>
             <button id="downloadScenariosHTML" style="margin-top: 15px; padding: 12px 24px; background: rgb(0, 123, 255); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; display: inline-block;">💾 Download Updated HTML File</button></div>
             
             <!-- Model Selection Configuration -->
@@ -490,8 +490,8 @@
                 <button onclick="saveModelConfig()" style="margin-top: 20px; padding: 10px 24px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">
                     💾 Save Model Configuration
                 </button>
-                <div id="configStatus" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
+                <div id="configStatus" style="margin-top: 10px; font-weight: bold; color: rgb(40, 167, 69);">✅ Configuration saved! Download updated HTML file below.</div>
+            <button id="downloadConfigHTML" style="margin-top: 15px; padding: 12px 24px; background: rgb(0, 123, 255); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; display: inline-block;">💾 Download Updated HTML File</button></div>
         </div>
 
 
@@ -2823,8 +2823,7 @@ const MODEL_CONFIG = {
                         <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">Traditional 60/40 vs Conservative + WR Adj</div>
                     </button>
                     
-                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
-                                   cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
+                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid rgb(245, 158, 11); border-radius: 10px; cursor: pointer; text-align: left; transition: 0.3s; box-shadow: rgba(245, 158, 11, 0.15) 0px 2px 8px; transform: translateY(0px);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
                         <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">🚀 Aggressive Growth</div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj</div>
                     </button>
@@ -2835,9 +2834,8 @@ const MODEL_CONFIG = {
                         <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">Traditional balanced vs Aggressive + WR Adj</div>
                     </button>
                     
-                    <button onclick="loadScenario('scenario4')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
-                                   cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">💼 Moderate Portfolio</div>
+                    <button onclick="loadScenario('scenario4')" style="padding: 15px 20px; background: white; border: 2px solid rgb(245, 158, 11); border-radius: 10px; cursor: pointer; text-align: left; transition: 0.3s; box-shadow: rgba(245, 158, 11, 0.15) 0px 2px 8px; transform: translateY(0px);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">💼 Moderate Growth</div>
                         <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">Traditional Moderate 50/50 vs Moderate + WR Adj</div>
                     </button>
                 </div>
@@ -2942,7 +2940,7 @@ const MODEL_CONFIG = {
                 <!-- A row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">A:</label>
-                    <select id="option1Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option1Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation1Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -2972,7 +2970,7 @@ const MODEL_CONFIG = {
                 <!-- B row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">B:</label>
-                    <select id="option2Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option2Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation2Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3002,7 +3000,7 @@ const MODEL_CONFIG = {
                 <!-- C row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">C:</label>
-                    <select id="option5Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option5Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation5Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3032,7 +3030,7 @@ const MODEL_CONFIG = {
                 <!-- D row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">D:</label>
-                    <select id="option6Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option6Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation6Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3070,7 +3068,7 @@ const MODEL_CONFIG = {
                 <!-- A row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">A:</label>
-                    <select id="option3Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option3Select" class="select-stack"><option value="">--</option><option value="3">WavRyder QQQ</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="16">WavRyder VEA</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation3Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3100,7 +3098,7 @@ const MODEL_CONFIG = {
                 <!-- B row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">B:</label>
-                    <select id="option4Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option4Select" class="select-stack"><option value="">--</option><option value="3">WavRyder QQQ</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="16">WavRyder VEA</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation4Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3130,7 +3128,7 @@ const MODEL_CONFIG = {
                 <!-- C row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">C:</label>
-                    <select id="option7Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option7Select" class="select-stack"><option value="">--</option><option value="3">WavRyder QQQ</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="16">WavRyder VEA</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation7Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3160,7 +3158,7 @@ const MODEL_CONFIG = {
                 <!-- D row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">D:</label>
-                    <select id="option8Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&amp;P500</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">Bond</option><option value="14">WavRyder AGG</option><option value="15">International</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">S&amp;P500</option><option value="19">WavRyder SPY</option></select>
+                    <select id="option8Select" class="select-stack"><option value="">--</option><option value="3">WavRyder QQQ</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="16">WavRyder VEA</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation8Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
