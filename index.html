@@ -4683,7 +4683,7 @@ const MODEL_CONFIG = {
             // Expected Return (now position 4)
             document.getElementById('option1ExpReturn').textContent = formatPercent(risk1.expectedReturn);
             document.getElementById('option2ExpReturn').textContent = formatPercent(risk2.expectedReturn);
-            const expReturnDiff = risk2.expectedReturn - risk1.expectedReturn; // FLIPPED
+            const expReturnDiff = risk1.expectedReturn - risk2.expectedReturn; // FLIPPED
             const expReturnDiffEl = document.getElementById('expReturnDiff');
             expReturnDiffEl.textContent = formatPercent(expReturnDiff);
             expReturnDiffEl.className = expReturnDiff >= 0 ? 'positive' : 'negative'; // Higher return is better
@@ -6696,7 +6696,7 @@ const MODEL_CONFIG = {
             
             // Calculate differences
             const growthDiff = p2Growth - p1Growth;
-            const drawdownImprovement = p1Drawdown - p2Drawdown; // Lower is better, so p1 - p2
+            const drawdownImprovement = p2Drawdown - p1Drawdown; // Lower is better, so p1 - p2
             const cagrDiff = p2CAGR - p1CAGR;
             
             // Determine the key message based on data
