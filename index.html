@@ -3787,34 +3787,8 @@ const MODEL_CONFIG = {
                 }
             }
             
-            // Populate dropdowns
-            const selectors = [
-                document.getElementById('option1Select'),
-                document.getElementById('option2Select'),
-                document.getElementById('option3Select'),
-                document.getElementById('option4Select'),
-                document.getElementById('option5Select'),
-                document.getElementById('option6Select'),
-                document.getElementById('option7Select'),
-                document.getElementById('option8Select')
-            ];
-            
-            // Clear existing options except the first one
-            selectors.forEach(select => {
-                while (select.options.length > 1) {
-                    select.remove(1);
-                }
-            });
-            
-            // Add options from column headers
-            columnHeaders.forEach(header => {
-                selectors.forEach(select => {
-                    const option = document.createElement('option');
-                    option.value = header.index;
-                    option.textContent = header.name;
-                    select.appendChild(option);
-                });
-            });
+            // Populate dropdowns with filtering based on MODEL_CONFIG
+            populateSelectors();
         }
         
         // Auto-load data from performance_data.js if available
