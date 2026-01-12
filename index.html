@@ -4648,7 +4648,7 @@ const MODEL_CONFIG = {
             document.getElementById('option2Drawdown').textContent = formatPercent(dd2);
             const ddDiffEl = document.getElementById('drawdownDiff');
             ddDiffEl.textContent = formatPercent(ddDiff);
-            ddDiffEl.className = ddDiff <= 0 ? 'positive' : 'negative'; // FLIPPED: negative diff is good for drawdowns
+            ddDiffEl.className = ddDiff <= 0 ? 'negative' : 'positive'; // FLIPPED: negative diff is good for drawdowns
             
             // Calculate and display risk metrics
             const risk1 = calculateRiskMetrics(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6);
