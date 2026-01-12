@@ -1384,8 +1384,8 @@ const EXCEL_DATA = [
 // Current = Current portfolio (limited options, was Portfolio 2)
 // Modeled = Modeled portfolio (all options, was Portfolio 1)
 const MODEL_CONFIG = {
-    portfolio1: [5, 6, 7, 8, 9, 13, 15, 18], // Current portfolio - limited models
-    portfolio2: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] // Modeled - all models
+    portfolio1: [2, 13, 15, 18], // Current portfolio - from Excel config
+    portfolio2: [3, 5, 6, 7, 8, 16, 19] // Modeled - from Excel config
 };
 
 </script>
@@ -6871,20 +6871,20 @@ const MODEL_CONFIG = {
             scenario1: {
                 title: '🛡️ Conservative',
                 desc: 'Traditional 60/40 vs Conservative + WR Adj',
-                portfolio1: { option1: 18, alloc1: 60, option2: 13, alloc2: 40, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 7, alloc3: 60, option4: 13, alloc4: 40, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                portfolio1: { option1: 18, alloc1: 40, option2: 13, alloc2: 60, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 7, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario2: {
                 title: '🚀 Aggressive Growth',
                 desc: 'Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj',
                 portfolio1: { option1: 18, alloc1: 80, option2: 13, alloc2: 20, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 50, option4: 9, alloc4: 50, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                portfolio2: { option3: 5, alloc3: 80, option4: 8, alloc4: 20, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario3: {
                 title: '📉 Balanced Growth',
                 desc: 'Traditional balanced vs Aggressive + WR Adj',
-                portfolio1: { option1: 18, alloc1: 50, option2: 13, alloc2: 50, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 80, option4: 13, alloc4: 20, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                portfolio1: { option1: 18, alloc1: 60, option2: 13, alloc2: 40, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario4: {
                 title: '💼 Moderate Growth',
