@@ -3618,12 +3618,12 @@ const MODEL_CONFIG = {
                             <div class="metric-title">Win Rate</div>
                             <table class="metric-table">
                                 <tbody><tr>
-                                    <td id="col1Label10">Current:</td>
-                                    <td class="neutral" id="option1WinRate">0.0%</td>
-                                </tr>
-                                <tr>
                                     <td id="col2Label10">Modeled:</td>
                                     <td class="neutral" id="option2WinRate">0.0%</td>
+                                </tr>
+                                <tr>
+                                    <td id="col1Label10">Current:</td>
+                                    <td class="neutral" id="option1WinRate">0.0%</td>
                                 </tr>
                                 <tr>
                                     <td>Difference:</td>
@@ -4193,14 +4193,22 @@ const MODEL_CONFIG = {
             const option2Select = document.getElementById('option2Select');
             const option3Select = document.getElementById('option3Select');
             const option4Select = document.getElementById('option4Select');
+            const option5Select = document.getElementById('option5Select');
+            const option6Select = document.getElementById('option6Select');
+            const option7Select = document.getElementById('option7Select');
+            const option8Select = document.getElementById('option8Select');
             
             option1Select.innerHTML = '<option value="">-- Select --</option>';
             option2Select.innerHTML = '<option value="">-- Select --</option>';
             option3Select.innerHTML = '<option value="">-- Select --</option>';
             option4Select.innerHTML = '<option value="">-- Select --</option>';
+            option5Select.innerHTML = '<option value="">-- Select --</option>';
+            option6Select.innerHTML = '<option value="">-- Select --</option>';
+            option7Select.innerHTML = '<option value="">-- Select --</option>';
+            option8Select.innerHTML = '<option value="">-- Select --</option>';
             
             columnHeaders.forEach((header) => {
-                // Portfolio 1 rows (option1, option2) - filter by MODEL_CONFIG.portfolio1
+                // Portfolio 1 rows (option1, option2, option5, option6) - filter by MODEL_CONFIG.portfolio1
                 if (MODEL_CONFIG.portfolio1.includes(header.index)) {
                     const opt1 = document.createElement('option');
                     opt1.value = header.index;
@@ -4211,9 +4219,19 @@ const MODEL_CONFIG = {
                     opt2.value = header.index;
                     opt2.textContent = header.name;
                     option2Select.appendChild(opt2);
+                    
+                    const opt5 = document.createElement('option');
+                    opt5.value = header.index;
+                    opt5.textContent = header.name;
+                    option5Select.appendChild(opt5);
+                    
+                    const opt6 = document.createElement('option');
+                    opt6.value = header.index;
+                    opt6.textContent = header.name;
+                    option6Select.appendChild(opt6);
                 }
                 
-                // Portfolio 2 rows (option3, option4) - filter by MODEL_CONFIG.portfolio2
+                // Portfolio 2 rows (option3, option4, option7, option8) - filter by MODEL_CONFIG.portfolio2
                 if (MODEL_CONFIG.portfolio2.includes(header.index)) {
                     const opt3 = document.createElement('option');
                     opt3.value = header.index;
@@ -4224,6 +4242,16 @@ const MODEL_CONFIG = {
                     opt4.value = header.index;
                     opt4.textContent = header.name;
                     option4Select.appendChild(opt4);
+                    
+                    const opt7 = document.createElement('option');
+                    opt7.value = header.index;
+                    opt7.textContent = header.name;
+                    option7Select.appendChild(opt7);
+                    
+                    const opt8 = document.createElement('option');
+                    opt8.value = header.index;
+                    opt8.textContent = header.name;
+                    option8Select.appendChild(opt8);
                 }
             });
         }
@@ -4772,7 +4800,9 @@ const MODEL_CONFIG = {
             document.getElementById('option2Drawdown').textContent = formatPercent(dd2);
             const ddDiffEl = document.getElementById('drawdownDiff');
             ddDiffEl.textContent = formatPercent(ddDiff);
-            ddDiffEl.className = ddDiff <= 0 ? 'positive' : 'negative'; // FLIPPED: negative diff is good for drawdowns
+            // For drawdowns: positive diff means Modeled has less drawdown (better) = green
+            // Negative diff means Modeled has more drawdown (worse) = red
+            ddDiffEl.className = ddDiff >= 0 ? 'positive' : 'negative';
             
             // Calculate and display risk metrics
             const risk1 = calculateRiskMetrics(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6);
