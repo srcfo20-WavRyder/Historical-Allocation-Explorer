@@ -3761,7 +3761,7 @@ const MODEL_CONFIG = {
         // Initialize working data from hard-coded EXCEL_DATA
         let excelData = EXCEL_DATA;
         let columnHeaders = [];
-        let yearsValue = 19; // Default, will be read from A17
+        let yearsValue = 20; // Default, will be read from A17
         let growthChart = null; // Chart.js instance
         
         // Function to process Excel data (used by both file upload and data file)
@@ -3788,6 +3788,13 @@ const MODEL_CONFIG = {
                     });
                 }
             }
+
+	// Add this inside processExcelData(jsonData)
+	// Assumes Row 48-51 contains descriptions in Column B (Index 1)
+	if (jsonData[47]) document.getElementById('s1_desc').value = jsonData[47][1] || "";
+	if (jsonData[48]) document.getElementById('s2_desc').value = jsonData[48][1] || "";
+	if (jsonData[49]) document.getElementById('s3_desc').value = jsonData[49][1] || "";
+	if (jsonData[50]) document.getElementById('s4_desc').value = jsonData[50][1] || "";
             
             // Populate dropdowns with filtering based on MODEL_CONFIG
             populateSelectors();
@@ -6036,7 +6043,7 @@ const MODEL_CONFIG = {
                     
                     pdf.setFontSize(16);
                     pdf.setFont(undefined, 'bold');
-                    pdf.text('19-Year Investment Lookback Analysis', margin, yPosition);
+                    pdf.text('20-Year Investment Lookback Analysis', margin, yPosition);
                     yPosition += 10;
                     
                     const canvas4 = await html2canvas(metricsSection, { scale: 2, backgroundColor: '#ffffff' });
@@ -7043,7 +7050,83 @@ const MODEL_CONFIG = {
                 closeScheduleModal();
             }
         }
-        
+
+// ============================================================================
+// UPDATED CORE CALCULATIONS (20-YEAR LOOKBACK)
+// ============================================================================
+
+/**
+ * Calculates the Compound Annual Growth Rate
+ * Fixes: ReferenceError: calculateCAGR is not defined
+ */
+function calculateCAGR(beginningValue, endingValue, periods) {
+    if (periods <= 0 || beginningValue <= 0 || endingValue <= 0) return 0;
+    const cagr = (Math.pow((endingValue / beginningValue), (1 / periods)) - 1) * 100;
+    return parseFloat(cagr.toFixed(2));
+}
+
+// Update the global years variable to 20
+yearsValue = 20;
+
+/**
+ * Re-defines the PDF generation header to say "20-Year" 
+ * instead of "19-Year"
+ */
+function updatePDFLabels() {
+    // This handles the label in the exported PDF
+    const originalGeneratePDF = window.generatePDF;
+    window.generatePDF = async function() {
+        const htmlContent = document.documentElement.innerHTML;
+        // Temporarily swap the text for the PDF capture
+        document.body.innerHTML = document.body.innerHTML.replace('19-Year Investment Lookback Analysis', '20-Year Investment Lookback Analysis');
+        await originalGeneratePDF();
+        // Swap back
+        document.body.innerHTML = htmlContent;
+    };
+}
+updatePDFLabels();        
+
+/**
+ * REFRESH CHECKBOXES FROM EXCEL
+ * This function clears the old hard-coded checkboxes and builds
+ * new ones based on the headers found in your uploaded Excel file.
+ */
+function refreshCheckboxesFromExcel() {
+    const tableBody = document.getElementById('modelConfigTable');
+    if (!tableBody || !columnHeaders.length) return;
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    // Create a row for every model found in the Excel
+    columnHeaders.forEach(header => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="padding: 10px; border-bottom: 1px solid #eee;">${header.name}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${header.index}</td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
+                <input type="checkbox" class="model-p1-check" data-index="${header.index}" checked>
+            </td>
+            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">
+                <input type="checkbox" class="model-p2-check" data-index="${header.index}" checked>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    console.log("Checkboxes refreshed with " + columnHeaders.length + " models.");
+}
+
+// Hook this into the existing upload process
+const originalProcessExcel = processExcelData;
+processExcelData = function(jsonData) {
+    originalProcessExcel(jsonData);
+    refreshCheckboxesFromExcel();
+};
+
+
+
+
 </script>
 
 
