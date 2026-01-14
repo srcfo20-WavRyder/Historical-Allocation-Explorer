@@ -7052,78 +7052,70 @@ const MODEL_CONFIG = {
         }
 
 // ============================================================================
-// MASTER DYNAMIC SYNC: MATH, LABELS, & CONFIGURATIONS
+// MASTER DYNAMIC SYNC: MATH, LABELS, & CONFIGURATIONS (MATCHED TO YOUR HTML)
 // ============================================================================
-
 (function() {
     console.log("Master Sync Engine Loaded.");
 
-    // 1. CORE MATH & PERIOD FIXES
     window.calculateCAGR = function(b, e, p) {
         if (p <= 0 || b <= 0 || e <= 0) return 0;
         return parseFloat(((Math.pow((e / b), (1 / p)) - 1) * 100).toFixed(2));
     };
     window.yearsValue = 20;
 
-    // 2. THE DYNAMIC SYNC LOGIC
     const oldProcess = window.processExcelData;
     window.processExcelData = function(jsonData) {
-        // Run standard numerical processing first
         if (typeof oldProcess === 'function') oldProcess(jsonData);
 
-        console.log("Syncing Data from Excel...");
-
-        // A. SCENARIOS (Rows 48-51 in Excel)
+        // A. SCENARIOS (Excel Rows 48-51)
+        // Corrected to match your HTML IDs: scenX_title, scenX_desc, etc.
         for (let i = 0; i < 4; i++) {
-            const row = jsonData[47 + i]; // Row 48 starts at Index 47
+            const row = jsonData[47 + i]; 
             const sNum = i + 1;
-            if (row && document.getElementById(`s${sNum}_title`)) {
-                document.getElementById(`s${sNum}_title`).value = row[0] || ''; // Col A
-                document.getElementById(`s${sNum}_desc`).value = row[1] || '';  // Col B
-                document.getElementById(`s${sNum}_p1`).value = row[2] || '';    // Col C
-                document.getElementById(`s${sNum}_p2`).value = row[3] || '';    // Col D
+            if (row) {
+                const titleInput = document.getElementById(`scen${sNum}_title`);
+                const descInput = document.getElementById(`scen${sNum}_desc`);
+                const p1Input = document.getElementById(`scen${sNum}_p1`);
+                const p2Input = document.getElementById(`scen${sNum}_p2`);
+                
+                if (titleInput) titleInput.value = row[0] || ''; // Col A
+                if (descInput) descInput.value = row[1] || '';   // Col B
+                if (p1Input) p1Input.value = row[2] || '';       // Col C
+                if (p2Input) p2Input.value = row[3] || '';       // Col D
             }
         }
 
-        // B. MODEL AVAILABILITY (Dynamic: Starts at Row 58, continues until blank)
+        // B. MODEL AVAILABILITY (Excel Row 58+ Dynamic)
         const tableBody = document.getElementById('modelConfigTable');
         if (tableBody) {
-            tableBody.innerHTML = ''; // Clear old UI list
-            let rowIndex = 57; // Data starts on Row 58 (Index 57)
-            
+            tableBody.innerHTML = ''; 
+            let rowIndex = 57; 
             while (jsonData[rowIndex] && jsonData[rowIndex][0]) {
                 const row = jsonData[rowIndex];
-                const modelName = row[0];
-                const showP1 = String(row[1]).toUpperCase() === 'YES';
-                const showP2 = String(row[2]).toUpperCase() === 'YES';
-
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="padding:10px; border-bottom: 1px solid #eee;">${modelName}</td>
+                    <td style="padding:10px; border-bottom: 1px solid #eee;">${row[0]}</td>
                     <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">${rowIndex - 55}</td>
                     <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">
-                        <input type="checkbox" class="model-p1-check" data-name="${modelName}" ${showP1 ? 'checked' : ''}>
+                        <input type="checkbox" class="model-p1-check" ${String(row[1]).toUpperCase() === 'YES' ? 'checked' : ''}>
                     </td>
                     <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">
-                        <input type="checkbox" class="model-p2-check" data-name="${modelName}" ${showP2 ? 'checked' : ''}>
-                    </td>
-                `;
+                        <input type="checkbox" class="model-p2-check" ${String(row[2]).toUpperCase() === 'YES' ? 'checked' : ''}>
+                    </td>`;
                 tableBody.appendChild(tr);
                 rowIndex++;
             }
         }
 
-        // C. USER INSTRUCTIONS (Row 82 / Index 81)
+        // C. USER INSTRUCTIONS (Row 82)
         const instructionBox = document.querySelector('.instructions-content');
         if (instructionBox && jsonData[81] && jsonData[81][0]) {
             instructionBox.innerHTML = jsonData[81][0];
         }
 
-        console.log("Sync Complete.");
-        alert("UI Configured! All spreadsheet descriptions and models are now loaded.");
+        alert("Tool Updated: Everything synced successfully!");
     };
 
-    // 3. PDF LABEL UPDATE
     const originalPDF = window.generatePDF;
     window.generatePDF = async function() {
         const titleH1 = document.querySelector('h1');
