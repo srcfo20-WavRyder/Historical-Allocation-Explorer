@@ -7052,7 +7052,7 @@ const MODEL_CONFIG = {
         }
 
 // ============================================================================
-// MASTER DYNAMIC SYNC: MATH, LABELS, & CONFIGURATIONS (MATCHED TO YOUR HTML)
+// MASTER DYNAMIC SYNC: HIJACKING DATA FOR ROW 48+ SYNC
 // ============================================================================
 (function() {
     console.log("Master Sync Engine Loaded.");
@@ -7063,25 +7063,45 @@ const MODEL_CONFIG = {
     };
     window.yearsValue = 20;
 
-    const oldProcess = window.processExcelData;
-    window.processExcelData = function(jsonData) {
-        if (typeof oldProcess === 'function') oldProcess(jsonData);
+    // 1. WE HIJACK THE UPLOAD PROCESS DIRECTLY
+    const fileInput = document.getElementById('excelFileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const fullRawData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                
+                // Now we run the UI sync using the UNTOUCHED raw data
+                runMasterUISync(fullRawData);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    }
+
+    // 2. THE UI SYNC FUNCTION
+    function runMasterUISync(jsonData) {
+        console.log("Syncing Configuration from Raw Rows 48+...");
 
         // A. SCENARIOS (Excel Rows 48-51)
-        // Corrected to match your HTML IDs: scenX_title, scenX_desc, etc.
         for (let i = 0; i < 4; i++) {
             const row = jsonData[47 + i]; 
             const sNum = i + 1;
             if (row) {
-                const titleInput = document.getElementById(`scen${sNum}_title`);
-                const descInput = document.getElementById(`scen${sNum}_desc`);
-                const p1Input = document.getElementById(`scen${sNum}_p1`);
-                const p2Input = document.getElementById(`scen${sNum}_p2`);
-                
-                if (titleInput) titleInput.value = row[0] || ''; // Col A
-                if (descInput) descInput.value = row[1] || '';   // Col B
-                if (p1Input) p1Input.value = row[2] || '';       // Col C
-                if (p2Input) p2Input.value = row[3] || '';       // Col D
+                const titleEl = document.getElementById(`scen${sNum}_title`);
+                const descEl = document.getElementById(`scen${sNum}_desc`);
+                const p1El = document.getElementById(`scen${sNum}_p1`);
+                const p2El = document.getElementById(`scen${sNum}_p2`);
+
+                if (titleEl) titleEl.value = row[0] || ''; 
+                if (descEl) descEl.value = row[1] || '';   
+                if (p1El) p1El.value = row[2] || '';       
+                if (p2El) p2El.value = row[3] || '';       
             }
         }
 
@@ -7113,21 +7133,23 @@ const MODEL_CONFIG = {
             instructionBox.innerHTML = jsonData[81][0];
         }
 
-        alert("Tool Updated: Everything synced successfully!");
-    };
+        alert("Tool Updated! Raw spreadsheet data successfully synced.");
+    }
 
+    // 3. PDF LABEL UPDATE
     const originalPDF = window.generatePDF;
     window.generatePDF = async function() {
         const titleH1 = document.querySelector('h1');
-        const oldTxt = titleH1.innerText;
-        titleH1.innerText = '20-Year Investment Lookback Analysis';
-        await originalPDF();
-        titleH1.innerText = oldTxt;
+        if (titleH1) {
+            const oldTxt = titleH1.innerText;
+            titleH1.innerText = '20-Year Investment Lookback Analysis';
+            await originalPDF();
+            titleH1.innerText = oldTxt;
+        } else {
+           await originalPDF();
+        }
     };
-})();
-
-
-</script>
-
-
-</body></html>
+})(); // <--- Add this
+</script> // <--- Add this
+</body>
+</html>
