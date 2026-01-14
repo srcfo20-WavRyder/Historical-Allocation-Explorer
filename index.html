@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
@@ -42,7 +41,7 @@
             <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary">
                 📊 Upload New Data File
             </button>
-            <div id="updateStatus" style="margin-top: 15px; font-weight: bold; display: block;"><span style="color: #007bff;">⏳ Generating updated HTML file...</span></div>
+            <div id="updateStatus" style="margin-top: 15px; font-weight: bold; display: block;"><span style="color: #28a745;">✅ Success! Downloaded index.html with 19 models and date range December 29, 2005 - December 30, 2025 (20 years).<br><br><strong>Next Steps:</strong><br>1. Replace your current index.html with the downloaded file<br>2. Upload to GitHub and push changes<br>3. Refresh this page to see new data</span></div>
             
             <!-- Default Portfolio Allocations Configuration -->
             <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid #dee2e6;">
@@ -313,7 +312,7 @@
                         💾 Update Scenarios
                     </button>
                 </div>
-                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold;"></div>
+                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold; color: rgb(40, 167, 69);"></div>
                 <div style="margin-top: 10px; text-align: center; font-size: 13px; color: #6c757d; font-style: italic;">
                     Changes are temporary. Export HTML below to make permanent.
                 </div>
@@ -496,6 +495,15 @@
                     <td style="padding: 12px; text-align: center;">
                         <input type="checkbox" id="p2_19" checked="" style="width: 18px; height: 18px; cursor: pointer;">
                     </td>
+                </tr><tr style="border-bottom: 1px solid rgb(222, 226, 230);">
+                    <td style="padding: 12px; text-align: left;">Target Fund</td>
+                    <td style="padding: 12px; text-align: center; color: #6c757d; font-family: monospace;">20</td>
+                    <td style="padding: 12px; text-align: center;">
+                        <input type="checkbox" id="p1_20" style="width: 18px; height: 18px; cursor: pointer;">
+                    </td>
+                    <td style="padding: 12px; text-align: center;">
+                        <input type="checkbox" id="p2_20" style="width: 18px; height: 18px; cursor: pointer;">
+                    </td>
                 </tr></tbody>
                     </table>
                 </div>
@@ -503,7 +511,7 @@
                 <button onclick="saveModelConfig()" style="margin-top: 20px; padding: 10px 24px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">
                     💾 Update Model Configuration
                 </button>
-                <div id="configStatus" style="margin-top: 10px; font-weight: bold;"></div>
+                <div id="configStatus" style="margin-top: 10px; font-weight: bold; color: rgb(40, 167, 69);"></div>
                 <div style="margin-top: 10px; text-align: center; font-size: 13px; color: #6c757d; font-style: italic;">
                     Changes are temporary. Export HTML below to make permanent.
                 </div>
@@ -554,29 +562,7 @@
         </div>
 
         <!-- Export Preview Modal -->
-        <div id="exportPreviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; overflow-y: auto;">
-            <div style="background: white; max-width: 800px; margin: 50px auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); overflow: hidden;">
-                <!-- Modal Header -->
-                <div style="background: linear-gradient(135deg, #0366d6, #0056b3); color: white; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0; font-size: 20px; font-weight: 700;">📤 Export Preview - What Will Be in Your GitHub HTML</h3>
-                    <button onclick="closeExportPreview()" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; padding: 0; width: 32px; height: 32px;">×</button>
-                </div>
-                
-                <!-- Modal Body -->
-                <div style="padding: 32px; max-height: 70vh; overflow-y: auto;">
-                    <div style="background: #e7f3ff; border-left: 4px solid #0366d6; padding: 16px; margin-bottom: 24px; border-radius: 4px;">
-                        <div style="color: #004085; font-weight: 600; margin-bottom: 8px;">✅ These settings will be permanently saved in the HTML file:</div>
-                        <div style="color: #004085; font-size: 13px;">Other users who open your GitHub link will see exactly this configuration.</div>
-                    </div>
-                    
-                    <!-- Scenario Preview -->
-                    <div style="margin-bottom: 28px;">
-                        <h4 style="color: #495057; margin-bottom: 16px; font-size: 16px; border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">
-                            🎯 Scenario Buttons (4)
-                        </h4>
-                        <div id="scenarioPreviewContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <!-- Will be populated by JavaScript -->
-                        </div>
+        
                     </div>
                     
                     <!-- Model Config Preview -->
@@ -587,15 +573,11 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <div style="font-weight: 600; color: #6c757d; margin-bottom: 8px; font-size: 13px;">Current Portfolio (Row 1-2):</div>
-                                <div id="portfolio1PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
+                                <div id="portfolio1PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">✅ 60/40<br>✅ Bond<br>✅ International<br>✅ S&amp;P500<br>✅ Target Fund</div>
                             </div>
                             <div>
                                 <div style="font-weight: 600; color: #6c757d; margin-bottom: 8px; font-size: 13px;">Modeled Portfolio (Row 3-4):</div>
-                                <div id="portfolio2PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
+                                <div id="portfolio2PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">✅ WavRyder QQQ<br>✅ Aggressive WR Adj<br>✅ Moderate WR Adj<br>✅ Conservative WR Adj<br>✅ Leveraged Nasdaq<br>✅ WavRyder VEA<br>✅ WavRyder SPY</div>
                             </div>
                         </div>
                     </div>
@@ -2763,7 +2745,7 @@ const MODEL_CONFIG = {
                         <div class="modal-section">
                             <div class="modal-section-title">What This Tool Shows</div>
                             <div class="modal-text">
-                                This calculator illustrates how selected, rules-based portfolio models and strategies would have performed historically over the period <span id="modalStartDate">December 30, 2005</span> through <span id="modalEndDate">December 31, 2025</span>, using hypothetical and backtested data. The results shown are not predictions, projections, or forecasts of future investment performance.
+                                This calculator illustrates how selected, rules-based portfolio models and strategies would have performed historically over the period <span id="modalStartDate">December 29, 2005</span> through <span id="modalEndDate">December 30, 2025</span>, using hypothetical and backtested data. The results shown are not predictions, projections, or forecasts of future investment performance.
                             </div>
                         </div>
                         
@@ -2965,42 +2947,25 @@ const MODEL_CONFIG = {
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                     <button onclick="loadScenario('scenario1')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">
-                            🛡️ Conservative
-                        </div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">
-                            Traditional 60/40 vs Conservative + WR Adj
-                        </div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">💼 Target Fund</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">Target Fund vs Moderate + WR Adj</div>
                     </button>
                     
-                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
-                                   cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">
-                            🚀 Aggressive Growth
-                        </div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">
-                            Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj
-                        </div>
+                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid rgb(245, 158, 11); border-radius: 10px; cursor: pointer; text-align: left; transition: 0.3s; box-shadow: rgba(245, 158, 11, 0.15) 0px 2px 8px; transform: translateY(0px);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">🚀 Aggressive Growth</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj</div>
                     </button>
                     
                     <button onclick="loadScenario('scenario3')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario3_title">
-                            📉 Balanced Growth
-                        </div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">
-                            Traditional balanced vs Aggressive + WR Adj
-                        </div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario3_title">📉 Balanced Growth</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">Traditional balanced vs Aggressive + WR Adj</div>
                     </button>
                     
                     <button onclick="loadScenario('scenario4')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">
-                            💼 Moderate Growth
-                        </div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">
-                            Traditional Moderate 50/50 vs Moderate + WR Adj
-                        </div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">🛡️ Conservative</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">Traditional 40/60 vs Conservative + WR Adj</div>
                     </button>
                 </div>
                 
@@ -3103,7 +3068,7 @@ const MODEL_CONFIG = {
                 <!-- A row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">A:</label>
-                    <select id="option1Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
+                    <select id="option1Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option><option value="20">Target Fund</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation1Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3133,7 +3098,7 @@ const MODEL_CONFIG = {
                 <!-- B row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">B:</label>
-                    <select id="option2Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
+                    <select id="option2Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option><option value="20">Target Fund</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation2Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3163,7 +3128,7 @@ const MODEL_CONFIG = {
                 <!-- C row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">C:</label>
-                    <select id="option5Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
+                    <select id="option5Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option><option value="20">Target Fund</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation5Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3193,7 +3158,7 @@ const MODEL_CONFIG = {
                 <!-- D row -->
                 <div class="selector-row-stack">
                     <label class="selector-label-stack">D:</label>
-                    <select id="option6Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option></select>
+                    <select id="option6Select" class="select-stack"><option value="">-- Select --</option><option value="2">60/40</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&amp;P500</option><option value="20">Target Fund</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation6Select" class="select-stack select-alloc-stack">
                         <option value="0">0</option>
@@ -3439,7 +3404,7 @@ const MODEL_CONFIG = {
                 
                 <!-- Data Period Notice -->
                 <div style="text-align: center; font-size: 12px; color: #6c757d; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
-                    📅 Hypothetical Scenario Period: <strong><span id="headerStartDate">December 30, 2005</span> - <span id="headerEndDate">December 31, 2025</span></strong> (<span id="headerYearsCount">20</span> years) | Last Updated: January 10, 2025
+                    📅 Hypothetical Scenario Period: <strong><span id="headerStartDate">December 29, 2005</span> - <span id="headerEndDate">December 30, 2025</span></strong> (<span id="headerYearsCount">20</span> years) | Last Updated: January 10, 2025
                 </div>
 
                 <div class="section-header" style="margin-top: 5px;">Hypothetical Portfolio Growth Over Time</div>
@@ -6222,94 +6187,11 @@ const MODEL_CONFIG = {
         }
         
         // ============================================================================
-        // MODEL CONFIGURATION MANAGEMENT
-        // ============================================================================
-        
-        function populateModelConfigTable() {
-            const tableBody = document.getElementById('modelConfigTable');
-            if (!tableBody) return;
-            
-            tableBody.innerHTML = '';
-            
-            // Get all available models from column headers (dynamically loaded from Excel)
-            const models = columnHeaders.map(header => ({
-                index: header.index,
-                name: header.name
-            }));
-            
-            models.forEach(model => {
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid #dee2e6';
-                
-                const inPortfolio1 = MODEL_CONFIG.portfolio1.includes(model.index);
-                const inPortfolio2 = MODEL_CONFIG.portfolio2.includes(model.index);
-                
-                row.innerHTML = `
-                    <td style="padding: 12px; text-align: left;">${model.name}</td>
-                    <td style="padding: 12px; text-align: center; color: #6c757d; font-family: monospace;">${model.index}</td>
-                    <td style="padding: 12px; text-align: center;">
-                        <input type="checkbox" id="p1_${model.index}" ${inPortfolio1 ? 'checked' : ''} 
-                               style="width: 18px; height: 18px; cursor: pointer;">
-                    </td>
-                    <td style="padding: 12px; text-align: center;">
-                        <input type="checkbox" id="p2_${model.index}" ${inPortfolio2 ? 'checked' : ''} 
-                               style="width: 18px; height: 18px; cursor: pointer;">
-                    </td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function saveModelConfig() {
-            // Updates MODEL_CONFIG in memory for immediate preview
-            // To persist: Export HTML after making changes
-            MODEL_CONFIG.portfolio1 = [];
-            MODEL_CONFIG.portfolio2 = [];
-            
-            // Use columnHeaders instead of hardcoded models
-            columnHeaders.forEach(header => {
-                const p1Checkbox = document.getElementById(`p1_${header.index}`);
-                const p2Checkbox = document.getElementById(`p2_${header.index}`);
-                
-                if (p1Checkbox && p1Checkbox.checked) {
-                    MODEL_CONFIG.portfolio1.push(header.index);
-                }
-                if (p2Checkbox && p2Checkbox.checked) {
-                    MODEL_CONFIG.portfolio2.push(header.index);
-                }
-            });
-            
-            // Update the dropdowns immediately
-            populateSelectors();
-            
-            const status = document.getElementById('configStatus');
-            status.textContent = '✅ Model configuration updated! Export HTML to make permanent.';
-            status.style.color = '#28a745';
-            
-            // Hide success message after 3 seconds
-            setTimeout(() => {
-                status.textContent = '';
-            }, 3000);
-            
-            console.log('✅ Model config updated (in memory):', MODEL_CONFIG);
-        }
-        
-        function generateUpdatedHTML() {
-            // Get the current HTML
-            let htmlContent = document.documentElement.outerHTML;
-            
-            // CRITICAL: Ensure updateDataSection is ALWAYS display: none in the HTML
-            htmlContent = htmlContent.replace(
-                /id="updateDataSection" style="display:\s*block\s*(!important)?;/g,
-                'id="updateDataSection" style="display: none !important;'
-            );
-            
-            // Create the new MODEL_CONFIG code
-            const newModelConfig = `const MODEL_CONFIG = {
-    portfolio1: [${MODEL_CONFIG.portfolio1.join(', ')}], // Current portfolio - limited models
-    portfolio2: [${MODEL_CONFIG.portfolio2.join(', ')}] // Modeled - all models
-};`;
+        // MODEL CONFIGURATION - Which models appear in which portfolio selector
+        const MODEL_CONFIG = {
+            portfolio1: [2, 13, 15, 18, 20],
+            portfolio2: [3, 5, 6, 7, 8, 16, 19]
+        };`;
             
             // Replace the old MODEL_CONFIG with new one
             const configRegex = /const MODEL_CONFIG = \{[\s\S]*?\};/;
@@ -6716,28 +6598,28 @@ const MODEL_CONFIG = {
             const newScenarioConfig = `// SCENARIO CONFIGURATION DATA - Editable in #update mode
         const SCENARIO_CONFIG = {
             scenario1: {
-                title: '${SCENARIO_CONFIG.scenario1.title}',
-                desc: '${SCENARIO_CONFIG.scenario1.desc}',
-                portfolio1: { option1: ${SCENARIO_CONFIG.scenario1.portfolio1.option1}, alloc1: ${SCENARIO_CONFIG.scenario1.portfolio1.alloc1}, option2: ${SCENARIO_CONFIG.scenario1.portfolio1.option2}, alloc2: ${SCENARIO_CONFIG.scenario1.portfolio1.alloc2}, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: ${SCENARIO_CONFIG.scenario1.portfolio2.option3}, alloc3: ${SCENARIO_CONFIG.scenario1.portfolio2.alloc3}, option4: ${SCENARIO_CONFIG.scenario1.portfolio2.option4}, alloc4: ${SCENARIO_CONFIG.scenario1.portfolio2.alloc4}, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '💼 Target Fund',
+                desc: 'Target Fund vs Moderate + WR Adj',
+                portfolio1: { option1: 20, alloc1: 100, option2: null, alloc2: 0, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario2: {
-                title: '${SCENARIO_CONFIG.scenario2.title}',
-                desc: '${SCENARIO_CONFIG.scenario2.desc}',
-                portfolio1: { option1: ${SCENARIO_CONFIG.scenario2.portfolio1.option1}, alloc1: ${SCENARIO_CONFIG.scenario2.portfolio1.alloc1}, option2: ${SCENARIO_CONFIG.scenario2.portfolio1.option2}, alloc2: ${SCENARIO_CONFIG.scenario2.portfolio1.alloc2}, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: ${SCENARIO_CONFIG.scenario2.portfolio2.option3}, alloc3: ${SCENARIO_CONFIG.scenario2.portfolio2.alloc3}, option4: ${SCENARIO_CONFIG.scenario2.portfolio2.option4}, alloc4: ${SCENARIO_CONFIG.scenario2.portfolio2.alloc4}, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '🚀 Aggressive Growth',
+                desc: 'Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj',
+                portfolio1: { option1: 18, alloc1: 80, option2: 13, alloc2: 20, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 5, alloc3: 80, option4: 8, alloc4: 20, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario3: {
-                title: '${SCENARIO_CONFIG.scenario3.title}',
-                desc: '${SCENARIO_CONFIG.scenario3.desc}',
-                portfolio1: { option1: ${SCENARIO_CONFIG.scenario3.portfolio1.option1}, alloc1: ${SCENARIO_CONFIG.scenario3.portfolio1.alloc1}, option2: ${SCENARIO_CONFIG.scenario3.portfolio1.option2}, alloc2: ${SCENARIO_CONFIG.scenario3.portfolio1.alloc2}, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: ${SCENARIO_CONFIG.scenario3.portfolio2.option3}, alloc3: ${SCENARIO_CONFIG.scenario3.portfolio2.alloc3}, option4: ${SCENARIO_CONFIG.scenario3.portfolio2.option4}, alloc4: ${SCENARIO_CONFIG.scenario3.portfolio2.alloc4}, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '📉 Balanced Growth',
+                desc: 'Traditional balanced vs Aggressive + WR Adj',
+                portfolio1: { option1: 18, alloc1: 60, option2: 13, alloc2: 40, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario4: {
-                title: '${SCENARIO_CONFIG.scenario4.title}',
-                desc: '${SCENARIO_CONFIG.scenario4.desc}',
-                portfolio1: { option1: ${SCENARIO_CONFIG.scenario4.portfolio1.option1}, alloc1: ${SCENARIO_CONFIG.scenario4.portfolio1.alloc1}, option2: ${SCENARIO_CONFIG.scenario4.portfolio1.option2}, alloc2: ${SCENARIO_CONFIG.scenario4.portfolio1.alloc2}, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: ${SCENARIO_CONFIG.scenario4.portfolio2.option3}, alloc3: ${SCENARIO_CONFIG.scenario4.portfolio2.alloc3}, option4: ${SCENARIO_CONFIG.scenario4.portfolio2.option4}, alloc4: ${SCENARIO_CONFIG.scenario4.portfolio2.alloc4}, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '🛡️ Conservative',
+                desc: 'Traditional 40/60 vs Conservative + WR Adj',
+                portfolio1: { option1: 18, alloc1: 40, option2: 13, alloc2: 60, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 7, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             }
         };`;
             
