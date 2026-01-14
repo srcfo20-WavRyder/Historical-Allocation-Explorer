@@ -7115,6 +7115,76 @@ const MODEL_CONFIG = {
     };
 })();
 
+// ============================================================================
+// REPAIRING THE UPLOAD BUTTON & UI AUTO-SYNC
+// ============================================================================
+
+(function() {
+    // 1. Force the analysis to 20 years
+    window.yearsValue = 20;
+
+    // 2. Define the Sync Logic
+    window.syncExcelToUI = function(data) {
+        if (!data || data.length < 51) return;
+
+        console.log("Syncing Labels from Rows 48-51...");
+
+        // Update Scenario Labels (Rows 48-51)
+        for (let i = 0; i < 4; i++) {
+            const row = data[47 + i]; 
+            const sNum = i + 1;
+            if (row) {
+                // We target the ID names shown in your screenshot
+                const titleInput = document.getElementById(`s${sNum}_title`);
+                const descInput = document.getElementById(`s${sNum}_desc`);
+                
+                if (titleInput) titleInput.value = row[0] || ""; // Col A
+                if (descInput) descInput.value = row[1] || "";   // Col B
+            }
+        }
+
+        // Rebuild the Checkbox Table (from Row 2 Headers)
+        const tableBody = document.getElementById('modelConfigTable');
+        if (tableBody && window.columnHeaders) {
+            tableBody.innerHTML = ''; 
+            window.columnHeaders.forEach(header => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding:10px; border-bottom:1px solid #eee;">${header.name}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;">${header.index}</td>
+                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p1-check" data-index="${header.index}" checked></td>
+                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p2-check" data-index="${header.index}" checked></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+    };
+
+    // 3. The "Heavy Duty" Upload Listener
+    const fileInput = document.getElementById('excelFileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                
+                // Run the sync
+                window.syncExcelToUI(jsonData);
+                
+                // CRITICAL: Reset the input so you can upload the same file again if needed
+                fileInput.value = "";
+                alert("Data synced! Check the Scenario boxes below.");
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    }
+})();
 
 
 </script>
