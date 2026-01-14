@@ -7052,138 +7052,86 @@ const MODEL_CONFIG = {
         }
 
 // ============================================================================
-// ULTIMATE UI SYNC: EXCEL TO HTML CONFIGURATION
+// MASTER DYNAMIC SYNC: MATH, LABELS, & CONFIGURATIONS
 // ============================================================================
 
 (function() {
-    console.log("Sync Engine Started: Monitoring Excel Uploads...");
+    console.log("Master Sync Engine Loaded.");
 
-    // 1. Fix CAGR math to prevent crashes
-    window.calculateCAGR = function(beginningValue, endingValue, periods) {
-        if (periods <= 0 || beginningValue <= 0 || endingValue <= 0) return 0;
-        const cagr = (Math.pow((endingValue / beginningValue), (1 / periods)) - 1) * 100;
-        return parseFloat(cagr.toFixed(2));
+    // 1. CORE MATH & PERIOD FIXES
+    window.calculateCAGR = function(b, e, p) {
+        if (p <= 0 || b <= 0 || e <= 0) return 0;
+        return parseFloat(((Math.pow((e / b), (1 / p)) - 1) * 100).toFixed(2));
     };
-
-    // 2. Set Analysis Period
     window.yearsValue = 20;
 
-    // 3. The Main Sync Function
-    window.syncExcelToUI = function(data) {
-        if (!data || !data.length) return;
-
-        // A. Update Scenarios (Rows 48-51 in Excel = Index 47-50)
-        for (let i = 0; i < 4; i++) {
-            const row = data[47 + i]; 
-            if (row) {
-                const sNum = i + 1;
-                const titleEl = document.getElementById(`s${sNum}_title`);
-                const descEl = document.getElementById(`s${sNum}_desc`);
-                
-                if (titleEl) titleEl.value = row[0] || ''; // Col A
-                if (descEl) descEl.value = row[1] || '';   // Col B
-                
-                // Also update the Portfolio Index hidden fields
-                if (document.getElementById(`s${sNum}_p1`)) document.getElementById(`s${sNum}_p1`).value = row[2] || '';
-                if (document.getElementById(`s${sNum}_p2`)) document.getElementById(`s${sNum}_p2`).value = row[3] || '';
-            }
-        }
-
-        // B. Rebuild Checkbox Table from Row 2 Headers
-        const tableBody = document.getElementById('modelConfigTable');
-        if (tableBody && window.columnHeaders) {
-            tableBody.innerHTML = ''; 
-            window.columnHeaders.forEach(header => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="padding:10px; border-bottom:1px solid #eee;">${header.name}</td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;">${header.index}</td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p1-check" data-index="${header.index}" checked></td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p2-check" data-index="${header.index}" checked></td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-        console.log("UI Refreshed: Scenarios and Checkboxes now match Excel.");
-    };
-
-    // 4. Hook into the existing processExcelData function
+    // 2. THE DYNAMIC SYNC LOGIC
     const oldProcess = window.processExcelData;
     window.processExcelData = function(jsonData) {
+        // Run standard numerical processing first
         if (typeof oldProcess === 'function') oldProcess(jsonData);
-        window.syncExcelToUI(jsonData);
-    };
-})();
 
-// ============================================================================
-// REPAIRING THE UPLOAD BUTTON & UI AUTO-SYNC
-// ============================================================================
+        console.log("Syncing Data from Excel...");
 
-(function() {
-    // 1. Force the analysis to 20 years
-    window.yearsValue = 20;
-
-    // 2. Define the Sync Logic
-    window.syncExcelToUI = function(data) {
-        if (!data || data.length < 51) return;
-
-        console.log("Syncing Labels from Rows 48-51...");
-
-        // Update Scenario Labels (Rows 48-51)
+        // A. SCENARIOS (Rows 48-51 in Excel)
         for (let i = 0; i < 4; i++) {
-            const row = data[47 + i]; 
+            const row = jsonData[47 + i]; // Row 48 starts at Index 47
             const sNum = i + 1;
-            if (row) {
-                // We target the ID names shown in your screenshot
-                const titleInput = document.getElementById(`s${sNum}_title`);
-                const descInput = document.getElementById(`s${sNum}_desc`);
-                
-                if (titleInput) titleInput.value = row[0] || ""; // Col A
-                if (descInput) descInput.value = row[1] || "";   // Col B
+            if (row && document.getElementById(`s${sNum}_title`)) {
+                document.getElementById(`s${sNum}_title`).value = row[0] || ''; // Col A
+                document.getElementById(`s${sNum}_desc`).value = row[1] || '';  // Col B
+                document.getElementById(`s${sNum}_p1`).value = row[2] || '';    // Col C
+                document.getElementById(`s${sNum}_p2`).value = row[3] || '';    // Col D
             }
         }
 
-        // Rebuild the Checkbox Table (from Row 2 Headers)
+        // B. MODEL AVAILABILITY (Dynamic: Starts at Row 58, continues until blank)
         const tableBody = document.getElementById('modelConfigTable');
-        if (tableBody && window.columnHeaders) {
-            tableBody.innerHTML = ''; 
-            window.columnHeaders.forEach(header => {
+        if (tableBody) {
+            tableBody.innerHTML = ''; // Clear old UI list
+            let rowIndex = 57; // Data starts on Row 58 (Index 57)
+            
+            while (jsonData[rowIndex] && jsonData[rowIndex][0]) {
+                const row = jsonData[rowIndex];
+                const modelName = row[0];
+                const showP1 = String(row[1]).toUpperCase() === 'YES';
+                const showP2 = String(row[2]).toUpperCase() === 'YES';
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="padding:10px; border-bottom:1px solid #eee;">${header.name}</td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;">${header.index}</td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p1-check" data-index="${header.index}" checked></td>
-                    <td style="padding:10px; border-bottom:1px solid #eee; text-align:center;"><input type="checkbox" class="model-p2-check" data-index="${header.index}" checked></td>
+                    <td style="padding:10px; border-bottom: 1px solid #eee;">${modelName}</td>
+                    <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">${rowIndex - 55}</td>
+                    <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">
+                        <input type="checkbox" class="model-p1-check" data-name="${modelName}" ${showP1 ? 'checked' : ''}>
+                    </td>
+                    <td style="padding:10px; border-bottom: 1px solid #eee; text-align:center;">
+                        <input type="checkbox" class="model-p2-check" data-name="${modelName}" ${showP2 ? 'checked' : ''}>
+                    </td>
                 `;
                 tableBody.appendChild(tr);
-            });
+                rowIndex++;
+            }
         }
+
+        // C. USER INSTRUCTIONS (Row 82 / Index 81)
+        const instructionBox = document.querySelector('.instructions-content');
+        if (instructionBox && jsonData[81] && jsonData[81][0]) {
+            instructionBox.innerHTML = jsonData[81][0];
+        }
+
+        console.log("Sync Complete.");
+        alert("UI Configured! All spreadsheet descriptions and models are now loaded.");
     };
 
-    // 3. The "Heavy Duty" Upload Listener
-    const fileInput = document.getElementById('excelFileInput');
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, {type: 'array'});
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
-                
-                // Run the sync
-                window.syncExcelToUI(jsonData);
-                
-                // CRITICAL: Reset the input so you can upload the same file again if needed
-                fileInput.value = "";
-                alert("Data synced! Check the Scenario boxes below.");
-            };
-            reader.readAsArrayBuffer(file);
-        });
-    }
+    // 3. PDF LABEL UPDATE
+    const originalPDF = window.generatePDF;
+    window.generatePDF = async function() {
+        const titleH1 = document.querySelector('h1');
+        const oldTxt = titleH1.innerText;
+        titleH1.innerText = '20-Year Investment Lookback Analysis';
+        await originalPDF();
+        titleH1.innerText = oldTxt;
+    };
 })();
 
 
