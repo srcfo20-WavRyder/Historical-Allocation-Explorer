@@ -312,7 +312,7 @@
                         💾 Update Scenarios
                     </button>
                 </div>
-                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold; color: rgb(40, 167, 69);"></div>
+                <div id="scenarioStatus" style="margin-top: 15px; text-align: center; font-weight: bold;"></div>
                 <div style="margin-top: 10px; text-align: center; font-size: 13px; color: #6c757d; font-style: italic;">
                     Changes are temporary. Export HTML below to make permanent.
                 </div>
@@ -2947,25 +2947,34 @@ const MODEL_CONFIG = {
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                     <button onclick="loadScenario('scenario1')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">💼 Target Fund</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">Target Fund vs Moderate + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">
+                            🛡️ Conservative</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">
+                            Traditional 60/40 vs Conservative + WR Adj</div>
                     </button>
                     
-                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid rgb(245, 158, 11); border-radius: 10px; cursor: pointer; text-align: left; transition: 0.3s; box-shadow: rgba(245, 158, 11, 0.15) 0px 2px 8px; transform: translateY(0px);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">🚀 Aggressive Growth</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj</div>
+                    <button onclick="loadScenario('scenario2')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
+                                   cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">
+                            🚀 Aggressive Growth</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">
+                            Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj</div>
                     </button>
                     
                     <button onclick="loadScenario('scenario3')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario3_title">📉 Balanced Growth</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">Traditional balanced vs Aggressive + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario3_title">
+                            📉 Balanced Growth</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">
+                            Traditional balanced vs Aggressive + WR Adj</div>
                     </button>
                     
                     <button onclick="loadScenario('scenario4')" style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">🛡️ Conservative</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">Traditional 40/60 vs Conservative + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">
+                            💼 Moderate Growth</div>
+                        <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">
+                            Traditional Moderate 50/50 vs Moderate + WR Adj</div>
                     </button>
                 </div>
                 
@@ -6598,10 +6607,10 @@ const MODEL_CONFIG = {
             const newScenarioConfig = `// SCENARIO CONFIGURATION DATA - Editable in #update mode
         const SCENARIO_CONFIG = {
             scenario1: {
-                title: '💼 Target Fund',
-                desc: 'Target Fund vs Moderate + WR Adj',
-                portfolio1: { option1: 20, alloc1: 100, option2: null, alloc2: 0, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '🛡️ Conservative',
+                desc: 'Traditional 60/40 vs Conservative + WR Adj',
+                portfolio1: { option1: 18, alloc1: 40, option2: 13, alloc2: 60, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 7, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario2: {
                 title: '🚀 Aggressive Growth',
@@ -6616,10 +6625,10 @@ const MODEL_CONFIG = {
                 portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             },
             scenario4: {
-                title: '🛡️ Conservative',
-                desc: 'Traditional 40/60 vs Conservative + WR Adj',
-                portfolio1: { option1: 18, alloc1: 40, option2: 13, alloc2: 60, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 7, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+                title: '💼 Moderate Growth',
+                desc: 'Traditional Moderate 50/50 vs Moderate + WR Adj',
+                portfolio1: { option1: 18, alloc1: 50, option2: 13, alloc2: 50, option5: null, alloc5: 0, option6: null, alloc6: 0 },
+                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
             }
         };`;
             
