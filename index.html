@@ -3980,6 +3980,14 @@ let SHOW_ADVANCED_METRICS = false;
         let yearsValue = 20; // Default, will be read from A17
         let growthChart = null; // Chart.js instance
         
+        // Aha Card configuration (can be overridden from Excel)
+        let ahaCardConfig = {
+            title: "Here's What the Data Shows",
+            button1: "📧 Email Me These Results",
+            button2: "📅 Talk to a WavRyder Advisor",
+            subtext: "Free consultation • No obligation • See if WavRyder is right for you"
+        };
+        
         // Function to process Excel data (used by both file upload and data file)
         function processExcelData(jsonData) {
             excelData = jsonData;
@@ -4003,6 +4011,28 @@ let SHOW_ADVANCED_METRICS = false;
                         name: nameRow[i]
                     });
                 }
+            }
+            
+            // Parse Aha Card configuration from Excel (rows 82-86)
+            // Row 82: Header "AHA CARD CONFIG"
+            // Row 83: Section Title (Column B)
+            // Row 84: Button 1 Text (Column B)
+            // Row 85: Button 2 Text (Column B)
+            // Row 86: Subtext (Column B)
+            if (jsonData.length > 86) {
+                if (jsonData[82] && jsonData[82][1]) {
+                    ahaCardConfig.title = jsonData[82][1];
+                }
+                if (jsonData[83] && jsonData[83][1]) {
+                    ahaCardConfig.button1 = jsonData[83][1];
+                }
+                if (jsonData[84] && jsonData[84][1]) {
+                    ahaCardConfig.button2 = jsonData[84][1];
+                }
+                if (jsonData[85] && jsonData[85][1]) {
+                    ahaCardConfig.subtext = jsonData[85][1];
+                }
+                console.log('✓ Loaded Aha Card config from Excel:', ahaCardConfig);
             }
             
             // Populate dropdowns with filtering based on MODEL_CONFIG
@@ -4866,6 +4896,9 @@ let SHOW_ADVANCED_METRICS = false;
         
         function generateComparison(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6, 
                                       col3, alloc3, col4, alloc4, col7, alloc7, col8, alloc8) {
+            // Calculate years from yearsValue
+            const years = Math.round(yearsValue);
+            
             // Get headers
             const header1 = col1 ? columnHeaders.find(h => h.index === col1) : null;
             const header2 = col2 ? columnHeaders.find(h => h.index === col2) : null;
@@ -5109,9 +5142,13 @@ let SHOW_ADVANCED_METRICS = false;
             // Show PDF download button (currently hidden)
             // document.getElementById('pdfDownloadButton').style.display = 'inline-block';
             
+            // Calculate full-period CAGRs for commentary
+            const p1_fullCAGR = calculateBlendedCAGR(col1, alloc1, col2, alloc2, null, 0, null, 0, col5, alloc5, col6, alloc6, null, 0, null, 0, 1, years);
+            const p2_fullCAGR = calculateBlendedCAGR(col3, alloc3, col4, alloc4, null, 0, null, 0, col7, alloc7, col8, alloc8, null, 0, null, 0, 1, years);
+            
             // Generate dynamic, context-aware commentary (Phase 2 Priority 4)
             generateEnhancedCommentary(
-                {cagr: cagr1, cagr2: cagr2, fv: fv1, fv2: fv2, dd: dd1, dd2: dd2},
+                {cagr1: p1_fullCAGR, cagr2: p2_fullCAGR, fv1: fv1, fv2: fv2, dd1: dd1, dd2: dd2},
                 {name1: portfolio1Name, name2: portfolio2Name},
                 years
             );
@@ -5119,9 +5156,7 @@ let SHOW_ADVANCED_METRICS = false;
             document.getElementById('reportContent').style.display = 'block';
             
             // Generate compelling Aha Card with key insights
-            const p1_20yrCAGR = calculateBlendedCAGR(col1, alloc1, col2, alloc2, null, 0, null, 0, col5, alloc5, col6, alloc6, null, 0, null, 0, 1, years);
-            const p2_20yrCAGR = calculateBlendedCAGR(col3, alloc3, col4, alloc4, null, 0, null, 0, col7, alloc7, col8, alloc8, null, 0, null, 0, 1, years);
-            generateAhaCard(fv1, fv2, dd1, dd2, p1_20yrCAGR, p2_20yrCAGR);
+            generateAhaCard(fv1, fv2, dd1, dd2, p1_fullCAGR, p2_fullCAGR);
         }
         
         function createGrowthChart(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6, col3, alloc3, col4, alloc4, col7, alloc7, col8, alloc8, portfolio1Name, portfolio2Name) {
@@ -7238,6 +7273,20 @@ let SHOW_ADVANCED_METRICS = false;
             
             ahaMessage.innerHTML = message;
             dollarImpact.textContent = dollarAmount;
+            
+            // Update Aha Card text from configuration (loaded from Excel or defaults)
+            const ahaTitle = document.querySelector('#ahaCard h2');
+            const button1 = document.querySelector('button[onclick="showLeadCaptureModal()"]');
+            const button2 = document.querySelector('button[onclick="showScheduleModal()"]');
+            const subtext = document.querySelector('#ahaCard > div > div:last-child');
+            
+            if (ahaTitle) ahaTitle.textContent = ahaCardConfig.title;
+            if (button1) button1.innerHTML = ahaCardConfig.button1;
+            if (button2) button2.innerHTML = ahaCardConfig.button2;
+            if (subtext && subtext.textContent.includes('•')) {
+                subtext.textContent = ahaCardConfig.subtext;
+            }
+            
             ahaCard.style.display = 'block';
             
             // Scroll to Aha Card
