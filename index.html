@@ -6363,6 +6363,14 @@ let SHOW_ADVANCED_METRICS = false;
             
             document.getElementById('reportContent').style.display = 'block';
             
+            // Show copy buttons (including audit report button) only in #local mode
+            if (window.location.hash === '#local') {
+                const copyButtonsContainer = document.getElementById('copyButtonsContainer');
+                if (copyButtonsContainer) {
+                    copyButtonsContainer.style.display = 'block';
+                }
+            }
+            
             // Generate compelling Aha Card with key insights
             generateAhaCard(fv1, fv2, dd1, dd2, p1_fullCAGR, p2_fullCAGR);
         }
@@ -8565,32 +8573,181 @@ let SHOW_ADVANCED_METRICS = false;
         
         function generateAuditReport() {
             const copyStatus = document.getElementById('copyStatus');
-            copyStatus.innerHTML = '⏳ Generating audit report...';
+            copyStatus.innerHTML = '⏳ Generating detailed audit report with calculations...';
             copyStatus.style.color = '#007bff';
             
-            // Gather current portfolio data
+            // Gather current portfolio configurations
+            const option1Index = parseInt(document.getElementById('option1Select').value) || 0;
+            const option2Index = parseInt(document.getElementById('option2Select').value) || 0;
+            const option3Index = parseInt(document.getElementById('option3Select').value) || 0;
+            const option4Index = parseInt(document.getElementById('option4Select').value) || 0;
+            const option5Index = parseInt(document.getElementById('option5Select').value) || 0;
+            const option6Index = parseInt(document.getElementById('option6Select').value) || 0;
+            const option7Index = parseInt(document.getElementById('option7Select').value) || 0;
+            const option8Index = parseInt(document.getElementById('option8Select').value) || 0;
+            
+            const alloc1 = parseInt(document.getElementById('allocation1Select').value) || 0;
+            const alloc2 = parseInt(document.getElementById('allocation2Select').value) || 0;
+            const alloc3 = parseInt(document.getElementById('allocation3Select').value) || 0;
+            const alloc4 = parseInt(document.getElementById('allocation4Select').value) || 0;
+            const alloc5 = parseInt(document.getElementById('allocation5Select').value) || 0;
+            const alloc6 = parseInt(document.getElementById('allocation6Select').value) || 0;
+            const alloc7 = parseInt(document.getElementById('allocation7Select').value) || 0;
+            const alloc8 = parseInt(document.getElementById('allocation8Select').value) || 0;
+            
             const portfolio1Name = document.getElementById('portfolio1Description').textContent;
             const portfolio2Name = document.getElementById('portfolio2Description').textContent;
-            const yearsCount = document.getElementById('sectionYearsCount').textContent;
-            const yearRange = document.getElementById('sectionYearRange').textContent;
+            const years = Math.round(yearsValue);
             
-            // Gather performance metrics
-            const p1_100k = document.getElementById('option1_100k').textContent;
-            const p2_100k = document.getElementById('option2_100k').textContent;
-            const diff100k = document.getElementById('diff100k').textContent;
+            // Get model names
+            function getModelName(index) {
+                if (!index) return null;
+                const header = columnHeaders.find(h => h.index === index);
+                return header ? header.name : 'Unknown';
+            }
             
-            const p1Drawdown = document.getElementById('option1Drawdown').textContent;
-            const p2Drawdown = document.getElementById('option2Drawdown').textContent;
-            const drawdownDiff = document.getElementById('drawdownDiff').textContent;
+            // Calculate year-by-year returns for a portfolio
+            function calculateYearByYear(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6) {
+                const yearlyData = [];
+                let cumulativeValue = 100000;
+                
+                for (let year = 1; year <= years; year++) {
+                    const rowIndex = 18 + year; // Excel row 20 = Year 1
+                    
+                    // Get returns for each component
+                    let blendedReturn = 0;
+                    const components = [];
+                    
+                    if (col1 && alloc1 > 0) {
+                        const r1 = excelData[rowIndex] && excelData[rowIndex][col1] !== null ? excelData[rowIndex][col1] : 0;
+                        blendedReturn += (alloc1 / 100) * r1;
+                        components.push({
+                            model: getModelName(col1),
+                            allocation: alloc1,
+                            return: r1,
+                            contribution: (alloc1 / 100) * r1
+                        });
+                    }
+                    
+                    if (col2 && alloc2 > 0) {
+                        const r2 = excelData[rowIndex] && excelData[rowIndex][col2] !== null ? excelData[rowIndex][col2] : 0;
+                        blendedReturn += (alloc2 / 100) * r2;
+                        components.push({
+                            model: getModelName(col2),
+                            allocation: alloc2,
+                            return: r2,
+                            contribution: (alloc2 / 100) * r2
+                        });
+                    }
+                    
+                    if (col5 && alloc5 > 0) {
+                        const r5 = excelData[rowIndex] && excelData[rowIndex][col5] !== null ? excelData[rowIndex][col5] : 0;
+                        blendedReturn += (alloc5 / 100) * r5;
+                        components.push({
+                            model: getModelName(col5),
+                            allocation: alloc5,
+                            return: r5,
+                            contribution: (alloc5 / 100) * r5
+                        });
+                    }
+                    
+                    if (col6 && alloc6 > 0) {
+                        const r6 = excelData[rowIndex] && excelData[rowIndex][col6] !== null ? excelData[rowIndex][col6] : 0;
+                        blendedReturn += (alloc6 / 100) * r6;
+                        components.push({
+                            model: getModelName(col6),
+                            allocation: alloc6,
+                            return: r6,
+                            contribution: (alloc6 / 100) * r6
+                        });
+                    }
+                    
+                    const startValue = cumulativeValue;
+                    cumulativeValue *= (1 + blendedReturn);
+                    const endValue = cumulativeValue;
+                    
+                    yearlyData.push({
+                        year,
+                        components,
+                        blendedReturn,
+                        startValue,
+                        endValue,
+                        growth: endValue - startValue
+                    });
+                }
+                
+                return yearlyData;
+            }
             
-            // Build audit HTML
+            // Calculate for both portfolios
+            const p1Data = calculateYearByYear(option1Index, alloc1, option2Index, alloc2, option5Index, alloc5, option6Index, alloc6);
+            const p2Data = calculateYearByYear(option3Index, alloc3, option4Index, alloc4, option7Index, alloc7, option8Index, alloc8);
+            
+            // Generate year-by-year tables HTML
+            function generateYearlyTable(data, portfolioName) {
+                let html = `<h3>${portfolioName} - Year-by-Year Calculations</h3>`;
+                html += `<table><thead><tr>
+                    <th>Year</th>
+                    <th>Components & Returns</th>
+                    <th>Blended Return</th>
+                    <th>Start Value</th>
+                    <th>End Value</th>
+                    <th>Growth</th>
+                </tr></thead><tbody>`;
+                
+                data.forEach(yearData => {
+                    html += `<tr>
+                        <td><strong>${yearData.year}</strong></td>
+                        <td class="calculation-detail" style="text-align: left; font-size: 12px;">`;
+                    
+                    yearData.components.forEach(comp => {
+                        const returnPct = (comp.return * 100).toFixed(2);
+                        const contribPct = (comp.contribution * 100).toFixed(2);
+                        html += `${comp.model}: ${returnPct}% × ${comp.allocation}% = ${contribPct}%<br>`;
+                    });
+                    
+                    html += `</td>
+                        <td><strong>${(yearData.blendedReturn * 100).toFixed(2)}%</strong></td>
+                        <td>$${yearData.startValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td>$${yearData.endValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td style="color: ${yearData.growth >= 0 ? '#28a745' : '#dc3545'}">
+                            $${yearData.growth.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        </td>
+                    </tr>`;
+                });
+                
+                const finalValue = data[data.length - 1].endValue;
+                const totalGrowth = finalValue - 100000;
+                const totalReturn = ((finalValue / 100000) - 1) * 100;
+                
+                html += `</tbody>
+                    <tfoot>
+                        <tr style="background: #f8f9fa; font-weight: bold;">
+                            <td colspan="3">TOTAL</td>
+                            <td>$100,000.00</td>
+                            <td>$${finalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                            <td style="color: ${totalGrowth >= 0 ? '#28a745' : '#dc3545'}">
+                                $${totalGrowth.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 
+                                (${totalReturn.toFixed(2)}%)
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>`;
+                
+                return html;
+            }
+            
+            const p1Table = generateYearlyTable(p1Data, portfolio1Name);
+            const p2Table = generateYearlyTable(p2Data, portfolio2Name);
+            
+            // Build audit HTML with detailed calculations
             const auditHTML = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WavRyder Performance Report - Audit Trail</title>
+    <title>WavRyder Performance Report - Detailed Audit Trail</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -8603,7 +8760,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             padding: 40px;
@@ -8624,12 +8781,16 @@ let SHOW_ADVANCED_METRICS = false;
             margin: 30px 0 15px 0;
             border-left: 4px solid #2196f3;
             padding-left: 12px;
+            page-break-before: always;
         }
         
         h3 {
             color: #424242;
             font-size: 18px;
             margin: 20px 0 10px 0;
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
         }
         
         .report-header {
@@ -8639,75 +8800,46 @@ let SHOW_ADVANCED_METRICS = false;
             margin-bottom: 30px;
         }
         
-        .metadata {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .metadata-item {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 3px solid #2196f3;
-        }
-        
-        .metadata-label {
-            font-weight: 600;
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-        
-        .metadata-value {
-            font-size: 16px;
-            color: #1a1a1a;
-            font-weight: 500;
-        }
-        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #dee2e6;
-        }
-        
-        th {
-            background: #e3f2fd;
-            font-weight: 600;
-            color: #1565c0;
-        }
-        
-        tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-        
-        .section {
-            margin: 30px 0;
-            page-break-inside: avoid;
-        }
-        
-        .calculation-detail {
-            background: #f0f7ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-family: 'Courier New', monospace;
+            margin: 20px 0;
             font-size: 13px;
         }
         
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #dee2e6;
-            font-size: 12px;
-            color: #666;
+        th {
+            background: #2196f3;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .calculation-detail {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        
+        .formula-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
         }
         
         .print-button {
@@ -8727,211 +8859,88 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .container {
-                box-shadow: none;
-                padding: 20px;
-            }
-            
-            .print-button {
-                display: none;
-            }
-            
-            h1 {
-                page-break-after: avoid;
-            }
-            
-            .section {
-                page-break-inside: avoid;
-            }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 20px; }
+            .print-button { display: none; }
+            h2 { page-break-before: always; }
+            table { page-break-inside: avoid; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📄 WavRyder Performance Report - Audit Trail</h1>
+        <h1>📄 WavRyder Performance Report - Detailed Audit Trail</h1>
         
         <div class="report-header">
             <p style="font-size: 14px; color: #666; margin-bottom: 8px;">
                 <strong>Generated:</strong> ${new Date().toLocaleString()}
             </p>
             <p style="font-size: 14px; color: #666;">
-                <strong>Analysis Period:</strong> ${yearRange} (${yearsCount} years)
+                <strong>Analysis Period:</strong> ${years} years
             </p>
         </div>
         
         <button class="print-button" onclick="window.print()">🖨️ Print to PDF</button>
         
-        <div class="section">
-            <h2>Portfolio Configuration</h2>
-            
-            <div class="metadata">
-                <div class="metadata-item">
-                    <div class="metadata-label">Current Portfolio</div>
-                    <div class="metadata-value">${portfolio1Name}</div>
-                </div>
-                <div class="metadata-item">
-                    <div class="metadata-label">Modeled Portfolio</div>
-                    <div class="metadata-value">${portfolio2Name}</div>
-                </div>
-            </div>
+        <h2>Portfolio Configurations</h2>
+        
+        <h3>Portfolio 1 (Current)</h3>
+        <div class="calculation-detail">
+${portfolio1Name}
         </div>
         
-        <div class="section">
-            <h2>Performance Summary</h2>
-            
-            <h3>$100,000 Investment Growth</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Portfolio</th>
-                        <th>Final Value</th>
-                        <th>Total Growth</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Current Portfolio</td>
-                        <td>${p1_100k}</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Modeled Portfolio</td>
-                        <td>${p2_100k}</td>
-                        <td>${diff100k}</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3>Maximum Annual Drawdown</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Portfolio</th>
-                        <th>Max Drawdown</th>
-                        <th>Difference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Current Portfolio</td>
-                        <td>${p1Drawdown}</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Modeled Portfolio</td>
-                        <td>${p2Drawdown}</td>
-                        <td>${drawdownDiff}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <h3>Portfolio 2 (Modeled)</h3>
+        <div class="calculation-detail">
+${portfolio2Name}
         </div>
         
-        <div class="section">
-            <h2>Calculation Methodology</h2>
-            
-            <h3>CAGR (Compound Annual Growth Rate)</h3>
-            <div class="calculation-detail">
-CAGR = (Ending Value / Beginning Value)^(1 / Number of Years) - 1
+        <h2>Detailed Year-by-Year Calculations</h2>
+        
+        <div class="formula-box">
+            <strong>Blended Return Formula:</strong><br>
+            Blended Return = (Allocation₁ × Return₁) + (Allocation₂ × Return₂) + ...<br><br>
+            <strong>Growth Calculation:</strong><br>
+            End Value = Start Value × (1 + Blended Return)
+        </div>
+        
+        ${p1Table}
+        
+        <div style="page-break-before: always;"></div>
+        
+        ${p2Table}
+        
+        <h2>Data Sources</h2>
+        <div class="calculation-detail">
+<strong>Excel File Structure:</strong>
+- Row 2: Model names
+- Row 16: Years value (${years})
+- Row 15: Starting investment ($100,000)
+- Rows 20-${19 + years}: Annual returns for Years 1-${years}
 
-This metric represents the mean annual growth rate of an investment over a 
-specified time period longer than one year, assuming profits are reinvested 
-at the end of each year.
-            </div>
-            
-            <h3>Maximum Drawdown</h3>
-            <div class="calculation-detail">
-Max Drawdown = (Trough Value - Peak Value) / Peak Value
-
-The maximum observed loss from a peak to a trough of a portfolio, before a 
-new peak is attained. This metric measures the largest single drop from peak 
-to bottom in the value of a portfolio.
-            </div>
-            
-            <h3>Investment Growth Calculation</h3>
-            <div class="calculation-detail">
-Future Value = Initial Investment × (1 + r₁) × (1 + r₂) × ... × (1 + rₙ)
-
-Where r₁, r₂, ... rₙ are the annual returns for each year in the period.
-Starting amount: $100,000
-Calculation: Year-by-year compounding of actual historical returns
-            </div>
+<strong>Calculation Method:</strong>
+1. For each year, retrieve annual returns from Excel for each model
+2. Calculate blended return using allocation percentages
+3. Multiply previous year's value by (1 + blended return)
+4. Compound through all ${years} years
+5. Final CAGR = (Final Value / Initial Value)^(1/${years}) - 1
         </div>
         
-        <div class="section">
-            <h2>Data Sources</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Source Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Historical Returns</td>
-                        <td>Annual return data from ${yearRange}</td>
-                    </tr>
-                    <tr>
-                        <td>Allocation</td>
-                        <td>User-specified portfolio weightings</td>
-                    </tr>
-                    <tr>
-                        <td>Benchmark</td>
-                        <td>Standard market indices (S&P 500, AGG, VEA)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>Assumptions & Limitations</h2>
-            <ul style="margin-left: 20px; line-height: 1.8;">
-                <li>Assumes annual rebalancing to target allocations</li>
-                <li>Does not account for transaction costs, taxes, or fees</li>
-                <li>Based on historical data; past performance does not guarantee future results</li>
-                <li>Assumes reinvestment of all dividends and capital gains</li>
-                <li>Returns are nominal (not adjusted for inflation)</li>
-                <li>Assumes perfect execution at end-of-year prices</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Risk Disclosure</h2>
-            <p style="padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
-                <strong>⚠️ Important:</strong> This analysis is for educational and illustrative purposes 
-                only. The performance data presented is based on hypothetical, backtested historical 
-                analysis and does not represent actual trading results. No representation is being made 
-                that any account will or is likely to achieve profits or losses similar to those shown. 
-                Please consult with a qualified financial advisor before making any investment decisions.
-            </p>
-        </div>
-        
-        <div class="footer">
-            <p><strong>Report Generated By:</strong> WavRyder Performance Comparison Tool</p>
-            <p><strong>Version:</strong> 2.0 (Phase 2 Complete)</p>
-            <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
-            <p style="margin-top: 15px; font-style: italic;">
-                This audit trail provides transparency into the calculations and methodology used 
-                to generate the performance comparison. All figures are derived from the historical 
-                data provided and user-specified allocations.
-            </p>
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #dee2e6; font-size: 12px; color: #666;">
+            <strong>Disclaimer:</strong> This analysis is based on historical data and hypothetical scenarios. 
+            Past performance does not guarantee future results. All calculations assume annual rebalancing and 
+            do not include fees, taxes, or transaction costs.
         </div>
     </div>
 </body>
 </html>
-            `;
+`;
             
-            // Create blob and open in new window
-            const blob = new Blob([auditHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+            // Open in new window
+            const auditWindow = window.open('', 'AuditReport', 'width=1200,height=800');
+            auditWindow.document.write(auditHTML);
+            auditWindow.document.close();
             
-            copyStatus.innerHTML = '✅ Audit report generated! Opening in new window...';
+            copyStatus.innerHTML = '✅ Detailed audit report generated with all calculations!';
             copyStatus.style.color = '#28a745';
             
             setTimeout(() => {
