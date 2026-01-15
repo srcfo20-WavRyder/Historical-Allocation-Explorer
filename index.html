@@ -543,7 +543,6 @@ const EXCEL_DATA = [
     "P",
     "Q",
     "R"
-    "S"
   ],
   [
     "Performance Measure",
@@ -566,7 +565,6 @@ const EXCEL_DATA = [
     "QQQ",
     "S&P500",
     "WavRyder SPY"
-    "Target Date"
   ],
   [
     "Total Return",
@@ -3982,14 +3980,6 @@ let SHOW_ADVANCED_METRICS = false;
         let yearsValue = 20; // Default, will be read from A17
         let growthChart = null; // Chart.js instance
         
-        // Aha Card configuration (can be overridden from Excel)
-        let ahaCardConfig = {
-            title: "Here's What the Data Shows",
-            button1: "📧 Email Me These Results",
-            button2: "📅 Talk to a WavRyder Advisor",
-            subtext: "Free consultation • No obligation • See if WavRyder is right for you"
-        };
-        
         // Function to process Excel data (used by both file upload and data file)
         function processExcelData(jsonData) {
             excelData = jsonData;
@@ -4012,67 +4002,6 @@ let SHOW_ADVANCED_METRICS = false;
                         index: i,
                         name: nameRow[i]
                     });
-                }
-            }
-            
-            // Parse Aha Card configuration from Excel (rows 82-86)
-            // Row 82: Header "AHA CARD CONFIG"
-            // Row 83: Section Title (Column B)
-            // Row 84: Button 1 Text (Column B)
-            // Row 85: Button 2 Text (Column B)
-            // Row 86: Subtext (Column B)
-            if (jsonData.length > 86) {
-                if (jsonData[82] && jsonData[82][1]) {
-                    ahaCardConfig.title = jsonData[82][1];
-                }
-                if (jsonData[83] && jsonData[83][1]) {
-                    ahaCardConfig.button1 = jsonData[83][1];
-                }
-                if (jsonData[84] && jsonData[84][1]) {
-                    ahaCardConfig.button2 = jsonData[84][1];
-                }
-                if (jsonData[85] && jsonData[85][1]) {
-                    ahaCardConfig.subtext = jsonData[85][1];
-                }
-                console.log('✓ Loaded Aha Card config from Excel:', ahaCardConfig);
-            }
-            
-            // Parse Model Availability Settings from Excel (rows 56+)
-            if (jsonData.length >= 56) {
-                try {
-                    MODEL_CONFIG.portfolio1 = [];
-                    MODEL_CONFIG.portfolio2 = [];
-                    
-                    let configRow = 55; // Excel row 56 = JS index 55 (first model is 60/40)
-                    while (configRow < jsonData.length && jsonData[configRow]) {
-                        const modelName = jsonData[configRow][0];
-                        const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
-                        const showInModeled = (jsonData[configRow][2] || '').toString().toUpperCase();
-                        
-                        // Stop if we hit empty row or next section
-                        if (!modelName || modelName.toString().includes('USER INSTRUCTIONS') || 
-                            modelName.toString().includes('AHA CARD')) {
-                            break;
-                        }
-                        
-                        // Find this model's column index
-                        const header = columnHeaders.find(h => h.name === modelName);
-                        if (header) {
-                            if (showInCurrent === 'YES') {
-                                MODEL_CONFIG.portfolio1.push(header.index);
-                            }
-                            if (showInModeled === 'YES') {
-                                MODEL_CONFIG.portfolio2.push(header.index);
-                            }
-                        }
-                        
-                        configRow++;
-                    }
-                    console.log('✅ Loaded model availability from Excel');
-                    console.log('Current portfolio models:', MODEL_CONFIG.portfolio1);
-                    console.log('Modeled portfolio models:', MODEL_CONFIG.portfolio2);
-                } catch (e) {
-                    console.error('Error reading model config:', e);
                 }
             }
             
@@ -6539,7 +6468,7 @@ let SHOW_ADVANCED_METRICS = false;
                 8: 'Leveraged Nasdaq',
                 9: 'Leveraged S&P500',
                 10: 'WavRyder QQQ/SP500 Leveraged)',
-                11: 'Target Date',
+                11: 'QQQ (Leveraged) W/O WavRyder',
                 12: 'SP 500',
                 13: 'Bond',
                 14: 'WavRyder AGG',
@@ -7314,20 +7243,6 @@ let SHOW_ADVANCED_METRICS = false;
             
             ahaMessage.innerHTML = message;
             dollarImpact.textContent = dollarAmount;
-            
-            // Update Aha Card text from configuration (loaded from Excel or defaults)
-            const ahaTitle = document.querySelector('#ahaCard h2');
-            const button1 = document.querySelector('button[onclick="showLeadCaptureModal()"]');
-            const button2 = document.querySelector('button[onclick="showScheduleModal()"]');
-            const subtext = document.querySelector('#ahaCard > div > div:last-child');
-            
-            if (ahaTitle) ahaTitle.textContent = ahaCardConfig.title;
-            if (button1) button1.innerHTML = ahaCardConfig.button1;
-            if (button2) button2.innerHTML = ahaCardConfig.button2;
-            if (subtext && subtext.textContent.includes('•')) {
-                subtext.textContent = ahaCardConfig.subtext;
-            }
-            
             ahaCard.style.display = 'block';
             
             // Scroll to Aha Card
