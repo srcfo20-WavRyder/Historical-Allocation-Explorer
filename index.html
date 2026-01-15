@@ -8465,15 +8465,17 @@ let SHOW_ADVANCED_METRICS = false;
             if (growthDiff > 10000) {
                 // Modeled portfolio significantly outperformed
                 const pctGain = ((growthDiff / p1Growth) * 100).toFixed(1);
+                const formattedDiff = Math.round(growthDiff).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
                 message = `The Modeled Portfolio would have grown <strong>${pctGain}% more</strong> over 20 years. ` +
-                         `That's an extra <strong>$${Math.round(growthDiff).toLocaleString()}</strong> on a $100K investment.`;
-                dollarAmount = `+$${Math.round(growthDiff).toLocaleString()}`;
+                         `That's an extra <strong>$${formattedDiff}</strong> on a $100K investment.`;
+                dollarAmount = `+$${formattedDiff}`;
             } else if (growthDiff < -10000) {
                 // Current portfolio outperformed (rare with WavRyder scenarios)
                 const pctLoss = ((Math.abs(growthDiff) / p1Growth) * 100).toFixed(1);
+                const formattedDiff = Math.round(Math.abs(growthDiff)).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
                 message = `The Current Portfolio would have grown <strong>${pctLoss}% more</strong> over 20 years. ` +
                          `However, check the risk metrics below to see the full picture.`;
-                dollarAmount = `-$${Math.round(Math.abs(growthDiff)).toLocaleString()}`;
+                dollarAmount = `-$${formattedDiff}`;
             } else if (drawdownImprovement > 5) {
                 // Focus on risk reduction
                 const pctReduction = ((drawdownImprovement / Math.abs(p1Drawdown)) * 100).toFixed(1);
@@ -8482,9 +8484,12 @@ let SHOW_ADVANCED_METRICS = false;
                 dollarAmount = `${drawdownImprovement.toFixed(1)}% Less Risk`;
             } else {
                 // General comparison
-                message = `Over 20 years, the Modeled Portfolio would have turned $100K into <strong>$${Math.round(p2Growth).toLocaleString()}</strong> ` +
-                         `compared to <strong>$${Math.round(p1Growth).toLocaleString()}</strong> for the Current Portfolio.`;
-                dollarAmount = growthDiff > 0 ? `+$${Math.round(growthDiff).toLocaleString()}` : `$${Math.round(Math.abs(growthDiff)).toLocaleString()}`;
+                const formattedP1 = Math.round(p1Growth).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                const formattedP2 = Math.round(p2Growth).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                const formattedDiff = Math.round(Math.abs(growthDiff)).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                message = `Over 20 years, the Modeled Portfolio would have turned $100K into <strong>$${formattedP2}</strong> ` +
+                         `compared to <strong>$${formattedP1}</strong> for the Current Portfolio.`;
+                dollarAmount = growthDiff > 0 ? `+$${formattedDiff}` : `$${formattedDiff}`;
             }
             
             ahaMessage.innerHTML = message;
