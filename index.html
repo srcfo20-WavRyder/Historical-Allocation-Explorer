@@ -4036,12 +4036,12 @@ let SHOW_ADVANCED_METRICS = false;
             }
             
             // Parse Model Availability Settings from Excel (rows 56+)
-            if (jsonData.length >= 57) {
+            if (jsonData.length >= 56) {
                 try {
                     MODEL_CONFIG.portfolio1 = [];
                     MODEL_CONFIG.portfolio2 = [];
                     
-                    let configRow = 56; // Excel row 57 = JS index 56
+                    let configRow = 55; // Excel row 56 = JS index 55 (first model is 60/40)
                     while (configRow < jsonData.length && jsonData[configRow]) {
                         const modelName = jsonData[configRow][0];
                         const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
