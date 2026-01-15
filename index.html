@@ -3765,29 +3765,56 @@ const MODEL_CONFIG = {
         let growthChart = null; // Chart.js instance
         
         // Function to process Excel data (used by both file upload and data file)
-        function processExcelData(jsonData) {
-            excelData = jsonData;
-            
-            // Read years value from A17 (row 17, column 0)
-            if (jsonData[16] && jsonData[16][0]) {
-                yearsValue = parseFloat(jsonData[16][0]);
-            }
-            
-            // Parse headers - create array of objects with index and name
-            columnHeaders = [];
-            const letterRow = jsonData[0]; // Row with letters like "A", "B", "C", etc.
-            const nameRow = jsonData[1]; // Row with names like "60/40", "WavRyder QQQ", etc.
-            
-            // Add options from column headers (skip first two: "Performance Measure" and empty)
-            for (let i = 2; i < nameRow.length; i++) {
-                if (nameRow[i]) {
-                    columnHeaders.push({
-                        letter: letterRow[i] || `Col${i}`,
-                        index: i,
-                        name: nameRow[i]
-                    });
-                }
-            }
+
+// 1. Update the MODEL_CONFIG global variable
+let MODEL_CONFIG = {
+    portfolio1: [], // Maps to "Show in Current?"
+    portfolio2: []  // Maps to "Show in Modeled?"
+};
+
+// 2. This REPLACES your existing processExcelData function
+function processExcelData(jsonData) {
+    excelData = jsonData; // Save the raw data globally
+    
+    // Clear old config
+    MODEL_CONFIG.portfolio1 = [];
+    MODEL_CONFIG.portfolio2 = [];
+
+    // Filter rows that actually contain Model Configuration data
+    jsonData.forEach((row) => {
+        const modelName = row['Model Name'];
+        if (!modelName) return; // Skip empty rows
+
+        // Find which column index this model refers to (A, B, C, etc.)
+        // This links the name "60/40" to its data column in your spreadsheet
+        const colHeader = columnHeaders.find(h => h.name === modelName);
+        
+        if (colHeader) {
+            const colIndex = colHeader.index;
+            if (row['Show in Current?'] === 'YES') MODEL_CONFIG.portfolio1.push(colIndex);
+            if (row['Show in Modeled?'] === 'YES') MODEL_CONFIG.portfolio2.push(colIndex);
+        }
+    });
+
+    // 3. Update the UI Elements
+    populateSelectors();          // Updates the 4 dropdowns at the top
+    populateModelConfigTable();   // Updates the checkbox table
+    
+    // 4. Update the Instruction Text at the top from the Excel
+    const instructionRow = jsonData.find(row => row['USER INSTRUCTIONS TEXT']);
+    if (instructionRow && instructionRow['USER INSTRUCTIONS TEXT']) {
+        const introBox = document.querySelector('.instructions p');
+        if (introBox) introBox.innerHTML = instructionRow['USER INSTRUCTIONS TEXT'];
+    }
+
+    // Refresh the charts/results
+    updateComparison();
+}        
+
+
+
+
+
             
             // Populate dropdowns with filtering based on MODEL_CONFIG
             populateSelectors();
