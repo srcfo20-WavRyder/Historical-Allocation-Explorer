@@ -4035,6 +4035,45 @@ let SHOW_ADVANCED_METRICS = false;
                 console.log('✓ Loaded Aha Card config from Excel:', ahaCardConfig);
             }
             
+            // Parse Model Availability Settings from Excel (rows 56+)
+            if (jsonData.length >= 57) {
+                try {
+                    MODEL_CONFIG.portfolio1 = [];
+                    MODEL_CONFIG.portfolio2 = [];
+                    
+                    let configRow = 56; // Excel row 57 = JS index 56
+                    while (configRow < jsonData.length && jsonData[configRow]) {
+                        const modelName = jsonData[configRow][0];
+                        const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
+                        const showInModeled = (jsonData[configRow][2] || '').toString().toUpperCase();
+                        
+                        // Stop if we hit empty row or next section
+                        if (!modelName || modelName.toString().includes('USER INSTRUCTIONS') || 
+                            modelName.toString().includes('AHA CARD')) {
+                            break;
+                        }
+                        
+                        // Find this model's column index
+                        const header = columnHeaders.find(h => h.name === modelName);
+                        if (header) {
+                            if (showInCurrent === 'YES') {
+                                MODEL_CONFIG.portfolio1.push(header.index);
+                            }
+                            if (showInModeled === 'YES') {
+                                MODEL_CONFIG.portfolio2.push(header.index);
+                            }
+                        }
+                        
+                        configRow++;
+                    }
+                    console.log('✅ Loaded model availability from Excel');
+                    console.log('Current portfolio models:', MODEL_CONFIG.portfolio1);
+                    console.log('Modeled portfolio models:', MODEL_CONFIG.portfolio2);
+                } catch (e) {
+                    console.error('Error reading model config:', e);
+                }
+            }
+            
             // Populate dropdowns with filtering based on MODEL_CONFIG
             populateSelectors();
         }
