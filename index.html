@@ -3810,9 +3810,41 @@ let SHOW_ADVANCED_METRICS = false;
         /* Mobile adjustments for tooltips */
         @media (max-width: 768px) {
             .tooltip {
-                width: 220px;
+                /* Smaller width for mobile */
+                width: calc(100vw - 40px);
+                max-width: 280px;
                 font-size: 12px;
                 padding: 10px 12px;
+                /* Position relative to viewport instead of parent */
+                position: fixed;
+                left: 50% !important;
+                bottom: auto !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                /* Add backdrop for better visibility */
+                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            }
+            
+            /* Remove arrow on mobile since tooltip is centered */
+            .tooltip::after {
+                display: none;
+            }
+            
+            /* Add backdrop overlay for mobile tooltips */
+            .metric-term.active::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 9999;
+            }
+            
+            /* Adjust tooltip z-index to be above backdrop */
+            .metric-term.active .tooltip {
+                z-index: 10001;
             }
             
             /* Header - Logo and Title improvements for mobile */
