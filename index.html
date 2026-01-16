@@ -1604,7 +1604,7 @@ const EXCEL_DATA = [
   [
     "Scenario 1",
     "\ud83d\udcbc Target Fund",
-    "Target Fund vs Moderate + WR Adj",
+    "Target Fund vs Aggressive + WR Adj",
     "Target Fund",
     100,
     null,
@@ -2526,10 +2526,40 @@ const EXCEL_DATA = [
 // Model configuration - which models are available in each portfolio
 // Current = Current portfolio (limited options, was Portfolio 2)
 // Modeled = Modeled portfolio (all options, was Portfolio 1)
-const MODEL_CONFIG = {
-    portfolio1: [2, 13, 15, 18, 20], // Current portfolio - from Excel config
-    portfolio2: [3, 5, 6, 7, 8, 16, 19] // Modeled - from Excel config
-};
+// Build MODEL_CONFIG dynamically from Excel data (rows 56+)
+// This ensures Excel is the single source of truth
+function buildModelConfig() {
+    const config = { portfolio1: [], portfolio2: [] };
+    
+    // Build model name to index map from row 2
+    const nameRow = EXCEL_DATA[1];
+    const modelMap = {};
+    for (let i = 2; i < nameRow.length; i++) {
+        if (nameRow[i]) {
+            modelMap[nameRow[i]] = i;
+        }
+    }
+    
+    // Read model availability from Excel rows 56+ (index 55+)
+    for (let rowIdx = 55; rowIdx < EXCEL_DATA.length; rowIdx++) {
+        const row = EXCEL_DATA[rowIdx];
+        if (!row || !row[0]) break; // Stop at empty row
+        
+        const modelName = row[0];
+        const inP1 = String(row[1]).toUpperCase() === 'YES';
+        const inP2 = String(row[2]).toUpperCase() === 'YES';
+        
+        const modelIndex = modelMap[modelName];
+        if (modelIndex) {
+            if (inP1) config.portfolio1.push(modelIndex);
+            if (inP2) config.portfolio2.push(modelIndex);
+        }
+    }
+    
+    return config;
+}
+
+const MODEL_CONFIG = buildModelConfig();
 
 // ADVANCED METRICS VISIBILITY - Controls whether Advanced Risk Metrics section is shown
 // Default: false (hidden for end users, shown in #update mode only)
@@ -8410,32 +8440,79 @@ let SHOW_ADVANCED_METRICS = false;
         
         // Pre-Built Scenarios - One-click portfolio comparisons
         // SCENARIO CONFIGURATION DATA - Editable in #update mode
-        const SCENARIO_CONFIG = {
-            scenario1: {
-                title: '💼 Target Fund',
-                desc: 'Target Fund vs Aggressive WR Adj',
-                portfolio1: { option1: 20, alloc1: 100, option2: null, alloc2: 0, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
-            },
-            scenario2: {
-                title: '🛡️ Conservative',
-                desc: 'Traditional 40/60 vs Moderate WR Adj',
-                portfolio1: { option1: 18, alloc1: 40, option2: 13, alloc2: 60, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 6, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
-            },
-            scenario3: {
-                title: '📉 Balanced Growth',
-                desc: 'Traditional balanced vs Aggressive WR Adj',
-                portfolio1: { option1: 18, alloc1: 60, option2: 13, alloc2: 40, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 100, option4: null, alloc4: 0, option7: null, alloc7: 0, option8: null, alloc8: 0 }
-            },
-            scenario4: {
-                title: '🚀 Aggressive Growth',
-                desc: 'Traditional Aggressive 80/20 vs Aggressive WR Adj / Lev Nasdaq + WR Adj',
-                portfolio1: { option1: 18, alloc1: 80, option2: 13, alloc2: 20, option5: null, alloc5: 0, option6: null, alloc6: 0 },
-                portfolio2: { option3: 5, alloc3: 80, option4: 8, alloc4: 20, option7: null, alloc7: 0, option8: null, alloc8: 0 }
+        // Build SCENARIO_CONFIG dynamically from Excel data (rows 47-50)
+        // This ensures Excel is the single source of truth
+        function buildScenarioConfig() {
+            const config = {};
+            
+            // Build model name to index map
+            const nameRow = EXCEL_DATA[1]; // Row 2 in Excel = index 1
+            const modelMap = {};
+            for (let i = 2; i < nameRow.length; i++) {
+                if (nameRow[i]) {
+                    modelMap[nameRow[i]] = i;
+                }
             }
-        };
+            
+            // Read scenarios from Excel rows 47-50 (indices 46-49)
+            for (let scenarioNum = 1; scenarioNum <= 4; scenarioNum++) {
+                const rowIndex = 46 + (scenarioNum - 1); // Row 47 = index 46
+                const row = EXCEL_DATA[rowIndex];
+                
+                if (!row) continue;
+                
+                const title = row[1] || `Scenario ${scenarioNum}`;
+                const desc = row[2] || '';
+                
+                // Portfolio 1 (Current)
+                const p1Model1 = row[3];
+                const p1Alloc1 = row[4] || 0;
+                const p1Model2 = row[5];
+                const p1Alloc2 = row[6] || 0;
+                
+                // Portfolio 2 (Modeled)
+                const p2Model1 = row[7];
+                const p2Alloc1 = row[8] || 0;
+                const p2Model2 = row[9];
+                const p2Alloc2 = row[10] || 0;
+                
+                // Convert model names to indices
+                const p1Idx1 = modelMap[p1Model1] || null;
+                const p1Idx2 = modelMap[p1Model2] || null;
+                const p2Idx1 = modelMap[p2Model1] || null;
+                const p2Idx2 = modelMap[p2Model2] || null;
+                
+                config[`scenario${scenarioNum}`] = {
+                    title: title,
+                    desc: desc,
+                    portfolio1: {
+                        option1: p1Idx1,
+                        alloc1: p1Alloc1,
+                        option2: p1Idx2,
+                        alloc2: p1Alloc2,
+                        option5: null,
+                        alloc5: 0,
+                        option6: null,
+                        alloc6: 0
+                    },
+                    portfolio2: {
+                        option3: p2Idx1,
+                        alloc3: p2Alloc1,
+                        option4: p2Idx2,
+                        alloc4: p2Alloc2,
+                        option7: null,
+                        alloc7: 0,
+                        option8: null,
+                        alloc8: 0
+                    }
+                };
+            }
+            
+            return config;
+        }
+        
+        // Build config from Excel data - Excel is the single source of truth
+        const SCENARIO_CONFIG = buildScenarioConfig();
         
         function loadScenario(scenarioName) {
             const scenario = SCENARIO_CONFIG[scenarioName];
