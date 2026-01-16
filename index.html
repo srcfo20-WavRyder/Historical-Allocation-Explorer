@@ -2588,7 +2588,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
@@ -3278,7 +3278,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         .modal-content {
             background: white;
-            max-width: 900px;
+            max-width: 1300px;
             margin: 0 auto;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -3912,66 +3912,6 @@ let SHOW_ADVANCED_METRICS = false;
             visibility: visible;
             opacity: 1;
         }
-        
-        /* Scenario Button Tooltips - Excel Editable (Rows 90-93) */
-        #scenarioButtonsGrid > button[title] {
-            position: relative;
-        }
-
-        #scenarioButtonsGrid > button[title]:hover::after {
-            content: attr(title);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2c3e50;
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.5;
-            width: 280px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-            white-space: normal;
-            text-align: left;
-            font-weight: 400;
-            pointer-events: none;
-        }
-
-        #scenarioButtonsGrid > button[title]:hover::before {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 8px solid transparent;
-            border-top-color: #2c3e50;
-            margin-bottom: 2px;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        /* Mobile tooltip adjustments for scenario buttons */
-        @media (max-width: 768px) {
-            #scenarioButtonsGrid > button[title]:hover::after,
-            #scenarioButtonsGrid > button[title]:active::after {
-                position: fixed;
-                left: 50% !important;
-                bottom: auto !important;
-                top: 50% !important;
-                transform: translate(-50%, -50%) !important;
-                width: calc(100vw - 60px);
-                max-width: 320px;
-                z-index: 10001;
-            }
-            
-            #scenarioButtonsGrid > button[title]:hover::before,
-            #scenarioButtonsGrid > button[title]:active::before {
-                display: none;
-            }
-        }
 
 </style>
 
@@ -4190,41 +4130,11 @@ let SHOW_ADVANCED_METRICS = false;
                 </div>
             </div>
             
-            <!-- How to Use Instructions - Collapsible (Excel Editable: Rows 88-89) -->
-            <div id="howToSection" style="max-width: 900px; margin: 20px auto 30px auto;">
-                <div style="background: #e7f3ff; border: 2px solid #2196f3; border-radius: 10px; overflow: hidden;">
-                    <!-- Header - Always Visible -->
-                    <div onclick="toggleInstructions()" style="padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2196f3, #1976d2);">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 24px;">📖</span>
-                            <span class="header-title" style="font-size: 16px; font-weight: 700; color: white;">How to Use This Tool</span>
-                        </div>
-                        <span id="instructionsToggle" style="font-size: 24px; color: white; transition: transform 0.3s;">▼</span>
-                    </div>
-                    
-                    <!-- Collapsible Content -->
-                    <div id="instructionsContent" style="display: none; padding: 20px; background: white;">
-                        <div id="howToInstructions" style="line-height: 1.8; color: #333;">
-                            <!-- Default Instructions (will be replaced by Excel Row 89 if provided) -->
-                            <p style="margin-bottom: 15px;">Follow these simple steps to explore hypothetical historical performance:</p>
-                            
-                            <p style="margin-bottom: 12px;"><strong>1. Choose Your Scenario:</strong> Click one of the four preset scenario buttons for quick comparisons, or build your own custom portfolio mix below.</p>
-                            
-                            <p style="margin-bottom: 12px;"><strong>2. Set Allocations:</strong> If building custom portfolios, select up to 2 models per portfolio and set allocation percentages (must total 100% per portfolio).</p>
-                            
-                            <p style="margin-bottom: 12px;"><strong>3. Run Comparison:</strong> Click the "Run Comparison" button to see how these portfolios would have performed historically from 2005-2025.</p>
-                            
-                            <p style="margin-bottom: 12px;"><strong>4. Review Results:</strong> Examine growth charts, CAGR, total returns, and risk metrics like maximum drawdown. All data is hypothetical and for educational purposes only.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Select Portfolio Combinations Header -->
             <h3 style="margin: 30px 0 20px 0; color: #495057; text-align: center; font-size: 20px;">Select Portfolio Combinations</h3>
             
             <!-- PRE-BUILT SCENARIOS - One-Click Demonstrations -->
-            <div style="max-width: 1000px; margin: 0 auto 30px auto; padding: 25px; background: linear-gradient(135deg, #fef3c7, #fef9c3); 
+            <div style="max-width: 1350px; margin: 0 auto 30px auto; padding: 25px; background: linear-gradient(135deg, #fef3c7, #fef9c3); 
                         border: 2px solid #fbbf24; border-radius: 12px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 24px; margin-bottom: 10px;">⚡</div>
@@ -4238,7 +4148,6 @@ let SHOW_ADVANCED_METRICS = false;
                 
                 <div id="scenarioButtonsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                     <button onclick="loadScenario('scenario1')" 
-                            title="Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio to see potential differences in long-term growth and risk."
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
@@ -4252,7 +4161,6 @@ let SHOW_ADVANCED_METRICS = false;
                     </button>
                     
                     <button onclick="loadScenario('scenario2')" 
-                            title="A conservative 40/60 stock/bond mix compared to a WavRyder conservative allocation. Ideal for investors prioritizing capital preservation with modest growth."
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
@@ -4266,7 +4174,6 @@ let SHOW_ADVANCED_METRICS = false;
                     </button>
                     
                     <button onclick="loadScenario('scenario3')" 
-                            title="Traditional balanced 60/40 portfolio versus an aggressive WavRyder approach. Shows how different risk profiles might have performed historically."
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
@@ -4280,7 +4187,6 @@ let SHOW_ADVANCED_METRICS = false;
                     </button>
                     
                     <button onclick="loadScenario('scenario4')" 
-                            title="Aggressive 80/20 allocation compared to WavRyder aggressive strategies with leveraged components. For investors comfortable with higher volatility for growth potential."
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
@@ -4299,6 +4205,70 @@ let SHOW_ADVANCED_METRICS = false;
                 </div>
             </div>
             
+            <!-- How to Use Instructions - Collapsible -->
+            <div style="max-width: 1300px; margin: 0 auto 30px auto;">
+                <div style="background: #e7f3ff; border: 2px solid #2196f3; border-radius: 10px; overflow: hidden;">
+                    <!-- Header - Always Visible -->
+                    <div onclick="toggleInstructions()" style="padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2196f3, #1976d2);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">📖</span>
+                            <span style="font-size: 16px; font-weight: 700; color: white;">How to Use This Tool</span>
+                        </div>
+                        <span id="instructionsToggle" style="font-size: 24px; color: white; transition: transform 0.3s;">▼</span>
+                    </div>
+                    
+                    <!-- Collapsible Content -->
+                    <div id="instructionsContent" style="display: none; padding: 20px; background: white;">
+                        <div id="instructionsText" style="line-height: 1.8; color: #333;">
+                            <!-- Default Instructions -->
+                            <h4 style="color: #2196f3; margin: 0 0 15px 0; font-size: 16px;">📊 Quick Start Guide</h4>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: #1976d2;">STEP 1: Current Portfolio</strong> (What you have today)
+                                <ul style="margin: 8px 0 0 20px;">
+                                    <li><strong>Quick Templates:</strong> Select a preset allocation (Conservative, Moderate, Balanced, etc.)</li>
+                                    <li><strong>Custom Build:</strong> Use rows A-D to select models and allocation percentages</li>
+                                    <li><strong>Must total 100%</strong></li>
+                                </ul>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: #1976d2;">STEP 2: Modeled Portfolio</strong> (What you're considering)
+                                <ul style="margin: 8px 0 0 20px;">
+                                    <li>Scroll down to the second portfolio section</li>
+                                    <li>Build your proposed allocation using rows A-D</li>
+                                    <li>More model options available</li>
+                                    <li><strong>Must total 100%</strong></li>
+                                </ul>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: #1976d2;">STEP 3: Compare</strong>
+                                <ul style="margin: 8px 0 0 20px;">
+                                    <li>Click <strong>"Compare Portfolios"</strong> button</li>
+                                    <li>View historical performance comparison</li>
+                                    <li>See growth charts, metrics, and risk analysis</li>
+                                </ul>
+                            </div>
+                            
+                            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-top: 15px; border-radius: 4px;">
+                                <strong>💡 Tip:</strong> Use Quick Templates to load common allocations instantly, then customize as needed!
+                            </div>
+                            
+                            <div style="background: #f8d7da; border-left: 4px solid #dc3545; padding: 12px; margin-top: 10px; border-radius: 4px; font-size: 13px;">
+                                <strong>⚠️ Important:</strong> This tool shows hypothetical historical performance. Past results do not guarantee future returns. For educational purposes only.
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Button (only visible in #update mode) -->
+                        <div id="editInstructionsBtn" style="display: none; margin-top: 20px; text-align: center;">
+                            <button onclick="editInstructions()" style="padding: 10px 20px; background: #ff9800; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px;">
+                                ✏️ Edit Instructions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
                         <!-- Current Container -->
 
@@ -4589,7 +4559,7 @@ let SHOW_ADVANCED_METRICS = false;
         <div id="reportContent" style="display: none;">
             
             <!-- AHA MOMENT SUMMARY CARD - High-Impact Results Summary -->
-            <div id="ahaCard" style="display: none; max-width: 900px; margin: 30px auto 40px auto; 
+            <div id="ahaCard" style="display: none; max-width: 1300px; margin: 30px auto 40px auto; 
                                      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); 
                                      border-radius: 16px; padding: 40px 30px; box-shadow: 0 10px 40px rgba(30, 58, 138, 0.3);
                                      border: 3px solid #60a5fa;">
@@ -5037,7 +5007,7 @@ let SHOW_ADVANCED_METRICS = false;
             <!-- End Risk Metrics Collapsible Section -->
             
             <!-- Footnotes Section - Phase 2 Priority 6 -->
-            <div id="footnotesSection" style="display: none; margin: 30px auto 20px auto; padding: 20px; background: #f0f7ff; border-radius: 10px; border-left: 4px solid #2196f3; max-width: 900px;">
+            <div id="footnotesSection" style="display: none; margin: 30px auto 20px auto; padding: 20px; background: #f0f7ff; border-radius: 10px; border-left: 4px solid #2196f3; max-width: 1300px;">
                 <h4 style="color: #1565c0; font-size: 16px; font-weight: 700; margin: 0 0 15px 0;">
                     📌 Footnotes
                 </h4>
@@ -5047,7 +5017,7 @@ let SHOW_ADVANCED_METRICS = false;
             </div>
             
             <!-- Final Comprehensive Disclaimer -->
-            <div style="margin: 30px auto 20px auto; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; max-width: 900px;">
+            <div style="margin: 30px auto 20px auto; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; max-width: 1300px;">
                 <h4 style="color: #495057; font-size: 16px; font-weight: 700; margin: 0 0 12px 0; text-align: center;">
                     📋 COMPREHENSIVE DISCLOSURE
                 </h4>
@@ -5778,50 +5748,6 @@ let SHOW_ADVANCED_METRICS = false;
                             }
                         } catch (e) {
                             console.error('Error reading instructions:', e);
-                        }
-                    }
-                    
-                    // SECTION 3A: How to Use Section (Rows 88-89: Title and Content)
-                    if (jsonData.length >= 89) {
-                        try {
-                            const howToTitle = jsonData[87][1]; // Row 88, Column B
-                            const howToContent = jsonData[88][1]; // Row 89, Column B
-                            
-                            if (howToTitle) {
-                                const titleEl = document.querySelector('#howToSection .header-title');
-                                if (titleEl) {
-                                    titleEl.textContent = howToTitle;
-                                    console.log('✅ Loaded How to Use title from Excel Row 88');
-                                }
-                            }
-                            
-                            if (howToContent) {
-                                const contentEl = document.getElementById('howToInstructions');
-                                if (contentEl) {
-                                    contentEl.innerHTML = howToContent;
-                                    console.log('✅ Loaded How to Use content from Excel Row 89');
-                                }
-                            }
-                        } catch (e) {
-                            console.error('Error loading How to Use section:', e);
-                        }
-                    }
-                    
-                    // SECTION 3B: Scenario Button Tooltips (Rows 90-93)
-                    if (jsonData.length >= 93) {
-                        try {
-                            for (let i = 1; i <= 4; i++) {
-                                const tooltip = jsonData[88 + i][1]; // Rows 90-93, Column B
-                                if (tooltip) {
-                                    const button = document.querySelector(`button[onclick="loadScenario('scenario${i}')"]`);
-                                    if (button) {
-                                        button.setAttribute('title', tooltip);
-                                        console.log(`✅ Loaded tooltip for Scenario ${i} from Excel Row ${89 + i}`);
-                                    }
-                                }
-                            }
-                        } catch (e) {
-                            console.error('Error loading scenario tooltips:', e);
                         }
                     }
                     
