@@ -8299,9 +8299,16 @@ let SHOW_ADVANCED_METRICS = false;
             let htmlContent = document.documentElement.outerHTML;
             
             // CRITICAL: Ensure updateDataSection is ALWAYS display: none in the exported HTML
+            // Replace any display value (block, none, flex, etc.) with display: none
             htmlContent = htmlContent.replace(
-                /id="updateDataSection" style="display:\s*block\s*(!important)?;/g,
-                'id="updateDataSection" style="display: none !important;'
+                /id="updateDataSection"\s+style="([^"]*display:\s*[^;]+;?[^"]*)"/g,
+                function(match, styleContent) {
+                    // Remove any existing display property
+                    let newStyle = styleContent.replace(/display:\s*[^;]+;?/g, '');
+                    // Add display: none at the beginning
+                    newStyle = 'display: none; ' + newStyle.trim();
+                    return `id="updateDataSection" style="${newStyle}"`;
+                }
             );
             
             // Replace SCENARIO_CONFIG in HTML with current config
