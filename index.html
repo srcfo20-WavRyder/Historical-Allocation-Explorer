@@ -3838,10 +3838,14 @@ let SHOW_ADVANCED_METRICS = false;
                 }
                 
                 // Check if URL has #update - show update section only for admin
+                console.log('Checking #update mode, current hash:', window.location.hash);
                 const updateSection = document.getElementById('updateDataSection');
+                console.log('Update section element found:', !!updateSection);
                 if (updateSection) {
                     if (window.location.hash === '#update') {
+                        console.log('Showing update section');
                         updateSection.classList.add('visible');
+                        updateSection.style.display = 'block'; // Also set directly
                     } else {
                         updateSection.classList.remove('visible');
                     }
@@ -3849,12 +3853,16 @@ let SHOW_ADVANCED_METRICS = false;
                 
                 // Also listen for hash changes to hide/show dynamically
                 window.addEventListener('hashchange', function() {
+                    console.log('Hash changed to:', window.location.hash);
                     const updateSection = document.getElementById('updateDataSection');
                     if (updateSection) {
                         if (window.location.hash === '#update') {
+                            console.log('Showing update section on hash change');
                             updateSection.classList.add('visible');
+                            updateSection.style.display = 'block'; // Also set directly
                         } else {
                             updateSection.classList.remove('visible');
+                            updateSection.style.display = 'none';
                         }
                     }
                 });
