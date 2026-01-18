@@ -30,7 +30,7 @@
 
 <!-- Sticky Disclaimer Banner -->
 <div style="position: sticky; top: 0; z-index: 9999; background: #856404; color: white; 
-            padding: 8px; text-align: center; font-size: 12px; font-weight: 600;">
+            padding: 8px; text-align: center; font-size: 14px; font-weight: 600;">
     ⚠️ Educational Tool Only • Past Performance ≠ Future Results • Not Financial Advice
 </div>
 
@@ -587,7 +587,7 @@ const EXCEL_DATA = [
     "QQQ",
     "S&P500",
     "WavRyder SPY",
-    "Target Date Fund"
+    "Target Fund"
   ],
   [
     "Total Return",
@@ -1603,9 +1603,9 @@ const EXCEL_DATA = [
   ],
   [
     "Scenario 1",
-    "\ud83d\udcbc Target Date Fund",
-    "Target Date Fund vs Aggressive + WR Adj",
-    "Target Date Fund",
+    "\ud83d\udcbc Target Fund",
+    "Target Fund vs Aggressive + WR Adj",
+    "Target Fund",
     100,
     null,
     null,
@@ -2223,7 +2223,7 @@ const EXCEL_DATA = [
     null
   ],
   [
-    "Target Date Fund",
+    "Target Fund",
     "YES",
     "NO",
     null,
@@ -2338,7 +2338,7 @@ const EXCEL_DATA = [
     null
   ],
   [
-    "<strong>Compare Portfolio Performance:</strong> Select up to 4 models for each portfolio to create blended allocations. Use the preset scenario buttons for quick comparisons, or build your own custom portfolios. Click \"Run Comparison\" to see hypothetical historical performance from 2005-2025.\n\n<strong>How to Use:</strong> Choose your allocations (must total 100% per portfolio), set your time period, then compare returns, drawdowns, and risk metrics. All data is hypothetical and for educational purposes only.",
+    "<strong>Compare Portfolio Performance:</strong> Select up to 2 models for each portfolio to create blended allocations. Use the preset scenario buttons for quick comparisons, or build your own custom portfolios. Click \"Run Comparison\" to see hypothetical historical performance from 2005-2025.\n\n<strong>How to Use:</strong> Choose your allocations (must total 100% per portfolio), set your time period, then compare returns, drawdowns, and risk metrics. All data is hypothetical and for educational purposes only.",
     null,
     null,
     null,
@@ -2520,167 +2520,6 @@ const EXCEL_DATA = [
     null,
     null,
     null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "HOW TO USE - TITLE",
-    "How to Use This Tool",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "HOW TO USE - CONTENT",
-    "Follow these simple steps to explore hypothetical historical performance: \n\n1. <strong>Choose Your Scenario:</strong> Click one of the four preset scenario buttons for quick comparisons, or scroll down to the portfolio selection boxes to build your own custom portfolio mix below. \n\n2. <strong>Set Allocations:</strong> If building custom portfolios, select up to 4 models per portfolio and set allocation percentages (must total 100% per portfolio). \n\n3. <strong>Run Comparison:</strong> Click the \"Run Comparison\" button to see how these portfolios would have performed historically from 2005-2025. \n\n4. <strong>Review Results:</strong> Examine growth charts, CAGR, total returns, and risk metrics like maximum drawdown. Note that each of the key terms has a hover button that when clicked will provide a description of the term. All data is hypothetical and for educational purposes only.",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "SCENARIO 1 TOOLTIP",
-    "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk.",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "SCENARIO 2 TOOLTIP",
-    "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation  (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth.",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "SCENARIO 3 TOOLTIP",
-    "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically.",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    "SCENARIO 4 TOOLTIP",
-    "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential.",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
   ]
 ];
 
@@ -2735,7 +2574,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         html {
-            font-size: 16px;
+            font-size: 20px;
             -webkit-text-size-adjust: 100%;
             -moz-text-size-adjust: 100%;
             -ms-text-size-adjust: 100%;
@@ -2749,7 +2588,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
@@ -2796,7 +2635,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .portfolio-header {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
             color: #000000;
             margin-bottom: 12px;
@@ -2811,7 +2650,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         /* Models Label */
         .models-label {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 600;
             color: #495057;
             margin-bottom: 5px;
@@ -2834,7 +2673,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         /* Even labels - compact */
         .selector-label-even {
-            font-size: 11px;
+            font-size: 135px;
             font-weight: 600;
             color: #495057;
         }
@@ -2845,7 +2684,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 8px;
             border: 1.5px solid #ced4da;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 17px;
             background: white;
             cursor: pointer;
             transition: border-color 0.2s ease;
@@ -2854,7 +2693,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         /* Smaller allocation selects */
         .select-alloc {
-            font-size: 12px;
+            font-size: 16px;
             padding: 6px 4px;
             text-align: center;
         }
@@ -2884,7 +2723,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .selector-label-stack {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 600;
             color: #000000;
             white-space: nowrap;
@@ -2897,7 +2736,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 6px 8px;
             border: 1px solid #000000;
             border-radius: 0px;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
             background: white;
             cursor: pointer;
@@ -2913,7 +2752,7 @@ let SHOW_ADVANCED_METRICS = false;
             flex: 0 0 55px;
             width: 55px;
             text-align: center;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
             padding: 6px 4px;
             box-sizing: border-box;
@@ -2946,7 +2785,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .selector-label-2col {
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 600;
             color: #495057;
         }
@@ -2957,7 +2796,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 6px 4px;
             border: 1.5px solid #ced4da;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 17px;
             background: white;
             cursor: pointer;
             transition: border-color 0.2s ease;
@@ -2968,7 +2807,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .select-alloc-2col {
-            font-size: 13px;
+            font-size: 17px;
             text-align: center;
             padding: 4px 2px;
             width: 8ch;
@@ -3004,7 +2843,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .selector-label-compact {
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 600;
             color: #495057;
         }
@@ -3013,7 +2852,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 6px 8px;
             border: 1.5px solid #ced4da;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 16px;
             background: white;
             cursor: pointer;
             transition: border-color 0.2s ease;
@@ -3048,12 +2887,12 @@ let SHOW_ADVANCED_METRICS = false;
         .selector-label {
             font-weight: 600;
             color: #495057;
-            font-size: 13px;
+            font-size: 17px;
         }
         
         select {
             padding: 8px 12px;
-            font-size: 14px;
+            font-size: 18px;
             border: 2px solid #dee2e6;
             border-radius: 6px;
             background: white;
@@ -3146,7 +2985,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         .copy-status {
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 17px;
             color: #28a745;
             font-weight: 600;
             display: none;
@@ -3176,7 +3015,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         h1 {
-            font-size: 34px;
+            font-size: 44px;
             color: #1a1a1a;
             margin-bottom: 3px;
             font-weight: 900;
@@ -3188,13 +3027,13 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .subtitle {
-            font-size: 16px;
+            font-size: 20px;
             color: #666;
             font-style: italic;
         }
         
         .section-header {
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 700;
             color: #1a1a1a;
             margin: 10px 0 6px 0;
@@ -3218,7 +3057,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 4px 5px;
             text-align: center;
             font-weight: 600;
-            font-size: 17px;
+            font-size: 21px;
         }
         
         .performance-table th:nth-child(2),
@@ -3239,7 +3078,7 @@ let SHOW_ADVANCED_METRICS = false;
             padding: 3px 5px;
             text-align: center;
             border-bottom: 1px solid #e9ecef;
-            font-size: 17px;
+            font-size: 21px;
         }
         
         .performance-table tbody tr:hover {
@@ -3292,7 +3131,7 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .metric-title {
-            font-size: 15px;
+            font-size: 19px;
             color: #666;
             margin-bottom: 3px;
             font-weight: 700;
@@ -3305,7 +3144,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         .metric-table td {
             padding: 1px 4px;
-            font-size: 14px;
+            font-size: 18px;
             text-align: left;
         }
         
@@ -3439,7 +3278,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         .modal-content {
             background: white;
-            max-width: 1300px;
+            max-width: 900px;
             margin: 0 auto;
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -3674,7 +3513,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         .pie-chart-title {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 20px;
             margin-bottom: 10px;
             color: #333;
         }
@@ -3737,7 +3576,7 @@ let SHOW_ADVANCED_METRICS = false;
             }
             
             .selector-label-stack {
-                font-size: 14px;
+                font-size: 13px;
             }
             
             .select-stack {
@@ -4074,101 +3913,6 @@ let SHOW_ADVANCED_METRICS = false;
             opacity: 1;
         }
 
-
-
-        
-        
-        
-        
-
-        /* Scenario button grid - equal heights and widths */
-        #scenarioButtonsGrid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            grid-template-rows: 1fr 1fr !important;
-            gap: 12px !important;
-            width: 100% !important;
-        }
-        
-        #scenarioButtonsGrid .scenario-button-wrapper {
-            height: 100%;
-            width: 100%;
-            display: flex;
-        }
-        
-        #scenarioButtonsGrid .scenario-button-wrapper button {
-            width: 100% !important;
-            height: 100% !important;
-            flex: 1;
-            min-height: 90px;
-        }
-        
-/* Scenario button consistent sizing */
-        .scenario-button-wrapper button,
-        #scenarioButtonsGrid .scenario-button-wrapper button {
-            height: 110px !important;
-            min-height: 110px !important;
-            max-height: 110px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: flex-start !important;
-            box-sizing: border-box !important;
-        }
-        
-/* Scenario button tooltip styling */
-        .scenario-button-wrapper {
-            position: relative;
-            display: block;
-            width: 100%;
-        }
-        
-        .scenario-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.4;
-            width: 240px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: opacity 0.2s, visibility 0.2s;
-            text-align: left;
-            font-weight: 400;
-            pointer-events: none;
-            white-space: normal;
-        }
-        
-        .scenario-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2c3e50 transparent transparent transparent;
-        }
-        
-        .scenario-button-wrapper:hover .scenario-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        @media (max-width: 768px) {
-            .scenario-tooltip {
-                width: 200px;
-                font-size: 11px;
-                padding: 8px 12px;
-            }
-        }
 </style>
 
 
@@ -4390,7 +4134,7 @@ let SHOW_ADVANCED_METRICS = false;
             <h3 style="margin: 30px 0 20px 0; color: #495057; text-align: center; font-size: 20px;">Select Portfolio Combinations</h3>
             
             <!-- PRE-BUILT SCENARIOS - One-Click Demonstrations -->
-            <div style="max-width: 1350px; margin: 0 auto 30px auto; padding: 25px; background: linear-gradient(135deg, #fef3c7, #fef9c3); 
+            <div style="max-width: 1000px; margin: 0 auto 30px auto; padding: 25px; background: linear-gradient(135deg, #fef3c7, #fef9c3); 
                         border: 2px solid #fbbf24; border-radius: 12px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 24px; margin-bottom: 10px;">⚡</div>
@@ -4402,75 +4146,67 @@ let SHOW_ADVANCED_METRICS = false;
                     </p>
                 </div>
                 
-                <div id="scenarioButtonsGrid" style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; width: 100%;">
-                    <div class="scenario-button-wrapper">
+                <div id="scenarioButtonsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                     <button onclick="loadScenario('scenario1')" 
-                            
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario1_title">
-                            💼 Target Date Fund</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario1_desc">
-                            Target Date Fund vs Aggressive + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 19px;" id="scenario1_title">
+                            🛡️ Conservative
+                        </div>
+                        <div style="font-size: 16px; color: #b45309;" id="scenario1_desc">
+                            Traditional 60/40 vs Conservative + WR Adj
+                        </div>
                     </button>
-                    <span class="scenario-tooltip">Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio to see potential differences in long-term growth and risk.</span>
-                </div>
                     
-                    <div class="scenario-button-wrapper">
                     <button onclick="loadScenario('scenario2')" 
-                            
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario2_title">
-                            🛡️ Conservative</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario2_desc">
-                            Traditional 40/60 vs Moderate + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 19px;" id="scenario2_title">
+                            🚀 Aggressive Growth
+                        </div>
+                        <div style="font-size: 16px; color: #b45309;" id="scenario2_desc">
+                            Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj
+                        </div>
                     </button>
-                    <span class="scenario-tooltip">A conservative 40/60 stock/bond mix compared to a WavRyder moderate allocation. Ideal for investors prioritizing capital preservation with modest growth.</span>
-                </div>
                     
-                    <div class="scenario-button-wrapper">
                     <button onclick="loadScenario('scenario3')" 
-                            
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario3_title">
-                            📉 Balanced Growth</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario3_desc">
-                            Traditional balanced vs Aggressive + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 19px;" id="scenario3_title">
+                            📉 Balanced Growth
+                        </div>
+                        <div style="font-size: 16px; color: #b45309;" id="scenario3_desc">
+                            Traditional balanced vs Aggressive + WR Adj
+                        </div>
                     </button>
-                    <span class="scenario-tooltip">Balanced 60/40 stock/bond portfolio versus an aggressive WavRyder approach. Shows how different risk profiles might have performed historically.</span>
-                </div>
                     
-                    <div class="scenario-button-wrapper">
                     <button onclick="loadScenario('scenario4')" 
-                            
                             style="padding: 15px 20px; background: white; border: 2px solid #f59e0b; border-radius: 10px; 
                                    cursor: pointer; text-align: left; transition: all 0.3s; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);"
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.25)';"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(245, 158, 11, 0.15)';">
-                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 15px;" id="scenario4_title">
-                            🚀 Aggressive Growth</div>
-                        <div style="font-size: 12px; color: #b45309;" id="scenario4_desc">
-                            Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj</div>
+                        <div style="font-weight: 700; color: #92400e; margin-bottom: 5px; font-size: 19px;" id="scenario4_title">
+                            💼 Moderate Growth
+                        </div>
+                        <div style="font-size: 16px; color: #b45309;" id="scenario4_desc">
+                            Traditional Moderate 50/50 vs Moderate + WR Adj
+                        </div>
                     </button>
-                    <span class="scenario-tooltip">Aggressive 80/20 stock/bond allocation compared to WavRyder aggressive strategies with leveraged components. For investors comfortable with higher volatility for growth potential.</span>
-                </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 15px; font-size: 12px; color: #92400e; font-style: italic;">
+                <div style="text-align: center; margin-top: 15px; font-size: 16px; color: #92400e; font-style: italic;">
                     Or build your own custom comparison below ↓
                 </div>
             </div>
             
             <!-- How to Use Instructions - Collapsible -->
-            <div style="max-width: 1300px; margin: 0 auto 30px auto;">
+            <div style="max-width: 900px; margin: 0 auto 30px auto;">
                 <div style="background: #e7f3ff; border: 2px solid #2196f3; border-radius: 10px; overflow: hidden;">
                     <!-- Header - Always Visible -->
                     <div onclick="toggleInstructions()" style="padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2196f3, #1976d2);">
@@ -4823,7 +4559,7 @@ let SHOW_ADVANCED_METRICS = false;
         <div id="reportContent" style="display: none;">
             
             <!-- AHA MOMENT SUMMARY CARD - High-Impact Results Summary -->
-            <div id="ahaCard" style="display: none; max-width: 1300px; margin: 30px auto 40px auto; 
+            <div id="ahaCard" style="display: none; max-width: 900px; margin: 30px auto 40px auto; 
                                      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); 
                                      border-radius: 16px; padding: 40px 30px; box-shadow: 0 10px 40px rgba(30, 58, 138, 0.3);
                                      border: 3px solid #60a5fa;">
@@ -4865,12 +4601,12 @@ let SHOW_ADVANCED_METRICS = false;
                                 display: flex; align-items: center; gap: 10px;"
                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255, 255, 255, 0.4)';"
                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(255, 255, 255, 0.3)';">
-                            📅 Schedule a Free Webinar to Learn More
+                            📅 Talk to a WavRyder Advisor
                         </button>
                     </div>
                     
                     <div style="margin-top: 20px; font-size: 13px; color: #cbd5e1;">
-                        No obligation • See if WavRyder is right for you
+                        Free consultation • No obligation • See if WavRyder is right for you
                     </div>
                 </div>
             </div>
@@ -4906,7 +4642,7 @@ let SHOW_ADVANCED_METRICS = false;
                 </div>
                 
                 <!-- Data Period Notice -->
-                <div style="text-align: center; font-size: 12px; color: #6c757d; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
+                <div style="text-align: center; font-size: 14px; color: #6c757d; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px;">
                     📅 Hypothetical Scenario Period: <strong><span id="headerStartDate">December 30, 2005</span> - <span id="headerEndDate">December 31, 2025</span></strong> (<span id="headerYearsCount">20</span> years) | Last Updated: January 10, 2025
                 </div>
 
@@ -4963,12 +4699,12 @@ let SHOW_ADVANCED_METRICS = false;
                         </tbody></table>
                     </div>
                 </div>
-                <div style="text-align: center; font-size: 11px; color: #999; font-style: italic; margin-top: 6px;">
-                    <div style="font-weight: 600; font-size: 12px; color: #1565c0; margin-bottom: 8px;">
+                <div style="text-align: center; font-size: 15px; color: #999; font-style: italic; margin-top: 6px;">
+                    <div style="font-weight: 600; font-size: 16px; color: #1565c0; margin-bottom: 8px;">
                         📋 Hypothetical Scenario Methodology (<span id="methodologyYearRange">2005-2025</span>)
                     </div>
                     <ul style="text-align: left; display: inline-block; margin: 5px 0;">
-                        <li>Hypothetical back-test CAGRs and growth from daily model (Jan 2006 - Dec 2024)</li>
+                        <li>Hypothetical back-test CAGRs and growth from daily model (Jan 2006 - Dec 2025)</li>
                         <li><strong>Multi-model portfolios assume annual rebalancing to target allocations</strong></li>
                         <li>Max annual drawdown based on year-end values</li>
                         <li>Transaction costs, taxes, and slippage not included</li>
@@ -4990,7 +4726,7 @@ let SHOW_ADVANCED_METRICS = false;
                              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(33, 150, 243, 0.15)';">
                             <img src="data:image/png;base64,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" 
                                  alt="WavRyder Logo" style="height: 24px; width: auto;">
-                            <span style="font-size: 15px; font-weight: 600; color: #1565c0;">
+                            <span style="font-size: 18px; font-weight: 600; color: #1565c0;">
                                 Want to learn more about WavRyder's methodology? Visit WavRyder.com
                             </span>
                         </div>
@@ -4998,7 +4734,7 @@ let SHOW_ADVANCED_METRICS = false;
                 </div>
 
                 <div class="section-header">Hypothetical Performance Metrics</div>
-                <div id="portfolioKey" style="text-align: center; font-size: 13px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
+                <div id="portfolioKey" style="text-align: center; font-size: 17px; color: #666; font-style: italic; margin-top: 3px; margin-bottom: 8px;">
                     <span id="portfolio1Description">Current Portfolio</span> vs <span id="portfolio2Description">Modeled Portfolio</span>
                 </div>
                 
@@ -5070,7 +4806,7 @@ let SHOW_ADVANCED_METRICS = false;
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(33, 150, 243, 0.15)';">
                         <img src="data:image/png;base64,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" 
                              alt="WavRyder Logo" style="height: 24px; width: auto;">
-                        <span style="font-size: 15px; font-weight: 600; color: #1565c0;">
+                        <span style="font-size: 18px; font-weight: 600; color: #1565c0;">
                             Want to learn more about WavRyder's methodology? Visit WavRyder.com
                         </span>
                     </div>
@@ -5271,17 +5007,17 @@ let SHOW_ADVANCED_METRICS = false;
             <!-- End Risk Metrics Collapsible Section -->
             
             <!-- Footnotes Section - Phase 2 Priority 6 -->
-            <div id="footnotesSection" style="display: none; margin: 30px auto 20px auto; padding: 20px; background: #f0f7ff; border-radius: 10px; border-left: 4px solid #2196f3; max-width: 1300px;">
+            <div id="footnotesSection" style="display: none; margin: 30px auto 20px auto; padding: 20px; background: #f0f7ff; border-radius: 10px; border-left: 4px solid #2196f3; max-width: 900px;">
                 <h4 style="color: #1565c0; font-size: 16px; font-weight: 700; margin: 0 0 15px 0;">
                     📌 Footnotes
                 </h4>
-                <div id="footnotesContent" style="color: #495057; font-size: 13px; line-height: 1.8;">
+                <div id="footnotesContent" style="color: #495057; font-size: 17px; line-height: 1.8;">
                     <!-- Footnotes will be dynamically inserted here -->
                 </div>
             </div>
             
             <!-- Final Comprehensive Disclaimer -->
-            <div style="margin: 30px auto 20px auto; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; max-width: 1300px;">
+            <div style="margin: 30px auto 20px auto; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #dee2e6; max-width: 900px;">
                 <h4 style="color: #495057; font-size: 16px; font-weight: 700; margin: 0 0 12px 0; text-align: center;">
                     📋 COMPREHENSIVE DISCLOSURE
                 </h4>
@@ -5320,7 +5056,7 @@ let SHOW_ADVANCED_METRICS = false;
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(33, 150, 243, 0.15)';">
                         <img src="data:image/png;base64,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" 
                              alt="WavRyder Logo" style="height: 24px; width: auto;">
-                        <span style="font-size: 15px; font-weight: 600; color: #1565c0;">
+                        <span style="font-size: 18px; font-weight: 600; color: #1565c0;">
                             Want to learn more about WavRyder's methodology? Visit WavRyder.com
                         </span>
                     </div>
@@ -5488,8 +5224,8 @@ let SHOW_ADVANCED_METRICS = false;
         let ahaCardConfig = {
             title: "Here's What the Data Shows",
             button1: "📧 Email Me These Results",
-            button2: "📅 Schedule a Free Webinar to Learn More",
-            subtext: "No obligation • See if WavRyder is right for you"
+            button2: "📅 Talk to a WavRyder Advisor",
+            subtext: "Free consultation • No obligation • See if WavRyder is right for you"
         };
         
         // Function to process Excel data (used by both file upload and data file)
@@ -6393,64 +6129,79 @@ let SHOW_ADVANCED_METRICS = false;
             
             if (!template) return;
             
-            // Template definitions: [Model Index, Allocation %]
+            // Helper function to find model index by name (Single Source of Truth from Excel)
+            function getModelIndex(modelName) {
+                const header = columnHeaders.find(h => h.name === modelName);
+                return header ? header.index : null;
+            }
+            
+            // Template definitions using MODEL NAMES (not hardcoded indices)
+            // This ensures Excel remains the Single Source of Truth
             const templates = {
                 conservative: {
-                    A: [18, 40],  // 40% SPY (index 18)
-                    B: [13, 60],  // 60% AGG (index 13)
+                    A: ['S&P500', 40],      // 40% S&P500
+                    B: ['Bond', 60],        // 60% Bonds
                     C: [null, 0],
                     D: [null, 0]
                 },
                 moderate: {
-                    A: [18, 50],  // 50% SPY
-                    B: [13, 50],  // 50% AGG
+                    A: ['S&P500', 50],      // 50% S&P500
+                    B: ['Bond', 50],        // 50% Bonds
                     C: [null, 0],
                     D: [null, 0]
                 },
                 balanced: {
-                    A: [18, 60],  // 60% SPY
-                    B: [13, 40],  // 40% AGG
+                    A: ['S&P500', 60],      // 60% S&P500
+                    B: ['Bond', 40],        // 40% Bonds
                     C: [null, 0],
                     D: [null, 0]
                 },
                 growth: {
-                    A: [18, 70],  // 70% SPY
-                    B: [13, 30],  // 30% AGG
+                    A: ['S&P500', 70],      // 70% S&P500
+                    B: ['Bond', 30],        // 30% Bonds
                     C: [null, 0],
                     D: [null, 0]
                 },
                 aggressive: {
-                    A: [18, 80],  // 80% SPY
-                    B: [13, 20],  // 20% AGG
+                    A: ['S&P500', 80],      // 80% S&P500
+                    B: ['Bond', 20],        // 20% Bonds
                     C: [null, 0],
                     D: [null, 0]
                 },
                 global: {
-                    A: [18, 60],  // 60% SPY
-                    B: [13, 30],  // 30% AGG
-                    C: [15, 10],  // 10% VEA (index 15)
+                    A: ['S&P500', 60],      // 60% S&P500
+                    B: ['Bond', 30],        // 30% Bonds
+                    C: ['International', 10],  // 10% International
                     D: [null, 0]
                 }
             };
             
             const config = templates[template];
             
+            // Convert model names to indices dynamically
+            const configWithIndices = {
+                A: [config.A[0] ? getModelIndex(config.A[0]) : null, config.A[1]],
+                B: [config.B[0] ? getModelIndex(config.B[0]) : null, config.B[1]],
+                C: [config.C[0] ? getModelIndex(config.C[0]) : null, config.C[1]],
+                D: [config.D[0] ? getModelIndex(config.D[0]) : null, config.D[1]]
+            };
+            
             // Load Current (Current) selectors (option1, option2, option5, option6)
             // A row
-            document.getElementById('option1Select').value = config.A[0] || '';
-            document.getElementById('allocation1Select').value = config.A[1];
+            document.getElementById('option1Select').value = configWithIndices.A[0] || '';
+            document.getElementById('allocation1Select').value = configWithIndices.A[1];
             
             // B row
-            document.getElementById('option2Select').value = config.B[0] || '';
-            document.getElementById('allocation2Select').value = config.B[1];
+            document.getElementById('option2Select').value = configWithIndices.B[0] || '';
+            document.getElementById('allocation2Select').value = configWithIndices.B[1];
             
             // C row
-            document.getElementById('option5Select').value = config.C[0] || '';
-            document.getElementById('allocation5Select').value = config.C[1];
+            document.getElementById('option5Select').value = configWithIndices.C[0] || '';
+            document.getElementById('allocation5Select').value = configWithIndices.C[1];
             
             // D row
-            document.getElementById('option6Select').value = config.D[0] || '';
-            document.getElementById('allocation6Select').value = config.D[1];
+            document.getElementById('option6Select').value = configWithIndices.D[0] || '';
+            document.getElementById('allocation6Select').value = configWithIndices.D[1];
             
             // Visual feedback
             const templateSelectBox = document.getElementById('templateSelect');
@@ -6779,9 +6530,6 @@ let SHOW_ADVANCED_METRICS = false;
             
             // Generate compelling Aha Card with key insights
             generateAhaCard(fv1, fv2, dd1, dd2, p1_fullCAGR, p2_fullCAGR);
-            
-            // Generate dynamic Historical Interpretation based on actual data
-            generateDynamicInterpretation(fv1, fv2, dd1, dd2, p1_fullCAGR, p2_fullCAGR);
         }
         
         function createGrowthChart(col1, alloc1, col2, alloc2, col5, alloc5, col6, alloc6, col3, alloc3, col4, alloc4, col7, alloc7, col8, alloc8, portfolio1Name, portfolio2Name) {
@@ -7151,7 +6899,7 @@ let SHOW_ADVANCED_METRICS = false;
                 const chartNote = document.createElement('div');
                 chartNote.textContent = 'Growth calculated from annual returns with annual rebalancing.';
                 chartNote.style.textAlign = 'center';
-                chartNote.style.fontSize = '11px';
+                chartNote.style.fontSize = '14px';
                 chartNote.style.color = '#999';
                 chartNote.style.fontStyle = 'italic';
                 chartNote.style.marginTop = '8px';
@@ -7505,7 +7253,7 @@ let SHOW_ADVANCED_METRICS = false;
                 const chartNote = document.createElement('div');
                 chartNote.textContent = 'Growth calculated from annual returns with annual rebalancing.';
                 chartNote.style.textAlign = 'center';
-                chartNote.style.fontSize = '11px';
+                chartNote.style.fontSize = '14px';
                 chartNote.style.color = '#999';
                 chartNote.style.fontStyle = 'italic';
                 chartNote.style.marginTop = '8px';
@@ -8978,51 +8726,6 @@ let SHOW_ADVANCED_METRICS = false;
                 ahaCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 300);
         }
-
-        // Generate Dynamic Historical Interpretation based on actual comparison data
-        function generateDynamicInterpretation(p1Growth, p2Growth, p1Drawdown, p2Drawdown, p1CAGR, p2CAGR) {
-            const commentaryText = document.getElementById('commentaryText');
-            if (!commentaryText) return;
-            
-            const growthDiff = p2Growth - p1Growth;
-            const growthPct = ((growthDiff / p1Growth) * 100).toFixed(1);
-            const drawdownDiff = Math.abs(p1Drawdown) - Math.abs(p2Drawdown);
-            const cagrDiff = (p2CAGR - p1CAGR) * 100;
-            
-            let interpretation = '';
-            
-            if (parseFloat(growthPct) > 15) {
-                interpretation = `In this comparison, the Modeled Portfolio demonstrated significantly stronger growth, ` +
-                    `achieving ${Math.abs(growthPct).toFixed(1)}% higher total returns over the period. ` +
-                    `This occurred while ${drawdownDiff > 2 ? 'also reducing maximum drawdown by ' + drawdownDiff.toFixed(1) + ' percentage points' : 'maintaining comparable risk levels'}, ` +
-                    `highlighting the potential benefits of the WavRyder tactical approach during this historical period.`;
-            } else if (Math.abs(parseFloat(growthPct)) < 10 && drawdownDiff > 5) {
-                interpretation = `While total returns were relatively similar (within ${Math.abs(growthPct).toFixed(1)}%), ` +
-                    `the Modeled Portfolio achieved meaningfully lower drawdowns—reducing worst declines from ` +
-                    `${Math.abs(p1Drawdown).toFixed(1)}% to ${Math.abs(p2Drawdown).toFixed(1)}%. ` +
-                    `This suggests that in this historical period, the WavRyder approach provided better risk-adjusted performance, ` +
-                    `delivering comparable returns with notably less volatility.`;
-            } else if (parseFloat(growthPct) < -5) {
-                interpretation = `In this comparison, the Current Portfolio showed ${Math.abs(growthPct).toFixed(1)}% higher returns, ` +
-                    `suggesting that ${drawdownDiff < -3 ? 'this came with increased maximum drawdowns of ' + Math.abs(drawdownDiff).toFixed(1) + ' percentage points' : 'traditional allocation performed well during this period'}. ` +
-                    `Historical results vary significantly across different time periods and market conditions, ` +
-                    `and past performance does not indicate future outcomes.`;
-            } else if (parseFloat(growthPct) >= 5 && parseFloat(growthPct) <= 15) {
-                interpretation = `The Modeled Portfolio delivered ${growthPct}% higher returns in this historical comparison, ` +
-                    `with a compounded annual growth rate of ${(p2CAGR * 100).toFixed(2)}% versus ${(p1CAGR * 100).toFixed(2)}% for the Current Portfolio. ` +
-                    `${drawdownDiff > 2 ? 'Additionally, it experienced ' + drawdownDiff.toFixed(1) + ' percentage points less in maximum drawdown. ' : ''}` +
-                    `This illustrates how tactical adjustments could have impacted performance during this specific timeframe.`;
-            } else {
-                interpretation = `The two portfolios showed remarkably similar performance over this period, ` +
-                    `with returns within ${Math.abs(growthPct).toFixed(1)}% of each other and comparable risk profiles. ` +
-                    `Maximum drawdowns differed by only ${Math.abs(drawdownDiff).toFixed(1)} percentage points. ` +
-                    `This suggests that during this particular historical period, both approaches would have delivered similar outcomes, ` +
-                    `though future periods could show different relative performance.`;
-            }
-            
-            commentaryText.textContent = interpretation;
-        }
-
         
         // Modal Functions
         function showLeadCaptureModal() {
@@ -9378,12 +9081,7 @@ let SHOW_ADVANCED_METRICS = false;
             h2 { page-break-before: always; }
             table { page-break-inside: avoid; }
         }
-    
-        
-        
-
-
-</style>
+    </style>
 </head>
 <body>
     <div class="container">
