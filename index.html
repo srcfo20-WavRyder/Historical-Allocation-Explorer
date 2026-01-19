@@ -2543,7 +2543,14 @@ const EXCEL_DATA = [
     null,
     null,
     null
-  ]
+  ],
+  [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["HOW TO USE - TITLE", "How to Use This Tool", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["HOW TO USE - CONTENT", "Follow these simple steps to explore hypothetical historical performance: \n\n1. <strong>Choose Your Scenario:</strong> Click one of the four preset scenario buttons for quick comparisons, or scroll down to the portfolio selection boxes to build your own custom portfolio mix below. \n\n2. <strong>Set Allocations:</strong> If building custom portfolios, select up to 4 models per portfolio and set allocation percentages (must total 100% per portfolio). \n\n3. <strong>Run Comparison:</strong> Click the \"Run Comparison\" button to see how these portfolios would have performed historically from 2005-2025. \n\n4. <strong>Review Results:</strong> Examine growth charts, CAGR, total returns, and risk metrics like maximum drawdown. Note that each of the key terms has a hover button that when clicked will provide a description of the term. All data is hypothetical and for educational purposes only.", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["SCENARIO 1 TOOLTIP", "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk.", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["SCENARIO 2 TOOLTIP", "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation  (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth.", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["SCENARIO 3 TOOLTIP", "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically.", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  ["SCENARIO 4 TOOLTIP", "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential.", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 ];
 
 // Model configuration - which models are available in each portfolio
@@ -2563,12 +2570,19 @@ function buildModelConfig() {
         }
     }
     
-    // Read model availability from Excel rows 56+ (index 55+)
-    for (let rowIdx = 55; rowIdx < EXCEL_DATA.length; rowIdx++) {
+    // Read model availability from Excel rows 57+ (index 56+) - first model is 60/40
+    for (let rowIdx = 56; rowIdx < EXCEL_DATA.length; rowIdx++) {
         const row = EXCEL_DATA[rowIdx];
         if (!row || !row[0]) break; // Stop at empty row
         
         const modelName = row[0];
+        
+        // Stop if we hit the next section
+        if (modelName.toString().includes('USER INSTRUCTIONS') || 
+            modelName.toString().includes('AHA CARD')) {
+            break;
+        }
+        
         const inP1 = String(row[1]).toUpperCase() === 'YES';
         const inP2 = String(row[2]).toUpperCase() === 'YES';
         
@@ -2756,10 +2770,10 @@ let SHOW_ADVANCED_METRICS = false;
         }
         
         .select-stack {
-            padding: 6px 8px;
+            padding: 8px 10px;
             border: 1px solid #000000;
             border-radius: 0px;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             background: white;
             cursor: pointer;
@@ -2767,17 +2781,17 @@ let SHOW_ADVANCED_METRICS = false;
             box-sizing: border-box;
             flex: 1;
             min-width: 0;
-            max-width: 180px;
+            max-width: 220px;
             text-align: left;
         }
         
         .select-alloc-stack {
-            flex: 0 0 55px;
-            width: 55px;
+            flex: 0 0 75px;
+            width: 75px;
             text-align: center;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
-            padding: 6px 4px;
+            padding: 8px 4px;
             box-sizing: border-box;
         }
         
@@ -4410,22 +4424,22 @@ let SHOW_ADVANCED_METRICS = false;
                 
 
                 <!-- Quick Templates -->
-                <div style="text-align: center; margin: 10px 0 15px 0; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 2px solid #e9ecef;">
-                    <label style="font-size: 13px; font-weight: 600; color: #495057; display: block; margin-bottom: 8px;">
-                        ⚡ Quick Templates - Load Common Allocations:
+                <div style="text-align: center; margin: 10px 0 15px 0; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 2px solid #e9ecef;">
+                    <label style="font-size: 12px; font-weight: 600; color: #495057; display: block; margin-bottom: 6px;">
+                        ⚡ Quick Templates:
                     </label>
-                    <select id="templateSelect" onchange="loadTemplate()" style="padding: 8px 12px; font-size: 14px; font-weight: 600; border: 2px solid #007bff; 
-                                                     border-radius: 6px; background: white; cursor: pointer; min-width: 200px;">
-                        <option value="">-- Select a Template --</option>
-                        <option value="conservative">🛡️ Conservative (40/60 Stocks/Bonds)</option>
-                        <option value="moderate">⚖️ Moderate (50/50 Stocks/Bonds)</option>
-                        <option value="balanced">📊 Balanced (60/40 Stocks/Bonds)</option>
-                        <option value="growth">📈 Growth (70/30 Stocks/Bonds)</option>
-                        <option value="aggressive">🚀 Aggressive (80/20 Stocks/Bonds)</option>
-                        <option value="global">🌍 Global Balanced (60/30/10 SPY/AGG/VEA)</option>
+                    <select id="templateSelect" onchange="loadTemplate()" style="padding: 6px 10px; font-size: 13px; font-weight: 600; border: 2px solid #007bff; 
+                                                     border-radius: 6px; background: white; cursor: pointer; max-width: 100%; width: auto;">
+                        <option value="">-- Select Template --</option>
+                        <option value="conservative">🛡️ Conservative (40/60)</option>
+                        <option value="moderate">⚖️ Moderate (50/50)</option>
+                        <option value="balanced">📊 Balanced (60/40)</option>
+                        <option value="growth">📈 Growth (70/30)</option>
+                        <option value="aggressive">🚀 Aggressive (80/20)</option>
+                        <option value="global">🌍 Global (60/30/10)</option>
                     </select>
-                    <div style="font-size: 11px; color: #6c757d; margin-top: 6px; font-style: italic;">
-                        Or build custom portfolio below
+                    <div style="font-size: 10px; color: #6c757d; margin-top: 5px; font-style: italic;">
+                        Or build custom below
                     </div>
                 </div>
 
@@ -4435,27 +4449,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option1Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation1Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4465,27 +4479,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option2Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation2Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4495,27 +4509,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option5Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation5Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4525,27 +4539,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option6Select" class="select-stack"><option value="">--</option><option value="5">Aggressive WR Adj</option><option value="6">Moderate WR Adj</option><option value="7">Conservative WR Adj</option><option value="8">Leveraged Nasdaq</option><option value="9">Leveraged S&P500</option><option value="13">Bond</option><option value="15">International</option><option value="18">S&P500</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation6Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
             </div>
@@ -4563,27 +4577,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option3Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation3Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4593,27 +4607,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option4Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation4Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4623,27 +4637,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option7Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation7Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 
@@ -4653,27 +4667,27 @@ let SHOW_ADVANCED_METRICS = false;
                     <select id="option8Select" class="select-stack"><option value="">--</option><option value="2">60/40</option><option value="3">WavRyder QQQ</option><option value="4">WavRyder SP500</option><option value="5">WavRyder(H)</option><option value="6">WavRyder(M)</option><option value="7">WavRyder(L)</option><option value="8">WavRyder QQQ (Leveraged)</option><option value="9">WavRyder SP500 (Leveraged)</option><option value="10">WavRyder QQQ/SP500 Leveraged)</option><option value="11">QQQ (Leveraged) W/O WavRyder</option><option value="12">SP 500</option><option value="13">AGG</option><option value="14">WavRyder AGG</option><option value="15">VEA</option><option value="16">WavRyder VEA</option><option value="17">QQQ</option><option value="18">SPY</option><option value="19">WavRyder SPY</option></select>
                     <label class="selector-label-stack">%:</label>
                     <select id="allocation8Select" class="select-stack select-alloc-stack">
-                        <option value="0">0</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="25">25</option>
-                        <option value="30">30</option>
-                        <option value="35">35</option>
-                        <option value="40">40</option>
-                        <option value="45">45</option>
-                        <option value="50">50</option>
-                        <option value="55">55</option>
-                        <option value="60">60</option>
-                        <option value="65">65</option>
-                        <option value="70">70</option>
-                        <option value="75">75</option>
-                        <option value="80">80</option>
-                        <option value="85">85</option>
-                        <option value="90">90</option>
-                        <option value="95">95</option>
-                        <option value="100">100</option>
+                        <option value="0">0%</option>
+                        <option value="5">5%</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="30">30%</option>
+                        <option value="35">35%</option>
+                        <option value="40">40%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                        <option value="55">55%</option>
+                        <option value="60">60%</option>
+                        <option value="65">65%</option>
+                        <option value="70">70%</option>
+                        <option value="75">75%</option>
+                        <option value="80">80%</option>
+                        <option value="85">85%</option>
+                        <option value="90">90%</option>
+                        <option value="95">95%</option>
+                        <option value="100">100%</option>
                     </select>
                 </div>
                 </div>
@@ -5829,13 +5843,13 @@ let SHOW_ADVANCED_METRICS = false;
                         }
                     }
                     
-                    // SECTION 2: Model Availability (Row 58+ in Excel = index 57+ in JS) - shifted by 1
-                    if (jsonData.length >= 58) {
+                    // SECTION 2: Model Availability (Row 57+ in Excel = index 56+ in JS)
+                    if (jsonData.length >= 57) {
                         try {
                             MODEL_CONFIG.portfolio1 = [];
                             MODEL_CONFIG.portfolio2 = [];
                             
-                            let configRow = 57; // Excel row 58 = JS index 57
+                            let configRow = 56; // Excel row 57 = JS index 56 (first model is 60/40)
                             while (configRow < jsonData.length && jsonData[configRow]) {
                                 const modelName = jsonData[configRow][0];
                                 const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
@@ -9471,18 +9485,31 @@ ${portfolio2Name}
         }
         
         // ============================================================================
-        // SCENARIO BUTTON TOOLTIPS - Hover tooltips with hardcoded descriptions
+        // SCENARIO BUTTON TOOLTIPS - Read from Excel rows 91-94 (indices 90-93)
         // ============================================================================
         
-        // Scenario tooltip descriptions (from Excel rows 91-94)
-        const SCENARIO_TOOLTIPS = {
-            scenario1: "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk.",
-            scenario2: "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth.",
-            scenario3: "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically.",
-            scenario4: "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential."
-        };
+        function getScenarioTooltips() {
+            const tooltips = {
+                scenario1: '',
+                scenario2: '',
+                scenario3: '',
+                scenario4: ''
+            };
+            
+            // Read from EXCEL_DATA if available (rows 91-94, indices 90-93)
+            if (typeof EXCEL_DATA !== 'undefined') {
+                if (EXCEL_DATA[90] && EXCEL_DATA[90][1]) tooltips.scenario1 = EXCEL_DATA[90][1];
+                if (EXCEL_DATA[91] && EXCEL_DATA[91][1]) tooltips.scenario2 = EXCEL_DATA[91][1];
+                if (EXCEL_DATA[92] && EXCEL_DATA[92][1]) tooltips.scenario3 = EXCEL_DATA[92][1];
+                if (EXCEL_DATA[93] && EXCEL_DATA[93][1]) tooltips.scenario4 = EXCEL_DATA[93][1];
+            }
+            
+            return tooltips;
+        }
         
         function initializeScenarioTooltips() {
+            const SCENARIO_TOOLTIPS = getScenarioTooltips();
+            
             for (let i = 1; i <= 4; i++) {
                 const scenarioKey = 'scenario' + i;
                 const tooltipText = SCENARIO_TOOLTIPS[scenarioKey];
