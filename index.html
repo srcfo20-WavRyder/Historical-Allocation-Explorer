@@ -3942,7 +3942,7 @@ let SHOW_ADVANCED_METRICS = false;
         
         /* Tooltip that appears near the select */
         #modelTooltipPopup {
-            position: fixed;
+            position: absolute;
             background-color: #2c3e50;
             color: white;
             padding: 12px 16px;
@@ -9376,13 +9376,16 @@ ${portfolio2Name}
         
         let modelTooltipPopup = null;
         
+        function createModelTooltipPopup() {
+            if (modelTooltipPopup) return;
+            modelTooltipPopup = document.createElement('div');
+            modelTooltipPopup.id = 'modelTooltipPopup';
+            document.body.appendChild(modelTooltipPopup);
+        }
+        
         function initializeModelTooltips() {
             // Create single tooltip element if not exists
-            if (!modelTooltipPopup) {
-                modelTooltipPopup = document.createElement('div');
-                modelTooltipPopup.id = 'modelTooltipPopup';
-                document.body.appendChild(modelTooltipPopup);
-            }
+            createModelTooltipPopup();
             
             const selectIds = [
                 'option1Select', 'option2Select', 'option3Select', 'option4Select',
@@ -9419,6 +9422,7 @@ ${portfolio2Name}
         }
         
         function showModelTooltipPopup(selectEl, event) {
+            createModelTooltipPopup(); // Ensure it exists
             if (!modelTooltipPopup) return;
             
             const selectedOption = selectEl.options[selectEl.selectedIndex];
@@ -9441,8 +9445,11 @@ ${portfolio2Name}
             
             // Position near the select element
             const rect = selectEl.getBoundingClientRect();
-            modelTooltipPopup.style.left = rect.left + 'px';
-            modelTooltipPopup.style.top = (rect.bottom + 10) + 'px';
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            modelTooltipPopup.style.left = (rect.left + scrollLeft) + 'px';
+            modelTooltipPopup.style.top = (rect.bottom + scrollTop + 10) + 'px';
             
             // Show it
             modelTooltipPopup.classList.add('visible');
@@ -9452,6 +9459,15 @@ ${portfolio2Name}
             if (modelTooltipPopup) {
                 modelTooltipPopup.classList.remove('visible');
             }
+        }
+        
+        // Ensure tooltips are initialized when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                createModelTooltipPopup();
+            });
+        } else {
+            createModelTooltipPopup();
         }
         
         // ============================================================================
