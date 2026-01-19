@@ -590,6 +590,29 @@ const EXCEL_DATA = [
     "Target Fund"
   ],
   [
+    "Description",
+    null,
+    "A traditional balanced portfolio with 60% stocks (S&P 500) and 40% bonds (AGG). This classic allocation aims to balance growth potential with stability.",
+    "A rules-based strategy applied to QQQ (Nasdaq-100 ETF). Uses WavRyder's proprietary signals to adjust market exposure based on momentum and risk indicators.",
+    "A rules-based strategy applied to S&P 500 ETF (SPY). Uses WavRyder's proprietary signals to manage risk through tactical allocation adjustments.",
+    "An aggressive growth-focused portfolio using WavRyder signals. Higher equity exposure with tactical risk management for growth-oriented investors.",
+    "A moderate risk portfolio using WavRyder signals. Balanced approach between growth and capital preservation with active risk management.",
+    "A conservative portfolio using WavRyder signals. Lower volatility focus with tactical adjustments to protect capital while seeking modest growth.",
+    "A leveraged strategy tracking Nasdaq-100 with 2x or 3x exposure. High risk/high reward approach for aggressive investors. Not recommended for long-term holding.",
+    "A leveraged strategy tracking S&P 500 with 2x or 3x exposure. Amplified returns and losses. Best suited for short-term tactical positions.",
+    "WavRyder signals applied to leveraged ETFs. Combines tactical timing with amplified exposure. Very high risk strategy.",
+    "A diversified alternative fund allocation. May include various asset classes beyond traditional stocks and bonds.",
+    "The S&P 500 index - a market-cap weighted index of 500 large U.S. companies. The benchmark for U.S. large-cap equity performance.",
+    "The Bloomberg Aggregate Bond Index (AGG). A broad-based U.S. investment-grade bond index providing diversification and income.",
+    "WavRyder signals applied to the bond market (AGG). Tactical bond allocation to manage interest rate and credit risk.",
+    "International developed market equities (VEA). Provides diversification beyond U.S. stocks through exposure to Europe, Japan, and other developed markets.",
+    "WavRyder signals applied to international developed markets (VEA). Tactical international allocation with active risk management.",
+    "The Invesco QQQ ETF tracking the Nasdaq-100 Index. Concentrated exposure to large-cap technology and growth companies.",
+    "S&P 500 Index fund (SPY). Passive exposure to 500 leading U.S. companies representing approximately 80% of available market cap.",
+    "WavRyder signals applied to SPY (S&P 500 ETF). Tactical allocation strategy for U.S. large-cap equity exposure.",
+    "A glide-path fund that automatically adjusts asset allocation based on target retirement date. Becomes more conservative over time."
+  ],
+  [
     "Total Return",
     "1 year",
     0.1594379780780619,
@@ -3912,6 +3935,115 @@ let SHOW_ADVANCED_METRICS = false;
             visibility: visible;
             opacity: 1;
         }
+        
+        /* ============================================
+           MODEL DESCRIPTION TOOLTIP STYLES
+           ============================================ */
+        
+        /* Tooltip that appears near the select */
+        #modelTooltipPopup {
+            position: fixed;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            z-index: 10001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 300px;
+            text-align: left;
+            font-weight: 400;
+            pointer-events: none;
+            display: none;
+        }
+        
+        #modelTooltipPopup.visible {
+            display: block;
+        }
+        
+        #modelTooltipPopup strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #fff;
+        }
+        
+        /* Mobile - hide tooltips */
+        @media (max-width: 768px) {
+            #modelTooltipPopup {
+                display: none !important;
+            }
+        }
+        
+        /* ============================================
+           SCENARIO BUTTON TOOLTIP STYLES
+           ============================================ */
+        
+        .scenario-btn-container {
+            position: relative;
+            display: flex;
+            height: 100%;
+        }
+        
+        .scenario-btn-container > button {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 90px;
+        }
+        
+        .scenario-desc-tooltip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            margin-top: 10px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            text-align: left;
+            font-weight: 400;
+            pointer-events: none;
+        }
+        
+        .scenario-desc-tooltip::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 30px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #2c3e50;
+        }
+        
+        .scenario-btn-container:hover .scenario-desc-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Make scenario grid items equal height */
+        #scenarioButtonsGrid {
+            align-items: stretch;
+        }
+        
+        #scenarioButtonsGrid > .scenario-btn-container {
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .scenario-desc-tooltip {
+                display: none !important;
+            }
+        }
 
 </style>
 
@@ -5232,15 +5364,19 @@ let SHOW_ADVANCED_METRICS = false;
         function processExcelData(jsonData) {
             excelData = jsonData;
             
-            // Read years value from A16 (row 16, column 0)
-            if (jsonData[15] && jsonData[15][0]) {
-                yearsValue = parseFloat(jsonData[15][0]);
+            // Read years value from A17 (row 17, column 0) - shifted by 1 due to Description row
+            if (jsonData[16] && jsonData[16][0]) {
+                yearsValue = parseFloat(jsonData[16][0]);
             }
             
-            // Parse headers - create array of objects with index and name
+            // Parse headers - create array of objects with index, name, and description
             columnHeaders = [];
             const letterRow = jsonData[0]; // Row with letters like "A", "B", "C", etc.
             const nameRow = jsonData[1]; // Row with names like "60/40", "WavRyder QQQ", etc.
+            const descRow = jsonData[2]; // Row with descriptions (if available)
+            
+            // Check if row 3 is actually the description row (starts with "Description")
+            const hasDescriptionRow = descRow && descRow[0] && descRow[0].toString().toLowerCase().includes('description');
             
             // Add options from column headers (skip first two: "Performance Measure" and empty)
             for (let i = 2; i < nameRow.length; i++) {
@@ -5248,40 +5384,48 @@ let SHOW_ADVANCED_METRICS = false;
                     columnHeaders.push({
                         letter: letterRow[i] || `Col${i}`,
                         index: i,
-                        name: nameRow[i]
+                        name: nameRow[i],
+                        description: hasDescriptionRow && descRow[i] ? descRow[i] : ''
                     });
                 }
             }
             
-            // Parse Aha Card configuration from Excel (rows 82-86)
-            // Row 82: Header "AHA CARD CONFIG"
-            // Row 83: Section Title (Column B)
-            // Row 84: Button 1 Text (Column B)
-            // Row 85: Button 2 Text (Column B)
-            // Row 86: Subtext (Column B)
-            if (jsonData.length >= 86) {
-                if (jsonData[82] && jsonData[82][1]) {
-                    ahaCardConfig.title = jsonData[82][1];
-                }
+            // Build model descriptions lookup for tooltips
+            window.modelDescriptions = {};
+            columnHeaders.forEach(header => {
+                window.modelDescriptions[header.index] = header.description || '';
+                window.modelDescriptions[header.name] = header.description || '';
+            });
+            
+            // Parse Aha Card configuration from Excel (rows 83-87) - shifted by 1 due to Description row
+            // Row 83: Header "AHA CARD CONFIG"
+            // Row 84: Section Title (Column B)
+            // Row 85: Button 1 Text (Column B)
+            // Row 86: Button 2 Text (Column B)
+            // Row 87: Subtext (Column B)
+            if (jsonData.length >= 87) {
                 if (jsonData[83] && jsonData[83][1]) {
-                    ahaCardConfig.button1 = jsonData[83][1];
+                    ahaCardConfig.title = jsonData[83][1];
                 }
                 if (jsonData[84] && jsonData[84][1]) {
-                    ahaCardConfig.button2 = jsonData[84][1];
+                    ahaCardConfig.button1 = jsonData[84][1];
                 }
                 if (jsonData[85] && jsonData[85][1]) {
-                    ahaCardConfig.subtext = jsonData[85][1];
+                    ahaCardConfig.button2 = jsonData[85][1];
+                }
+                if (jsonData[86] && jsonData[86][1]) {
+                    ahaCardConfig.subtext = jsonData[86][1];
                 }
                 console.log('✓ Loaded Aha Card config from Excel:', ahaCardConfig);
             }
             
-            // Parse Model Availability Settings from Excel (rows 56+)
-            if (jsonData.length >= 56) {
+            // Parse Model Availability Settings from Excel (rows 57+) - shifted by 1 due to Description row
+            if (jsonData.length >= 57) {
                 try {
                     MODEL_CONFIG.portfolio1 = [];
                     MODEL_CONFIG.portfolio2 = [];
                     
-                    let configRow = 55; // Excel row 56 = JS index 55 (first model is 60/40)
+                    let configRow = 56; // Excel row 57 = JS index 56 (first model is 60/40)
                     while (configRow < jsonData.length && jsonData[configRow]) {
                         const modelName = jsonData[configRow][0];
                         const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
@@ -5314,15 +5458,15 @@ let SHOW_ADVANCED_METRICS = false;
                 }
             }
             
-            // Parse Scenario Configurations from Excel (rows 47-50)
+            // Parse Scenario Configurations from Excel (rows 48-51) - shifted by 1 due to Description row
             // Populate the #update section scenario fields AND main page scenario buttons
-            if (jsonData.length >= 50) {
+            if (jsonData.length >= 51) {
                 try {
-                    // Scenario 1 (Row 47 = index 46)
-                    if (jsonData[46]) {
+                    // Scenario 1 (Row 48 = index 47)
+                    if (jsonData[47]) {
                         // Update #update section fields
-                        const s1Title = jsonData[46][1] || '';
-                        const s1Desc = jsonData[46][2] || '';
+                        const s1Title = jsonData[47][1] || '';
+                        const s1Desc = jsonData[47][2] || '';
                         document.getElementById('s1_title').value = s1Title;
                         document.getElementById('s1_desc').value = s1Desc;
                         
@@ -5333,10 +5477,10 @@ let SHOW_ADVANCED_METRICS = false;
                         if (scenario1DescEl) scenario1DescEl.textContent = s1Desc;
                     }
                     
-                    // Scenario 2 (Row 48 = index 47)
-                    if (jsonData[47]) {
-                        const s2Title = jsonData[47][1] || '';
-                        const s2Desc = jsonData[47][2] || '';
+                    // Scenario 2 (Row 49 = index 48)
+                    if (jsonData[48]) {
+                        const s2Title = jsonData[48][1] || '';
+                        const s2Desc = jsonData[48][2] || '';
                         document.getElementById('s2_title').value = s2Title;
                         document.getElementById('s2_desc').value = s2Desc;
                         
@@ -5346,10 +5490,10 @@ let SHOW_ADVANCED_METRICS = false;
                         if (scenario2DescEl) scenario2DescEl.textContent = s2Desc;
                     }
                     
-                    // Scenario 3 (Row 49 = index 48)
-                    if (jsonData[48]) {
-                        const s3Title = jsonData[48][1] || '';
-                        const s3Desc = jsonData[48][2] || '';
+                    // Scenario 3 (Row 50 = index 49)
+                    if (jsonData[49]) {
+                        const s3Title = jsonData[49][1] || '';
+                        const s3Desc = jsonData[49][2] || '';
                         document.getElementById('s3_title').value = s3Title;
                         document.getElementById('s3_desc').value = s3Desc;
                         
@@ -5359,10 +5503,10 @@ let SHOW_ADVANCED_METRICS = false;
                         if (scenario3DescEl) scenario3DescEl.textContent = s3Desc;
                     }
                     
-                    // Scenario 4 (Row 50 = index 49)
-                    if (jsonData[49]) {
-                        const s4Title = jsonData[49][1] || '';
-                        const s4Desc = jsonData[49][2] || '';
+                    // Scenario 4 (Row 51 = index 50)
+                    if (jsonData[50]) {
+                        const s4Title = jsonData[50][1] || '';
+                        const s4Desc = jsonData[50][2] || '';
                         document.getElementById('s4_title').value = s4Title;
                         document.getElementById('s4_desc').value = s4Desc;
                         
@@ -5373,10 +5517,10 @@ let SHOW_ADVANCED_METRICS = false;
                     }
                     
                     console.log('✅ Loaded scenario configurations from Excel');
-                    console.log('  Scenario 1:', jsonData[46] ? jsonData[46][1] : 'N/A');
-                    console.log('  Scenario 2:', jsonData[47] ? jsonData[47][1] : 'N/A');
-                    console.log('  Scenario 3:', jsonData[48] ? jsonData[48][1] : 'N/A');
-                    console.log('  Scenario 4:', jsonData[49] ? jsonData[49][1] : 'N/A');
+                    console.log('  Scenario 1:', jsonData[47] ? jsonData[47][1] : 'N/A');
+                    console.log('  Scenario 2:', jsonData[48] ? jsonData[48][1] : 'N/A');
+                    console.log('  Scenario 3:', jsonData[49] ? jsonData[49][1] : 'N/A');
+                    console.log('  Scenario 4:', jsonData[50] ? jsonData[50][1] : 'N/A');
                 } catch (e) {
                     console.error('Error reading scenario config:', e);
                 }
@@ -5540,9 +5684,9 @@ let SHOW_ADVANCED_METRICS = false;
                     
                     excelData = jsonData;
                     
-                    // Read years value from A16 (row 16, column A = index [15][0])
-                    if (jsonData[15] && jsonData[15][0]) {
-                        yearsValue = parseFloat(jsonData[15][0]);
+                    // Read years value from A17 (row 17, column A = index [16][0]) - shifted by 1
+                    if (jsonData[16] && jsonData[16][0]) {
+                        yearsValue = parseFloat(jsonData[16][0]);
                         if (isNaN(yearsValue) || yearsValue <= 0) {
                             yearsValue = 20; // Fallback to 20 if invalid
                         }
@@ -5552,6 +5696,10 @@ let SHOW_ADVANCED_METRICS = false;
                     columnHeaders = [];
                     const letterRow = jsonData[0];
                     const nameRow = jsonData[1];
+                    const descRow = jsonData[2]; // Description row
+                    
+                    // Check if row 3 is actually the description row
+                    const hasDescriptionRow = descRow && descRow[0] && descRow[0].toString().toLowerCase().includes('description');
                     
                     // Start from column 2 (index 2) and check all columns until we hit empty ones
                     for (let i = 2; i < letterRow.length; i++) {
@@ -5560,10 +5708,18 @@ let SHOW_ADVANCED_METRICS = false;
                             columnHeaders.push({
                                 letter: letterRow[i] || `Col${i}`,
                                 name: nameRow[i] || letterRow[i] || `Column ${i}`,
-                                index: i
+                                index: i,
+                                description: hasDescriptionRow && descRow[i] ? descRow[i] : ''
                             });
                         }
                     }
+                    
+                    // Build model descriptions lookup for tooltips
+                    window.modelDescriptions = {};
+                    columnHeaders.forEach(header => {
+                        window.modelDescriptions[header.index] = header.description || '';
+                        window.modelDescriptions[header.name] = header.description || '';
+                    });
                     
                     // Also check if there are more columns beyond the current length
                     // by looking at the data rows to find the actual last column with data
@@ -5673,13 +5829,13 @@ let SHOW_ADVANCED_METRICS = false;
                         }
                     }
                     
-                    // SECTION 2: Model Availability (Row 57+ in Excel = index 56+ in JS, after header at index 55)
-                    if (jsonData.length >= 57) {
+                    // SECTION 2: Model Availability (Row 58+ in Excel = index 57+ in JS) - shifted by 1
+                    if (jsonData.length >= 58) {
                         try {
                             MODEL_CONFIG.portfolio1 = [];
                             MODEL_CONFIG.portfolio2 = [];
                             
-                            let configRow = 56; // Excel row 57 = JS index 56
+                            let configRow = 57; // Excel row 58 = JS index 57
                             while (configRow < jsonData.length && jsonData[configRow]) {
                                 const modelName = jsonData[configRow][0];
                                 const showInCurrent = (jsonData[configRow][1] || '').toString().toUpperCase();
@@ -5737,10 +5893,10 @@ let SHOW_ADVANCED_METRICS = false;
                         populateSelectors();
                     }
                     
-                    // SECTION 3: User Instructions (Row 79 in Excel = index 78 in JS)
-                    if (jsonData.length >= 79 && jsonData[78] && jsonData[78][0]) {
+                    // SECTION 3: User Instructions (Row 80 in Excel = index 79 in JS) - shifted by 1
+                    if (jsonData.length >= 80 && jsonData[79] && jsonData[79][0]) {
                         try {
-                            const instructionsText = jsonData[78][0];
+                            const instructionsText = jsonData[79][0];
                             const instructionsEl = document.getElementById('customInstructions');
                             if (instructionsEl && instructionsText) {
                                 instructionsEl.innerHTML = instructionsText;
@@ -5828,21 +5984,25 @@ let SHOW_ADVANCED_METRICS = false;
                     const opt1 = document.createElement('option');
                     opt1.value = header.index;
                     opt1.textContent = header.name;
+                    opt1.setAttribute('data-description', header.description || '');
                     option1Select.appendChild(opt1);
                     
                     const opt2 = document.createElement('option');
                     opt2.value = header.index;
                     opt2.textContent = header.name;
+                    opt2.setAttribute('data-description', header.description || '');
                     option2Select.appendChild(opt2);
                     
                     const opt5 = document.createElement('option');
                     opt5.value = header.index;
                     opt5.textContent = header.name;
+                    opt5.setAttribute('data-description', header.description || '');
                     option5Select.appendChild(opt5);
                     
                     const opt6 = document.createElement('option');
                     opt6.value = header.index;
                     opt6.textContent = header.name;
+                    opt6.setAttribute('data-description', header.description || '');
                     option6Select.appendChild(opt6);
                 }
                 
@@ -5851,33 +6011,40 @@ let SHOW_ADVANCED_METRICS = false;
                     const opt3 = document.createElement('option');
                     opt3.value = header.index;
                     opt3.textContent = header.name;
+                    opt3.setAttribute('data-description', header.description || '');
                     option3Select.appendChild(opt3);
                     
                     const opt4 = document.createElement('option');
                     opt4.value = header.index;
                     opt4.textContent = header.name;
+                    opt4.setAttribute('data-description', header.description || '');
                     option4Select.appendChild(opt4);
                     
                     const opt7 = document.createElement('option');
                     opt7.value = header.index;
                     opt7.textContent = header.name;
+                    opt7.setAttribute('data-description', header.description || '');
                     option7Select.appendChild(opt7);
                     
                     const opt8 = document.createElement('option');
                     opt8.value = header.index;
                     opt8.textContent = header.name;
+                    opt8.setAttribute('data-description', header.description || '');
                     option8Select.appendChild(opt8);
                 }
             });
+            
+            // Initialize model tooltips after populating selectors
+            initializeModelTooltips();
         }
         
         function calculateCAGRFromAnnualReturns(colIndex, startYear, endYear) {
-            // Annual returns start at row 20 (index 19) for Year 1
+            // Annual returns start at row 21 (index 20) for Year 1
             // Calculate compound annual growth rate from individual year returns
             let compoundedValue = 1.0;
             
             for (let year = startYear; year <= endYear; year++) {
-                const rowIndex = 18 + year; // Row 20 = Year 1, so index 19 = 18 + 1
+                const rowIndex = 19 + year; // Row 21 = Year 1, so index 20 = 19 + 1
                 const row = excelData[rowIndex];
                 if (row && row[colIndex] !== null && row[colIndex] !== undefined) {
                     const yearReturn = typeof row[colIndex] === 'number' ? row[colIndex] : parseValue(row[colIndex]);
@@ -5896,7 +6063,7 @@ let SHOW_ADVANCED_METRICS = false;
             let compoundedValue = 1.0;
             
             for (let year = startYear; year <= endYear; year++) {
-                const rowIndex = 18 + year;
+                const rowIndex = 19 + year;
                 const row = excelData[rowIndex];
                 
                 let blendedReturn = 0;
@@ -5950,7 +6117,7 @@ let SHOW_ADVANCED_METRICS = false;
             const years = Math.round(yearsValue); // Use value from A17
             
             for (let year = 1; year <= years; year++) {
-                const rowIndex = 18 + year;
+                const rowIndex = 19 + year;
                 const row = excelData[rowIndex];
                 
                 let blendedReturn = 0;
@@ -5993,7 +6160,7 @@ let SHOW_ADVANCED_METRICS = false;
             const years = Math.round(yearsValue); // Use value from A17
             
             for (let year = 1; year <= years; year++) {
-                const rowIndex = 18 + year;
+                const rowIndex = 19 + year;
                 const row = excelData[rowIndex];
                 
                 let blendedReturn = 0;
@@ -6028,7 +6195,7 @@ let SHOW_ADVANCED_METRICS = false;
             
             // Collect blended annual returns and S&P 500 returns
             for (let year = 1; year <= years; year++) {
-                const rowIndex = 18 + year;
+                const rowIndex = 19 + year;
                 const row = excelData[rowIndex];
                 
                 let blendedReturn = 0;
@@ -6544,7 +6711,7 @@ let SHOW_ADVANCED_METRICS = false;
             let value2 = 100000;
             
             for (let year = 1; year <= years; year++) {
-                const rowIndex = 18 + year;
+                const rowIndex = 19 + year;
                 const row = excelData[rowIndex];
                 
                 // Current blended return
@@ -8560,9 +8727,9 @@ let SHOW_ADVANCED_METRICS = false;
                 }
             }
             
-            // Read scenarios from Excel rows 47-50 (indices 46-49)
+            // Read scenarios from Excel rows 48-51 (indices 47-50) - shifted by 1 due to Description row
             for (let scenarioNum = 1; scenarioNum <= 4; scenarioNum++) {
-                const rowIndex = 46 + (scenarioNum - 1); // Row 47 = index 46
+                const rowIndex = 47 + (scenarioNum - 1); // Row 48 = index 47
                 const row = EXCEL_DATA[rowIndex];
                 
                 if (!row) continue;
@@ -8828,7 +8995,7 @@ let SHOW_ADVANCED_METRICS = false;
                 let cumulativeValue = 100000;
                 
                 for (let year = 1; year <= years; year++) {
-                    const rowIndex = 18 + year; // Excel row 20 = Year 1
+                    const rowIndex = 19 + year; // Excel row 20 = Year 1
                     
                     // Get returns for each component
                     let blendedReturn = 0;
@@ -9129,9 +9296,10 @@ ${portfolio2Name}
         <div class="calculation-detail">
 <strong>Excel File Structure:</strong>
 - Row 2: Model names
-- Row 16: Years value (${years})
-- Row 15: Starting investment ($100,000)
-- Rows 20-${19 + years}: Annual returns for Years 1-${years}
+- Row 3: Model descriptions
+- Row 17: Years value (${years})
+- Row 16: Starting investment ($100,000)
+- Rows 21-${20 + years}: Annual returns for Years 1-${years}
 
 <strong>Calculation Method:</strong>
 1. For each year, retrieve annual returns from Excel for each model
@@ -9201,6 +9369,131 @@ ${portfolio2Name}
                 }
             });
         });
+        
+        // ============================================================================
+        // MODEL DESCRIPTION TOOLTIPS - Using mouseenter/mouseleave events
+        // ============================================================================
+        
+        let modelTooltipPopup = null;
+        
+        function initializeModelTooltips() {
+            // Create single tooltip element if not exists
+            if (!modelTooltipPopup) {
+                modelTooltipPopup = document.createElement('div');
+                modelTooltipPopup.id = 'modelTooltipPopup';
+                document.body.appendChild(modelTooltipPopup);
+            }
+            
+            const selectIds = [
+                'option1Select', 'option2Select', 'option3Select', 'option4Select',
+                'option5Select', 'option6Select', 'option7Select', 'option8Select'
+            ];
+            
+            selectIds.forEach(selectId => {
+                const selectEl = document.getElementById(selectId);
+                if (!selectEl) return;
+                if (selectEl.hasAttribute('data-tooltip-init')) return;
+                selectEl.setAttribute('data-tooltip-init', 'true');
+                
+                // Show tooltip on mouseenter
+                selectEl.addEventListener('mouseenter', function(e) {
+                    showModelTooltipPopup(selectEl, e);
+                });
+                
+                // Hide tooltip on mouseleave
+                selectEl.addEventListener('mouseleave', function() {
+                    hideModelTooltipPopup();
+                });
+                
+                // Update and show tooltip after selection changes
+                selectEl.addEventListener('change', function(e) {
+                    // Brief delay then show the tooltip
+                    setTimeout(() => {
+                        showModelTooltipPopup(selectEl, e);
+                    }, 100);
+                });
+            });
+            
+            // Initialize scenario tooltips
+            initializeScenarioTooltips();
+        }
+        
+        function showModelTooltipPopup(selectEl, event) {
+            if (!modelTooltipPopup) return;
+            
+            const selectedOption = selectEl.options[selectEl.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                hideModelTooltipPopup();
+                return;
+            }
+            
+            const modelName = selectedOption.textContent;
+            const description = selectedOption.getAttribute('data-description') || 
+                               (window.modelDescriptions && window.modelDescriptions[selectedOption.value]) || '';
+            
+            if (!description) {
+                hideModelTooltipPopup();
+                return;
+            }
+            
+            // Set content
+            modelTooltipPopup.innerHTML = '<strong>' + modelName + '</strong>' + description;
+            
+            // Position near the select element
+            const rect = selectEl.getBoundingClientRect();
+            modelTooltipPopup.style.left = rect.left + 'px';
+            modelTooltipPopup.style.top = (rect.bottom + 10) + 'px';
+            
+            // Show it
+            modelTooltipPopup.classList.add('visible');
+        }
+        
+        function hideModelTooltipPopup() {
+            if (modelTooltipPopup) {
+                modelTooltipPopup.classList.remove('visible');
+            }
+        }
+        
+        // ============================================================================
+        // SCENARIO BUTTON TOOLTIPS - Hover tooltips with hardcoded descriptions
+        // ============================================================================
+        
+        // Scenario tooltip descriptions (from Excel rows 91-94)
+        const SCENARIO_TOOLTIPS = {
+            scenario1: "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk.",
+            scenario2: "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth.",
+            scenario3: "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically.",
+            scenario4: "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential."
+        };
+        
+        function initializeScenarioTooltips() {
+            for (let i = 1; i <= 4; i++) {
+                const scenarioKey = 'scenario' + i;
+                const tooltipText = SCENARIO_TOOLTIPS[scenarioKey];
+                if (!tooltipText) continue;
+                
+                // Find the button
+                const button = document.querySelector('button[onclick="loadScenario(\'' + scenarioKey + '\')"]');
+                if (!button) continue;
+                
+                // Skip if already has tooltip
+                if (button.parentElement && button.parentElement.classList.contains('scenario-btn-container')) continue;
+                
+                // Create container
+                const container = document.createElement('div');
+                container.className = 'scenario-btn-container';
+                
+                // Wrap button
+                button.parentNode.insertBefore(container, button);
+                container.appendChild(button);
+                
+                // Create tooltip
+                const tooltip = document.createElement('div');
+                tooltip.className = 'scenario-desc-tooltip';
+                tooltip.textContent = tooltipText;
+                container.appendChild(tooltip);
+            }
+        }
         
 </script>
 
