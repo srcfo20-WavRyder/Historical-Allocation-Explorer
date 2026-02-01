@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <style>:is([id*='google_ads_iframe'],[id*='taboola-'],.taboolaHeight,.taboola-placeholder,#top-ad,#credential_picker_container,#credentials-picker-container,#credential_picker_iframe,[id*='google-one-tap-iframe'],#google-one-tap-popup-container,.google-one-tap__module,.google-one-tap-modal-div,#amp_floatingAdDiv,#ez-content-blocker-container) {display:none!important;min-height:0!important;height:0!important;}</style></head><body>//<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WavRyder Performance Comparison Tool</title>
     
     <!-- Open Graph Meta Tags for Social Media Preview -->
@@ -26,8 +25,8 @@
     <meta name="keywords" content="investment, portfolio, performance, comparison, wavryder, financial analysis">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-        
-
+</head>
+<body>
 
 <!-- Sticky Disclaimer Banner -->
 <div style="position: sticky; top: 0; z-index: 9999; background: #856404; color: white; 
@@ -35,9 +34,9 @@
     ⚠️ Educational Tool Only • Past Performance ≠ Future Results • Not Financial Advice
 </div>
 
-<div class="update-data-section visible" id="updateDataSection" style="text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
-            <h3 style="color: #495057; margin-bottom: 15px;">Update Tool Data</h3>
-            <p style="color: #6c757d; margin-bottom: 15px;">Upload a new Excel file to update all models and data in this tool</p>
+<div class="update-data-section" id="updateDataSection" style="text-align: center; margin: 20px 0px; padding: 20px; background: rgb(248, 249, 250); border-radius: 8px;">
+            <h3 style="color: #495057; margin-bottom: 15px;">⚙️ Configuration Mode</h3>
+            <p style="color: #6c757d; margin-bottom: 15px;">Configure models, scenarios, and dropdown options. Use the <strong>WavRyder_Updater.html</strong> tool to update performance data.</p>
             
             <!-- Quick Navigation -->
             <div style="background: #e7f3ff; border: 2px solid #0366d6; border-radius: 8px; padding: 12px; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
@@ -47,24 +46,6 @@
                 <span style="color: #dee2e6;">|</span>
                 <a href="#modelConfig" style="color: #0366d6; text-decoration: none; font-weight: 600; font-size: 14px;">🔧 Jump to Models</a>
             </div>
-            
-            <!-- Date Range Inputs -->
-            <div style="margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <label for="startDateInput" style="font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 5px;">Start Date:</label>
-                    <input type="date" id="startDateInput" value="2005-12-30" style="padding: 8px 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 14px;">
-                </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <label for="endDateInput" style="font-size: 14px; font-weight: 600; color: #495057; margin-bottom: 5px;">End Date:</label>
-                    <input type="date" id="endDateInput" value="2025-12-31" style="padding: 8px 12px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 14px;">
-                </div>
-            </div>
-            
-            <input type="file" id="updateDataInput" accept=".xlsx,.xls" style="display: none;">
-            <button onclick="document.getElementById('updateDataInput').click()" class="btn-primary">
-                📊 Upload New Data File
-            </button>
-            <div id="updateStatus" style="margin-top: 15px; font-weight: bold; display: block;"><span style="color: #28a745;">✅ Success! Downloaded index.html with 19 models and date range December 29, 2005 - December 30, 2025 (20 years).<br><br><strong>Next Steps:</strong><br>1. Replace your current index.html with the downloaded file<br>2. Upload to GitHub and push changes<br>3. Refresh this page to see new data</span></div>
             
             <!-- Default Portfolio Allocations Configuration -->
             <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid #dee2e6;">
@@ -606,8 +587,13 @@
         
 
         <!-- Export Preview Modal -->
-        
-                    </div>
+        <div id="exportPreviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; overflow-y: auto;">
+            <div style="background: white; max-width: 800px; margin: 40px auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+                <div style="padding: 24px 32px; border-bottom: 1px solid #dee2e6;">
+                    <h3 style="margin: 0; color: #1a1a2e;">📤 Export Preview</h3>
+                    <p style="margin: 8px 0 0; color: #6c757d; font-size: 14px;">Review your configuration before downloading</p>
+                </div>
+                <div style="padding: 24px 32px;">
                     
                     <!-- Model Config Preview -->
                     <div style="margin-bottom: 28px;">
@@ -617,11 +603,11 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <div style="font-weight: 600; color: #6c757d; margin-bottom: 8px; font-size: 13px;">Current Portfolio (Row 1-2):</div>
-                                <div id="portfolio1PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">✅ 60/40<br>✅ Bond<br>✅ International<br>✅ S&amp;P500<br>✅ Target Fund</div>
+                                <div id="portfolio1PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;"></div>
                             </div>
                             <div>
                                 <div style="font-weight: 600; color: #6c757d; margin-bottom: 8px; font-size: 13px;">Modeled Portfolio (Row 3-4):</div>
-                                <div id="portfolio2PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;">✅ WavRyder QQQ<br>✅ Aggressive WR Adj<br>✅ Moderate WR Adj<br>✅ Conservative WR Adj<br>✅ Leveraged Nasdaq<br>✅ Leveraged S&amp;P500<br>✅ WavRyder VEA<br>✅ WavRyder SPY</div>
+                                <div id="portfolio2PreviewContent" style="font-size: 12px; line-height: 1.8; color: #495057;"></div>
                             </div>
                         </div>
                     </div>
@@ -659,10 +645,10 @@
     <!-- Load performance data from external file -->
     <script>
 // Date range configuration - will be updated when data is refreshed
-const DATA_START_DATE = "December 28, 2005";
-const DATA_END_DATE = "December 29, 2025";
-const DATA_START_DATE_SHORT = "12/28/2005";
-const DATA_END_DATE_SHORT = "12/29/2025";
+const DATA_START_DATE = "December 29, 2005";
+const DATA_END_DATE = "December 30, 2025";
+const DATA_START_DATE_SHORT = "12/29/2005";
+const DATA_END_DATE_SHORT = "12/30/2025";
 const DATA_YEAR_RANGE = "2005-2025";
 const DATA_YEARS_COUNT = 20;
 
@@ -854,8 +840,52 @@ const EXCEL_DATA = [
     0.0953211493896522,
     0.07011216807810627
   ],
-  [],
-  [],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   [
     "$100K Investment Growth",
     "20 Year",
@@ -879,8 +909,52 @@ const EXCEL_DATA = [
     617773.7768892092,
     387780.5726222483
   ],
-  [],
-  [],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   [
     "Worst Annual Drawdown%",
     "20 Year",
@@ -904,18 +978,143 @@ const EXCEL_DATA = [
     -0.08463731735187463,
     -0.32905570223475034
   ],
-  [],
-  [
-    100000
-  ],
-  [
-    20
-  ],
-  [],
-  [],
   [
     null,
-    "Year"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    100000,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    20,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    "Year",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Total Return",
@@ -1139,7 +1338,7 @@ const EXCEL_DATA = [
     -0.01032291531624685,
     0.012522826824659772,
     0.0048114362464581895,
-    0.000012273772209026035,
+    1.2273772209026035e-05,
     -0.0037752592205140267,
     -0.09874775140071046,
     0.09446454742890409,
@@ -1377,55 +1576,239 @@ const EXCEL_DATA = [
     0.1494660233365281,
     0.16237342074480643
   ],
-  [],
-  [],
-  [],
-  [],
   [
-    "SCENARIO BUTTON CONFIGURATIONS"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "Instructions: Edit the 4 scenario buttons below. Column names must match the 'Performance Measure' row exactly (e.g., 'S&P500', 'Bond', 'Aggressive WR Adj')"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "Scenario"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "SCENARIO BUTTON CONFIGURATIONS",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Instructions: Edit the 4 scenario buttons below. Column names must match the 'Performance Measure' row exactly (e.g., 'S&P500', 'Bond', 'Aggressive WR Adj')",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Scenario",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Scenario 1",
-    "💼 Target Date Fund",
+    "\ud83d\udcbc Target Date Fund",
     "Target Date Fund vs Aggressive + WR Adj",
     "Target Date Fund",
     100,
     null,
     null,
     "Aggressive WR Adj",
-    100
+    100,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Scenario 2",
-    "🛡️ Conservative",
+    "\ud83d\udee1\ufe0f Conservative",
     "Traditional 40/60 vs Moderate + WR Adj",
     "S&P500",
     40,
     "Bond",
     60,
     "Moderate WR Adj",
-    100
+    100,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Scenario 3",
-    "📉 Balanced Growth",
+    "\ud83d\udcc9 Balanced Growth",
     "Traditional balanced vs Aggressive + WR Adj",
     "S&P500",
     60,
     "Bond",
     40,
     "Aggressive WR Adj",
-    100
+    100,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Scenario 4",
-    "🚀 Aggressive Growth",
+    "\ud83d\ude80 Aggressive Growth",
     "Traditional Aggressive 80/20 vs Aggressive + WR Adj / Lev Nasdaq + WR Adj",
     "S&P500",
     80,
@@ -1434,170 +1817,1006 @@ const EXCEL_DATA = [
     "Aggressive WR Adj",
     80,
     "Leveraged Nasdaq",
-    20
+    20,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
-  [],
-  [],
   [
-    "MODEL AVAILABILITY SETTINGS"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "Instructions: Set 'YES' to show model in dropdown, 'NO' to hide. Current = Portfolio 1 dropdown, Modeled = Portfolio 2 dropdown"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "Model Name"
+    "MODEL AVAILABILITY SETTINGS",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Instructions: Set 'YES' to show model in dropdown, 'NO' to hide. Current = Portfolio 1 dropdown, Modeled = Portfolio 2 dropdown",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "Model Name",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "60/40",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "WavRyder QQQ",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "WavRyder SP500",
     "NO",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Aggressive WR Adj",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Moderate WR Adj",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Conservative WR Adj",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Leveraged Nasdaq",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Leveraged S&P500",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "QQQ Waveryder",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "QQQ (Leveraged) W/O WavRyder",
     "NO",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "SP 500",
     "NO",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Bond",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "WavRyder AGG",
     "NO",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "International",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "WavRyder VEA",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "QQQ",
     "NO",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "S&P500",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "WavRyder SPY",
     "NO",
-    "YES"
+    "YES",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Target Date Fund",
     "YES",
-    "NO"
+    "NO",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
-  [],
-  [],
   [
-    "USER INSTRUCTIONS TEXT"
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "Instructions: Edit the text that appears in the instructions box at the top of the tool. HTML tags are supported."
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
-    "<strong>Compare Portfolio Performance:</strong> Select up to 4 models for each portfolio to create blended allocations. Use the preset scenario buttons for quick comparisons, or build your own custom portfolios. Click \"Run Comparison\" to see hypothetical historical performance from 2005-2025.\r\n\r\n<strong>How to Use:</strong> Choose your allocations (must total 100% per portfolio), set your time period, then compare returns, drawdowns, and risk metrics. All data is hypothetical and for educational purposes only."
+    "USER INSTRUCTIONS TEXT",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
-  [],
-  [],
   [
-    "AHA CARD CONFIG"
+    "Instructions: Edit the text that appears in the instructions box at the top of the tool. HTML tags are supported.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "<strong>Compare Portfolio Performance:</strong> Select up to 4 models for each portfolio to create blended allocations. Use the preset scenario buttons for quick comparisons, or build your own custom portfolios. Click \"Run Comparison\" to see hypothetical historical performance from 2005-2025.\n\n<strong>How to Use:</strong> Choose your allocations (must total 100% per portfolio), set your time period, then compare returns, drawdowns, and risk metrics. All data is hypothetical and for educational purposes only.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    "AHA CARD CONFIG",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Section Title:",
-    "Here's What the Data Shows"
+    "Here's What the Data Shows",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Button 1 Text:",
-    "📧 Email Me These Results"
+    "\ud83d\udce7 Email Me These Results",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Button 2 Text:",
-    "📅 Schedule a Free Webinar to Learn More"
+    "\ud83d\udcc5 Schedule a Free Webinar to Learn More",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "Subtext:",
-    "No obligation • See if WavRyder is right for you"
+    "No obligation \u2022 See if WavRyder is right for you",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
-  [],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   [
     "HOW TO USE - TITLE",
-    "How to Use This Tool"
+    "How to Use This Tool",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "HOW TO USE - CONTENT",
-    "Follow these simple steps to explore hypothetical historical performance: \r\n\r\n1. <strong>Choose Your Scenario:</strong> Click one of the four preset scenario buttons for quick comparisons, or scroll down to the portfolio selection boxes to build your own custom portfolio mix below. \r\n\r\n2. <strong>Set Allocations:</strong> If building custom portfolios, select up to 4 models per portfolio and set allocation percentages (must total 100% per portfolio). \r\n\r\n3. <strong>Run Comparison:</strong> Click the \"Run Comparison\" button to see how these portfolios would have performed historically from 2005-2025. \r\n\r\n4. <strong>Review Results:</strong> Examine growth charts, CAGR, total returns, and risk metrics like maximum drawdown. Note that each of the key terms has a hover button that when clicked will provide a description of the term. All data is hypothetical and for educational purposes only."
+    "Follow these simple steps to explore hypothetical historical performance: \n\n1. <strong>Choose Your Scenario:</strong> Click one of the four preset scenario buttons for quick comparisons, or scroll down to the portfolio selection boxes to build your own custom portfolio mix below. \n\n2. <strong>Set Allocations:</strong> If building custom portfolios, select up to 4 models per portfolio and set allocation percentages (must total 100% per portfolio). \n\n3. <strong>Run Comparison:</strong> Click the \"Run Comparison\" button to see how these portfolios would have performed historically from 2005-2025. \n\n4. <strong>Review Results:</strong> Examine growth charts, CAGR, total returns, and risk metrics like maximum drawdown. Note that each of the key terms has a hover button that when clicked will provide a description of the term. All data is hypothetical and for educational purposes only.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "SCENARIO 1 TOOLTIP",
-    "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk."
+    "Compare a Target Date Fund allocation against a moderate WavRyder-adjusted portfolio (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted) to see potential differences in long-term growth and risk.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "SCENARIO 2 TOOLTIP",
-    "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation  (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth."
+    "A conservative 40%/60% stock/bond mix compared to a WavRyder conservative allocation  (50% Nasdaq ETF/50% S&P500 ETF - both WavRyder Adjusted). Ideal for investors prioritizing capital preservation with modest growth.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "SCENARIO 3 TOOLTIP",
-    "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically."
+    "Balanced 60%/40% stock/bond portfolio versus an aggressive WavRyder approach (80% Nasdaq ETF/20% S&P500 ETF - both WavRyder Adjusted). Shows how different risk profiles might have performed historically.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   [
     "SCENARIO 4 TOOLTIP",
-    "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential."
+    "Aggressive 80%/20% stock/bond allocation compared to WavRyder aggressive strategies with leveraged components (80% Aggressive WR Adj / 20% Leveraged Nasdaq). For investors comfortable with higher volatility for growth potential.",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ]
 ];
 
@@ -6497,119 +7716,8 @@ let SHOW_ADVANCED_METRICS = false;
     
         
         // ============================================================================
-        // DATA UPDATE FUNCTIONALITY
+        // DATA UPDATES - Use WavRyder_Updater.html tool (external) to update data
         // ============================================================================
-        
-        document.getElementById('updateDataInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            // Get date values from input boxes
-            const startDateInput = document.getElementById('startDateInput').value;
-            const endDateInput = document.getElementById('endDateInput').value;
-            
-            if (!startDateInput || !endDateInput) {
-                alert('Please enter both start and end dates');
-                return;
-            }
-            
-            // Parse dates
-            const startDate = new Date(startDateInput);
-            const endDate = new Date(endDateInput);
-            
-            // Calculate years
-            const yearsDiff = Math.round((endDate - startDate) / (365.25 * 24 * 60 * 60 * 1000));
-            
-            // Format dates for display
-            const startDateLong = startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            const endDateLong = endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            const startDateShort = startDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-            const endDateShort = endDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-            const yearRange = `${startDate.getFullYear()}-${endDate.getFullYear()}`;
-            
-            const statusDiv = document.getElementById('updateStatus');
-            statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Reading file...</span>';
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    // Parse Excel file
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
-                    
-                    if (jsonData.length < 40) {
-                        throw new Error(`Excel file must have at least 40 rows (found ${jsonData.length})`);
-                    }
-                    
-                    // Validate structure
-                    const modelCount = jsonData[1].filter((cell, idx) => idx >= 2 && cell).length;
-                    if (modelCount < 1) {
-                        throw new Error('No model columns found in Excel file');
-                    }
-                    
-                    statusDiv.innerHTML = '<span style="color: #007bff;">⏳ Generating updated HTML file...</span>';
-                    
-                    // IMMEDIATELY create updated HTML with new data baked in
-                    try {
-                        let htmlContent = document.documentElement.outerHTML;
-                        const doctype = "<!DOCTYPE html>\n";
-                        
-                        // Prepare the new data string
-                        const newDataString = 'const EXCEL_DATA = ' + JSON.stringify(jsonData, null, 2) + ';';
-                        
-                        // Replace EXCEL_DATA in the HTML code
-                        const dataPattern = /(const|var|let)\s+EXCEL_DATA\s*=\s*\[[\s\S]*?\];/;
-                        
-                        if (!dataPattern.test(htmlContent)) {
-                            throw new Error('Could not find EXCEL_DATA in HTML. Contact support.');
-                        }
-                        
-                        htmlContent = htmlContent.replace(dataPattern, newDataString);
-                        
-                        // Replace date constants
-                        htmlContent = htmlContent.replace(/const DATA_START_DATE = "[^"]*";/, `const DATA_START_DATE = "December 28, 2005";`);
-                        htmlContent = htmlContent.replace(/const DATA_END_DATE = "[^"]*";/, `const DATA_END_DATE = "December 29, 2025";`);
-                        htmlContent = htmlContent.replace(/const DATA_START_DATE_SHORT = "[^"]*";/, `const DATA_START_DATE_SHORT = "12/28/2005";`);
-                        htmlContent = htmlContent.replace(/const DATA_END_DATE_SHORT = "[^"]*";/, `const DATA_END_DATE_SHORT = "12/29/2025";`);
-                        htmlContent = htmlContent.replace(/const DATA_YEAR_RANGE = "[^"]*";/, `const DATA_YEAR_RANGE = "2005-2025";`);
-                        htmlContent = htmlContent.replace(/const DATA_YEARS_COUNT = \d+;/, `const DATA_YEARS_COUNT = ${yearsDiff};`);
-                        
-                        // Replace the years value in EXCEL_DATA row 16 (where it says [20] or [19])
-                        htmlContent = htmlContent.replace(/\[\s*19\s*\]/, `[${yearsDiff}]`);
-                        htmlContent = htmlContent.replace(/\[\s*20\s*\]/, `[${yearsDiff}]`);
-                        
-                        // Auto-download the updated file
-                        const blob = new Blob([doctype + htmlContent], { type: 'text/html' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'index.html';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        
-                        statusDiv.innerHTML = `<span style="color: #28a745;">✅ Success! Downloaded index.html with ${modelCount} models and date range ${startDateLong} - ${endDateLong} (${yearsDiff} years).<br><br><strong>Next Steps:</strong><br>1. Replace your current index.html with the downloaded file<br>2. Upload to GitHub and push changes<br>3. Refresh this page to see new data</span>`;
-                        
-                    } catch (error) {
-                        throw new Error('Failed to generate HTML: ' + error.message);
-                    }
-                    
-                } catch (error) {
-                    statusDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
-                    console.error('Error updating data:', error);
-                }
-            };
-            
-            reader.onerror = function() {
-                statusDiv.innerHTML = '<span style="color: #dc3545;">❌ Error reading file</span>';
-            };
-            
-            reader.readAsArrayBuffer(file);
-        });
         
         // Pie Chart Variables
         let pieChart1 = null;
@@ -6986,7 +8094,7 @@ let SHOW_ADVANCED_METRICS = false;
             // CRITICAL: Ensure updateDataSection is ALWAYS display: none in the HTML
             htmlContent = htmlContent.replace(
                 /id="updateDataSection" style="display: none; /g,
-                'id="updateDataSection" style="display: none !important;'
+                'id="updateDataSection" style="'
             );
             
             // Create the new MODEL_CONFIG code
@@ -7433,7 +8541,7 @@ let SHOW_ADVANCED_METRICS = false;
             // CRITICAL: Ensure updateDataSection is ALWAYS display: none in the HTML
             htmlContent = htmlContent.replace(
                 /id="updateDataSection" style="display: none; /g,
-                'id="updateDataSection" style="display: none !important;'
+                'id="updateDataSection" style="'
             );
             
             // Create the new SCENARIO_CONFIG code
@@ -8383,6 +9491,33 @@ ${portfolio2Name}
                     document.querySelectorAll('.metric-term.active').forEach(t => {
                         t.classList.remove('active');
                     });
+                }
+            });
+        });
+        
+        // ============================================================================
+        // HASH-BASED UPDATE SECTION VISIBILITY - ALWAYS RUNS
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if URL has #update - show update section for admin
+            const updateSection = document.getElementById('updateDataSection');
+            if (updateSection) {
+                if (window.location.hash === '#update') {
+                    updateSection.classList.add('visible');
+                } else {
+                    updateSection.classList.remove('visible');
+                }
+            }
+            
+            // Listen for hash changes to hide/show dynamically
+            window.addEventListener('hashchange', function() {
+                const updateSection = document.getElementById('updateDataSection');
+                if (updateSection) {
+                    if (window.location.hash === '#update') {
+                        updateSection.classList.add('visible');
+                    } else {
+                        updateSection.classList.remove('visible');
+                    }
                 }
             });
         });
