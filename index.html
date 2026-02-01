@@ -2,7 +2,6 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   //<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>WavRyder Performance Comparison Tool</title>
     
     <!-- Open Graph Meta Tags for Social Media Preview -->
@@ -9386,6 +9385,33 @@ ${portfolio2Name}
                     document.querySelectorAll('.metric-term.active').forEach(t => {
                         t.classList.remove('active');
                     });
+                }
+            });
+        });
+        
+        // ============================================================================
+        // HASH-BASED UPDATE SECTION VISIBILITY - ALWAYS RUNS
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if URL has #update - show update section for admin
+            const updateSection = document.getElementById('updateDataSection');
+            if (updateSection) {
+                if (window.location.hash === '#update') {
+                    updateSection.classList.add('visible');
+                } else {
+                    updateSection.classList.remove('visible');
+                }
+            }
+            
+            // Listen for hash changes to hide/show dynamically
+            window.addEventListener('hashchange', function() {
+                const updateSection = document.getElementById('updateDataSection');
+                if (updateSection) {
+                    if (window.location.hash === '#update') {
+                        updateSection.classList.add('visible');
+                    } else {
+                        updateSection.classList.remove('visible');
+                    }
                 }
             });
         });
